@@ -5,12 +5,14 @@
  */
 package game;
 
-import com.sun.org.apache.xerces.internal.parsers.DOMParser;
+//import com.sun.org.apache.xerces.internal.parsers.DOMParser;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 /**
  *
@@ -32,18 +34,18 @@ public class Profil {
     // Cree un DOM à partir d'un fichier XML
     public Profil(String nomFichier){
         _doc = fromXML(nomFichier);
-        DOMParser parseur = new DOMParser();
-        parseur.parse(nomFichier);
-        
+        /*DOMParser parseur = new DOMParser();
+        parseur.parse(nomFichier);*/
+
         // parsing à compléter
         // ?!#?!    
     }
-    
+
     
     // Sauvegarde un DOM en XML
     private void toXML(String nomFichier) {
         try {
-            XMLUtil.DocumentTransform.writeDoc(_doc, nomFichier);
+            //XMLUtil.DocumentTransform.writeDoc(_doc, nomFichier);
         } catch (Exception ex) {
             Logger.getLogger(Profil.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -52,7 +54,7 @@ public class Profil {
     // Cree un DOM à partir d'un fichier XML
     private Document fromXML(String nomFichier) {
         try {
-            return XMLUtil.DocumentFactory.fromFile(nomFichier);
+            //return XMLUtil.DocumentFactory.fromFile(nomFichier);
         } catch (Exception ex) {
             Logger.getLogger(Profil.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -65,11 +67,11 @@ public class Profil {
     }
     
     public int getDernierNiveau(){
-        
+        return 0;
     }
     
     public String toString(){
-        
+        return "";
     }
     
     public void sauvegarder(String filename){

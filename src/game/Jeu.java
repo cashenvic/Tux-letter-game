@@ -75,10 +75,10 @@ public abstract class Jeu {
 
         // Instancie une autre mainRoom pour les menus
         menuRoom = new mainRoom();
-        menuRoom.setTextureEast("textures/black.png");
-        menuRoom.setTextureWest("textures/black.png");
-        menuRoom.setTextureNorth("textures/black.png");
-        menuRoom.setTextureBottom("textures/black.png");
+        menuRoom.setTextureEast("textures/skybox/cave/east.png");
+        menuRoom.setTextureWest("textures/skybox/cave/west.png");
+        menuRoom.setTextureNorth("textures/skybox/cave/north.png");
+        menuRoom.setTextureBottom("textures/skybox/cave/bottom.png");
 
         // Règle la camera
         env.setCameraXYZ(50, 60, 175);
@@ -114,12 +114,12 @@ public abstract class Jeu {
         textMenuPrincipal2 = new EnvText(env, "2. Créer un nouveau joueur ?", 250, 260);
         textMenuPrincipal3 = new EnvText(env, "3. Sortir du jeu ?", 250, 240);
         
-        textMenuQ1 = new EnvText(env, "1.1 Choisissez votre niveau ?", 250, 240);        
-        textMenuR1 = new EnvText(env, "Niveau 1", 250, 240);        
-        textMenuR2 = new EnvText(env, "Niveau 2", 250, 240);        
-        textMenuR3 = new EnvText(env, "Niveau 3", 250, 240);
-        textMenuR4 = new EnvText(env, "Niveau 4", 250, 240);
-        textMenuR5 = new EnvText(env, "Niveau 5", 250, 240);
+        textMenuQ1 = new EnvText(env, "Choisissez votre niveau", 200, 280);
+        textMenuR1 = new EnvText(env, "1. Niveau 1", 250, 260);
+        textMenuR2 = new EnvText(env, "2. Niveau 2", 250, 240);
+        textMenuR3 = new EnvText(env, "3. Niveau 3", 250, 220);
+        textMenuR4 = new EnvText(env, "4. Niveau 4", 250, 200);
+        textMenuR5 = new EnvText(env, "5. Niveau 5", 250, 180);
         
     }
 
@@ -224,7 +224,7 @@ public abstract class Jeu {
 
         // vérifie qu'une touche 1, 2 ou 3 est pressée
         int touche = 0;
-        while (!(touche == Keyboard.KEY_1 || touche == Keyboard.KEY_2 || touche == Keyboard.KEY_3)) {
+        while (!(touche == Keyboard.KEY_1 || touche == Keyboard.KEY_2 || touche == Keyboard.KEY_3 || touche == Keyboard.KEY_ESCAPE)) {
             touche = env.getKey();
             env.advanceOneFrame();
         }
@@ -271,6 +271,11 @@ public abstract class Jeu {
             case Keyboard.KEY_3:
                 // le choix est de sortir du jeu (quitter l'application)
                 choix = MENU_VAL.MENU_SORTIE;
+                break;
+            case Keyboard.KEY_ESCAPE:
+                // le choix est de sortir du jeu (quitter l'application)
+                choix = MENU_VAL.MENU_SORTIE;
+                break;
         }
         return choix;
     }
@@ -372,8 +377,18 @@ public abstract class Jeu {
                     //date
                     date = new SimpleDateFormat("dd/mm/aaaa_hh:mm:ss").format(Calendar.getInstance().getTime());                    
                     // crée un nouvelle partie
-                    partie = new Partie(this.date,this.mot,this.niveau); 
+                    partie = new Partie(this.date, this.mot, this.niveau);
+
+                    /*
+                    https://www.commentcamarche.net/forum/affich-27749493-comment-arreter-une-methode-apres-un-certain-temps-d-executionlong max = 60000 / 2; // 1 mn 
+                    long tmax = System.currentTimeMillis() + max;
+                    EnvText motAfficher = new EnvText(env, "Trouver ce mot :\n" + partie.getMot(), 250, 280);
+                    motAfficher.display();
+                    while (System.currentTimeMillis() < tmax) {
+                    }
+                    motAfficher.erase();*/
                     // joue
+                    System.out.println();
                     joue(partie);
                     
                     // enregistre la partie dans le profil --> enregistre le profil
@@ -412,6 +427,12 @@ public abstract class Jeu {
                 // -----------------------------------------                
                 case Keyboard.KEY_4:
                     playTheGame = MENU_VAL.MENU_SORTIE;
+                    break;
+
+                case Keyboard.KEY_ESCAPE:
+                    // le choix est de sortir du jeu (quitter l'application)
+                    playTheGame = MENU_VAL.MENU_SORTIE;
+                    break;
             }
         } while (playTheGame == MENU_VAL.MENU_JOUE);
         return playTheGame;

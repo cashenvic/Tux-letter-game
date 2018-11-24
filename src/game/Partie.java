@@ -32,7 +32,7 @@ public class Partie {
     }
     
     //crée le bloc XML représentant une partie à partir du paramètre doc(pour créer les éléments du XML) et renvoie ce bloc en tant que Element.
-    public Element getPartie(Document doc){
+    public /*Element*/ void getPartie(Document doc) {
         
     }
     

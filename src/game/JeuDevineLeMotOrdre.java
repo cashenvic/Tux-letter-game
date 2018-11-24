@@ -14,7 +14,6 @@ public class JeuDevineLeMotOrdre extends Jeu{
     private ArrayList<Letter> wrongLetters;
     
     //affichage du mot pdt 5s
-    EnvText motAfficher;
     
     public JeuDevineLeMotOrdre(){
         super();        
@@ -45,9 +44,7 @@ public class JeuDevineLeMotOrdre extends Jeu{
         wrongLetters = new ArrayList<Letter>();
         
         //affichage du mot à trouvé pendant 5s
-        motAfficher = new EnvText(env, "Trouver ce mot :\n" +  partie.getMot() , 250, 280);
         
-        motAfficher.display();   
         
         
         //initialise la limite + instancie le chrono et commence le chrono -> start
