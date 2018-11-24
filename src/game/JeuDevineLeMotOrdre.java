@@ -37,7 +37,7 @@ public class JeuDevineLeMotOrdre extends Jeu{
         }  
         
          // restaure la room du jeu
-        env.setRoom(mainRoom);   
+        //env.setRoom(mainRoom);   
         
         nbLettresrestantes = getNbLettresRestantes();
         //comporte les lettres qui sont mal choisi/désodre

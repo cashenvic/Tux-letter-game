@@ -100,7 +100,8 @@ public abstract class Jeu {
         dico.ajouteMotADico(1, "grenoble");
         dico.ajouteMotADico(1, "maman");
         dico.ajouteMotADico(1, "papa");   
-        dico.ajouteMotADico(1, "j ai");  
+        dico.ajouteMotADico(1, "j ai");
+        dico.ajouteMotADico(5, "mot tres complique");
         
 
         // Textes affichés à l'écran
@@ -317,7 +318,7 @@ public abstract class Jeu {
             textMenuJeu4.erase();
 
             // restaure la room du jeu
-            env.setRoom(mainRoom);
+            //env.setRoom(mainRoom);
 
             // et décide quoi faire en fonction de la touche pressée
             switch (touche) {
@@ -369,7 +370,7 @@ public abstract class Jeu {
                     textMenuR5.erase();  
                     
                     // restaure la room du jeu
-                    env.setRoom(mainRoom);
+                    //env.setRoom(mainRoom);
                     
                     // .......... dico ...........
                     //choix du mot à deviner
@@ -388,7 +389,6 @@ public abstract class Jeu {
                     }
                     motAfficher.erase();*/
                     // joue
-                    System.out.println();
                     joue(partie);
                     
                     // enregistre la partie dans le profil --> enregistre le profil
@@ -448,8 +448,8 @@ public abstract class Jeu {
         env.setRoom(mainRoom);
 
         // Instancie un Tux
-        tux = new Tux(env,mainRoom);
-        env.addObject(this.tux);        
+        tux = new Tux(env, mainRoom);
+            env.addObject(this.tux);
         
         // Ici, on peut initialiser des valeurs pour une nouvelle partie
         démarrePartie(partie);        
@@ -461,6 +461,7 @@ public abstract class Jeu {
             // Contrôles globaux du jeu (sortie, ...)
             //1 is for escape key
             if (env.getKey() == 1) {
+                env.restart();
                 finished = true;               
             }
 

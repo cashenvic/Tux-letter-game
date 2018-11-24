@@ -96,7 +96,7 @@ public class Dico {
         }
         //si liste vide return valeur par défaut
         else {
-            return "papa"; 
+            return "default";
         }
         
     }
