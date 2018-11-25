@@ -4,13 +4,17 @@ TODO
 un autre cube -> graine
 - affichage pas à pas des lettres trouvé dans la console -> list bonOrdre
 - l.374 // enregistre la partie dans le profil --> enregistre le profil
+- apparition de la lettre pdt 5s
  */
 package game;
 
 import env3d.Env;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Scanner;
 import org.lwjgl.input.Keyboard;
 
 public abstract class Jeu {
@@ -40,10 +44,13 @@ public abstract class Jeu {
     protected char caract[];
     protected Boolean finished;
     
-    // ...
+   
     private final mainRoom menuRoom;
     
     EnvText textNomJoueur;
+    //EnvText textDateNais;
+    
+    
     EnvText textMenuQuestion;
     EnvText textMenuJeu1;
     EnvText textMenuJeu2;
@@ -88,7 +95,9 @@ public abstract class Jeu {
         env.setDefaultControl(false);
 
         // Instancie un profil par défaut
-        profil = new Profil("Profil.xml");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-mm-yyyy") ;
+        Date aujourdhui = new Date();
+        //profil = new Profil( "Hanh",dateFormat.format(aujourdhui));
 
         // Dictionnaire
         //instancie les lettres en Liste Letter
@@ -111,6 +120,8 @@ public abstract class Jeu {
         textMenuJeu3 = new EnvText(env, "3. Sortir de ce jeu ?", 250, 240);
         textMenuJeu4 = new EnvText(env, "4. Quitter le jeu ?", 250, 220);
         textNomJoueur = new EnvText(env, "Choisissez un nom de joueur : ", 200, 300);
+        //textDateNais = new EnvText(env, "Indiquez la date de naissance du joueur : ", 200, 300);
+        
         textMenuPrincipal1 = new EnvText(env, "1. Charger un profil de joueur existant ?", 250, 280);
         textMenuPrincipal2 = new EnvText(env, "2. Créer un nouveau joueur ?", 250, 260);
         textMenuPrincipal3 = new EnvText(env, "3. Sortir du jeu ?", 250, 240);
@@ -202,7 +213,25 @@ public abstract class Jeu {
         textNomJoueur.erase();
         return nomJoueur;
     }
-
+    
+    
+    /**
+     * Permet de saisir la date de naissance d'un joueur et de l'affiche à l'écran durant la saisie
+     *
+     * @return la date de naissance du joueur au format String
+     */
+    /*
+    private String getDateNais() {
+        textDateNais.modify("Indiquez la date de naissance du joueur : ");
+        int touche = 0;
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Veuillez saisir une date de naissance (dd-mm-yyyy) :");
+        String dateNais = sc.nextLine();
+        
+        textDateNais.erase();
+        return dateNais;
+    }
+    */
     
     /**
      * Menu principal
@@ -213,6 +242,7 @@ public abstract class Jeu {
 
         MENU_VAL choix = MENU_VAL.MENU_CONTINUE;
         String nomJoueur;
+        String dateNais;
 
         // restaure la room du menu
         env.setRoom(menuRoom);
@@ -260,8 +290,10 @@ public abstract class Jeu {
             case Keyboard.KEY_2:
                 // demande le nom du nouveau joueur
                 nomJoueur = getNomJoueur();
+                //demande la date de naissance du nouveau joueur
+                //dateNais = getDateNais();
                 // crée un profil avec le nom d'un nouveau joueur
-                profil = new Profil(nomJoueur);
+               // profil = new Profil(nomJoueur,"01-12-2000");
                 // lance le menu de jeu et récupère le choix à la sortie de ce menu de jeu
                 choix = menuJeu();
                 break;
@@ -369,9 +401,6 @@ public abstract class Jeu {
                     textMenuR3.erase();
                     textMenuR4.erase();
                     textMenuR5.erase();  
-                    
-                    // restaure la room du jeu
-                    //env.setRoom(mainRoom);
                     
                     // .......... dico ...........
                     //choix du mot à deviner

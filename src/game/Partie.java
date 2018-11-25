@@ -1,11 +1,13 @@
 /*
- * Ajoutez la possibilité de sélectionner un niveau au début d'une partie
-(avant de choisir le mot dans le dictionnaire, bien entendu).
+ *
  */
 package game;
 
-import javax.swing.text.Document;
+//import javax.swing.text.Document;
 import javax.swing.text.Element;
+
+import org.w3c.dom.Document;
+
 
 /**
  *
@@ -15,7 +17,7 @@ public class Partie {
     private String date;
     private String mot;
     private int niveau;
-    private int trouvé; //pourcentage (arrondi) de lettres trouvées
+    private int trouvé; 
     private int temps;
     
     //construction d'une nouvelle partie et initialise donc tous ses attributs
@@ -26,8 +28,18 @@ public class Partie {
     }
     
     //construction et la réinitialisation d'une Partie déjà faite et issue du XML
-    //parsing du document DOM ; le constucteur utilisera cet élément pour récupérer les bonnes valeurs et initialiser la partie.
-    public Partie(Element partieElt) {
+    //parsing du document DOM ; 
+    //le constucteur utilisera cet élément pour récupérer les bonnes valeurs 
+    //et initialiser la partie.
+    public Partie(Element partieElt) { // élément DOM correspondant à une partie
+       /*
+        this.date = partieElt.getAttributes().item(0).getTextContent();
+        this.trouvé = partieElt.getAttributes().item(1).getTextContent();
+        this.temps = partieElt.getElementsByTagName("temps").getTextContent();
+        this.mot = partieElt.getElementsByTagName("mot").getTextContent();
+        this.niveau = partieElt.getElementsByTagName("mot").getAttribute().item(0).getTextContent();
+        */
+        
 //        • getElementsByTagName(name: String): NodeList renvoie la liste des éléments descendants
 //        de l’élément courant qui ont pour nom celui passé en attribut.
 //        getAttribute(name: String): String retourne la valeur de l’attribut dont le nom est passé
@@ -37,8 +49,10 @@ public class Partie {
 //        • getTagName(): String renvoie le nom de l’élément.
     }
     
-    //crée le bloc XML représentant une partie à partir du paramètre doc(pour créer les éléments du XML) et renvoie ce bloc en tant que Element.
+    //crée le bloc XML représentant une partie à partir du paramètre doc(pour créer les éléments du XML) 
+    //et renvoie ce bloc en tant que Element.
     public /*Element*/ void getPartie(Document doc) {
+        
         
     }
     

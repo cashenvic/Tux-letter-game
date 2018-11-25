@@ -1,7 +1,6 @@
 /**
 tuxTrouveLettre -> si c'est pas la bonne lettre
 * terminePartie -> pourcentage
-* apparition de la lettre pdt 5s
  */
 package game;
 

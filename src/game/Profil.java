@@ -1,7 +1,6 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ *
+ * 
  */
 package game;
 
@@ -9,12 +8,10 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
 import xml.XMLUtil;
 
-/**
- *
- * @author dothit
- */
+
 public class Profil {
     private String nom;
     private String dateNaissance;
@@ -37,11 +34,12 @@ public class Profil {
         this.dateNaissance = _doc.getElementsByTagName("anniversaire").item(0).getTextContent();
 
         for (int i = 0; i < _doc.getElementsByTagName("partie").getLength(); i++) {
-            String date = _doc.getElementsByTagName("partie").item(i).getAttributes().item(0).getTextContent();
-            String trouve = _doc.getElementsByTagName("partie").item(i).getAttributes().item(1).getTextContent();
-            String temps = _doc.getElementsByTagName("partie").item(i).getChildNodes().item(0).getTextContent();
-            String mot = _doc.getElementsByTagName("partie").item(i).getChildNodes().item(1).getTextContent();
-            String niveau = _doc.getElementsByTagName("partie").item(i).getAttributes().item(0).getTextContent();
+            NodeList partie = _doc.getElementsByTagName("partie");
+            String date = partie.item(i).getAttributes().item(0).getTextContent();
+            String trouve = partie.item(i).getAttributes().item(1).getTextContent();
+            String temps = partie.item(i).getChildNodes().item(0).getTextContent();
+            String mot = partie.item(i).getChildNodes().item(1).getTextContent();
+            String niveau = partie.item(i).getAttributes().item(0).getTextContent();
 
             p = new Partie(xmlDateToProfileDate(date), mot, Integer.parseInt(niveau));
             p.setTemps(Integer.parseInt(temps));
@@ -89,13 +87,15 @@ public class Profil {
         _doc.getElementsByTagName("nom").item(0).setTextContent(this.nom);
         _doc.getElementsByTagName("avatar").item(0).setTextContent(this.avatar);
         _doc.getElementsByTagName("anniversaire").item(0).setTextContent(this.dateNaissance);
-
+        
+        int i=0;
         for (Partie p : parties) {
-            _doc.getElementsByTagName("partie").item(0).getAttributes().item(0).setTextContent(profileDateToXmlDate(p.getDate()));
-            _doc.getElementsByTagName("partie").item(0).getAttributes().item(1).setTextContent(p.getTrouvé() + "%");
-            _doc.getElementsByTagName("partie").item(0).getChildNodes().item(0).setTextContent("" + p.getTemps());
-            _doc.getElementsByTagName("partie").item(0).getChildNodes().item(1).setTextContent(p.getMot());
-            _doc.getElementsByTagName("partie").item(0).getAttributes().item(0).setTextContent("" + p.getNiveau());
+            _doc.getElementsByTagName("partie").item(i).getAttributes().item(0).setTextContent(profileDateToXmlDate(p.getDate()));
+            _doc.getElementsByTagName("partie").item(i).getAttributes().item(1).setTextContent(p.getTrouvé() + "%");
+            _doc.getElementsByTagName("partie").item(i).getChildNodes().item(0).setTextContent("" + p.getTemps());
+            _doc.getElementsByTagName("partie").item(i).getChildNodes().item(1).setTextContent(p.getMot());
+            _doc.getElementsByTagName("partie").item(i).getAttributes().item(0).setTextContent("" + p.getNiveau());
+            i++;
         }
 
         toXML(filename);
