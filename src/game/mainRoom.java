@@ -5,6 +5,11 @@
  */
 package game;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.w3c.dom.Document;
+import xml.XMLUtil;
+
 /**
  *
  * @author dothit
@@ -20,15 +25,38 @@ public class mainRoom {
     private String textureWest;
     private String textureTop;    
     private String textureSouth;
+    public Document _doc;
     
     public mainRoom(){
         this.depth = 100;
         this.height = 60;
         this.width = 100;
-        this.textureBottom = "textures/floor/grass2.png"; 
+        this.textureBottom = "textures/floor/grass2.png";
         this.textureNorth = "textures/skybox/sunny/north.png";
         this.textureEast = "textures/skybox/sunny/east.png";
         this.textureWest = "textures/skybox/sunny/west.png";
+        //loadPlateau();
+    }
+
+    private void loadPlateau() {
+        _doc = fromXML("plateau.xml");
+        this.textureBottom = _doc.getElementsByTagName("textureBottom").item(0).getTextContent();
+        this.textureNorth = _doc.getElementsByTagName("textureNorth").item(0).getTextContent();
+        this.textureEast = _doc.getElementsByTagName("textureEast").item(0).getTextContent();
+        this.textureWest = _doc.getElementsByTagName("textureWest").item(0).getTextContent();
+
+        this.depth = Integer.parseInt(_doc.getElementsByTagName("depth").item(0).getTextContent());
+        this.height = Integer.parseInt(_doc.getElementsByTagName("height").item(0).getTextContent());
+        this.width = Integer.parseInt(_doc.getElementsByTagName("width").item(0).getTextContent());
+    }
+
+    private Document fromXML(String nomFichier) {
+        try {
+            return XMLUtil.DocumentFactory.fromFile(nomFichier);
+        } catch (Exception ex) {
+            Logger.getLogger(Profil.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 
     public int getDepth() {

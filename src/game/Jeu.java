@@ -88,8 +88,8 @@ public abstract class Jeu {
         env.setDefaultControl(false);
 
         // Instancie un profil par défaut
-        //profil = new Profil("Profil.xml");
-        
+        profil = new Profil("Profil.xml");
+
         // Dictionnaire
         //instancie les lettres en Liste Letter
         lettres = new ArrayList<Letter>();        
@@ -261,7 +261,7 @@ public abstract class Jeu {
                 // demande le nom du nouveau joueur
                 nomJoueur = getNomJoueur();
                 // crée un profil avec le nom d'un nouveau joueur
-                //profil = new Profil(nomJoueur);
+                profil = new Profil(nomJoueur);
                 // lance le menu de jeu et récupère le choix à la sortie de ce menu de jeu
                 choix = menuJeu();
                 break;
