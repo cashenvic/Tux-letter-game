@@ -4,10 +4,19 @@
 */
 package game;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+import org.xml.sax.Attributes;
+import org.xml.sax.helpers.DefaultHandler;
 
 
-public class Dico {
+public class Dico extends DefaultHandler {
 
     private ArrayList<String> listeNiveau1;
     private ArrayList<String> listeNiveau2;
@@ -15,9 +24,11 @@ public class Dico {
     private ArrayList<String> listeNiveau4;
     private ArrayList<String> listeNiveau5;
     private String cheminFichierDico;
+    private StringBuffer buffer;
     
     
     public Dico(String cheminFichier) {
+        super();
         //instancie les listes par niveau
         this.listeNiveau1 = new ArrayList<String>();
         this.listeNiveau2 = new ArrayList<String>();
@@ -99,6 +110,49 @@ public class Dico {
             return "default";
         }
         
+    }
+
+    private void lireDictionnaire() throws org.xml.sax.SAXException {
+        String pathToDicoFile = "./ExempleSAX.xml";
+
+        try {
+            // création d'une fabrique de parseurs SAX 
+            SAXParserFactory fabrique = SAXParserFactory.newInstance();
+
+            // création d'un parseur SAX 
+            SAXParser parseur = fabrique.newSAXParser();
+
+            // lecture d'un fichier XML avec un DefaultHandler 
+            File fichier = new File(pathToDicoFile);
+            DefaultHandler gestionnaire = new DefaultHandler();
+            parseur.parse(fichier, gestionnaire);
+
+        } catch (ParserConfigurationException pce) {
+            System.out.println("Erreur de configuration du parseur");
+            System.out.println("Lors de l'appel à newSAXParser()");
+        } catch (IOException ex) {
+            Logger.getLogger(Dico.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @Override
+    public void startElement(String uri, String localName, String qName, Attributes attributes) {
+    }
+
+    @Override
+    public void endElement(String uri, String localName, String qName) {
+    }
+
+    @Override
+    public void characters(char[] ch, int start, int length) {
+    }
+
+    @Override
+    public void startDocument() {
+    }
+
+    @Override
+    public void endDocument() {
     }
     
 }

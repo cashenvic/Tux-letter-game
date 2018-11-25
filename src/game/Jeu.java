@@ -88,7 +88,7 @@ public abstract class Jeu {
         env.setDefaultControl(false);
 
         // Instancie un profil par défaut
-        profil = new Profil("Profil.xml");
+        //profil = new Profil("Profil.xml");
         
         // Dictionnaire
         //instancie les lettres en Liste Letter
@@ -261,7 +261,7 @@ public abstract class Jeu {
                 // demande le nom du nouveau joueur
                 nomJoueur = getNomJoueur();
                 // crée un profil avec le nom d'un nouveau joueur
-                profil = new Profil(nomJoueur);
+                //profil = new Profil(nomJoueur);
                 // lance le menu de jeu et récupère le choix à la sortie de ce menu de jeu
                 choix = menuJeu();
                 break;
@@ -357,8 +357,9 @@ public abstract class Jeu {
                             break;    
                         case Keyboard.KEY_5 :
                             this.niveau = 5;
-                            break;    
-                        default : break;    
+                            break;
+                        default:
+                            break;
                     }
                     
                     // efface le menu
@@ -380,18 +381,21 @@ public abstract class Jeu {
                     // crée un nouvelle partie
                     partie = new Partie(this.date, this.mot, this.niveau);
 
-                    /*
-                    https://www.commentcamarche.net/forum/affich-27749493-comment-arreter-une-methode-apres-un-certain-temps-d-executionlong max = 60000 / 2; // 1 mn 
+                    //https://www.commentcamarche.net/forum/affich-27749493-comment-arreter-une-methode-apres-un-certain-temps-d-execution
+                    long max = 3000; // 60000 = 1mn
                     long tmax = System.currentTimeMillis() + max;
+
                     EnvText motAfficher = new EnvText(env, "Trouver ce mot :\n" + partie.getMot(), 250, 280);
                     motAfficher.display();
                     while (System.currentTimeMillis() < tmax) {
                     }
-                    motAfficher.erase();*/
+                    motAfficher.erase();
                     // joue
                     joue(partie);
                     
                     // enregistre la partie dans le profil --> enregistre le profil
+                    profil.ajouterPartie(partie);
+                    profil.sauvegarder("filename");
                     // .......... profil .........
                     playTheGame = MENU_VAL.MENU_JOUE;
                     break;

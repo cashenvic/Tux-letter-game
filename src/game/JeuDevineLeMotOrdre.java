@@ -44,9 +44,6 @@ public class JeuDevineLeMotOrdre extends Jeu{
         wrongLetters = new ArrayList<Letter>();
         
         //affichage du mot à trouvé pendant 5s
-        
-        
-        
         //initialise la limite + instancie le chrono et commence le chrono -> start
         int limite = 5*60*1000; 
         chrono = new Chronometre(limite);
@@ -79,10 +76,9 @@ public class JeuDevineLeMotOrdre extends Jeu{
         //partie.setTrouve(lettres.size() - lettresRestantes.size());       
         
         //a supp car faut le faire dans partie settrouve
-        int pourcent =  ( lettres.size() - getNbLettresRestantes() ) * 100 / lettres.size() ;
         
          System.out.println("Temps réparti : " + chrono.getMilliseconds() + " ms"
-                            + "\nPourcentage des lettres trouvé : " + pourcent);
+                + "\nPourcentage des lettres trouvé : " + partie.setTrouve(nbLettresrestantes) + "%");
         
     }
     

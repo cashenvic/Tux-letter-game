@@ -27,8 +27,14 @@ public class Partie {
     
     //construction et la réinitialisation d'une Partie déjà faite et issue du XML
     //parsing du document DOM ; le constucteur utilisera cet élément pour récupérer les bonnes valeurs et initialiser la partie.
-    public Partie(Element partieElt){
-        
+    public Partie(Element partieElt) {
+//        • getElementsByTagName(name: String): NodeList renvoie la liste des éléments descendants
+//        de l’élément courant qui ont pour nom celui passé en attribut.
+//        getAttribute(name: String): String retourne la valeur de l’attribut dont le nom est passé
+//        en paramètre.
+//        • setAttribute(name: String, valeur: String): void modifie la valeur de l’attribut.
+//        • removeAttribute(name: String): void supprime l’attribut dont le nom est passé en paramètre
+//        • getTagName(): String renvoie le nom de l’élément.
     }
     
     //crée le bloc XML représentant une partie à partir du paramètre doc(pour créer les éléments du XML) et renvoie ce bloc en tant que Element.
@@ -38,7 +44,8 @@ public class Partie {
     
     
     //renvoyer un pourcentage en fonction du nombre de lettres trouvées.
-    public void setTrouve( int nbLettresRestantes){  
+    public int setTrouve(int nbLettresRestantes) {
+        return (this.mot.length() - nbLettresRestantes) * 100 / this.mot.length();
     }
     
     
@@ -66,6 +73,23 @@ public class Partie {
     
     public void setMot(String mot){
         this.mot = mot;   
-    } 
-    
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public int getTrouvé() {
+        return trouvé;
+    }
+
+    public int getTemps() {
+        return temps;
+    }
+
+
 }

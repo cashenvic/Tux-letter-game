@@ -5,14 +5,11 @@
  */
 package game;
 
-//import com.sun.org.apache.xerces.internal.parsers.DOMParser;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.w3c.dom.Document;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
+import xml.XMLUtil;
 
 /**
  *
@@ -28,24 +25,37 @@ public class Profil {
     
     public Profil(String nom, String dateNaissance){
         this.nom = nom;
-        this.dateNaissance =dateNaissance;        
+        this.dateNaissance = dateNaissance;
     }
     
     // Cree un DOM à partir d'un fichier XML
-    public Profil(String nomFichier){
+    public Profil(String nomFichier) {
+        Partie p;
         _doc = fromXML(nomFichier);
-        /*DOMParser parseur = new DOMParser();
-        parseur.parse(nomFichier);*/
+        this.nom = _doc.getElementsByTagName("nom").item(0).getTextContent();
+        this.avatar = _doc.getElementsByTagName("avatar").item(0).getTextContent();
+        this.dateNaissance = _doc.getElementsByTagName("anniversaire").item(0).getTextContent();
 
-        // parsing à compléter
-        // ?!#?!    
+        for (int i = 0; i < _doc.getElementsByTagName("partie").getLength(); i++) {
+            String date = _doc.getElementsByTagName("partie").item(i).getAttributes().item(0).getTextContent();
+            String trouve = _doc.getElementsByTagName("partie").item(i).getAttributes().item(1).getTextContent();
+            String temps = _doc.getElementsByTagName("partie").item(i).getChildNodes().item(0).getTextContent();
+            String mot = _doc.getElementsByTagName("partie").item(i).getChildNodes().item(1).getTextContent();
+            String niveau = _doc.getElementsByTagName("partie").item(i).getAttributes().item(0).getTextContent();
+
+            p = new Partie(xmlDateToProfileDate(date), mot, Integer.parseInt(niveau));
+            p.setTemps(Integer.parseInt(temps));
+            p.setTrouve(Integer.parseInt(trouve));
+
+            parties.add(p);
+        }
     }
 
     
     // Sauvegarde un DOM en XML
     private void toXML(String nomFichier) {
         try {
-            //XMLUtil.DocumentTransform.writeDoc(_doc, nomFichier);
+            XMLUtil.DocumentTransform.writeDoc(_doc, nomFichier);
         } catch (Exception ex) {
             Logger.getLogger(Profil.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -54,7 +64,7 @@ public class Profil {
     // Cree un DOM à partir d'un fichier XML
     private Document fromXML(String nomFichier) {
         try {
-            //return XMLUtil.DocumentFactory.fromFile(nomFichier);
+            return XMLUtil.DocumentFactory.fromFile(nomFichier);
         } catch (Exception ex) {
             Logger.getLogger(Profil.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -63,11 +73,11 @@ public class Profil {
     
     
     public void ajouterPartie(Partie p){
-        
+        parties.add(p);
     }
     
     public int getDernierNiveau(){
-        return 0;
+        return parties.get(parties.size() - 1).getNiveau();
     }
     
     public String toString(){
@@ -75,7 +85,20 @@ public class Profil {
     }
     
     public void sauvegarder(String filename){
-        
+        //ecrire les informations dans un doc dom et appeler toXml()
+        _doc.getElementsByTagName("nom").item(0).setTextContent(this.nom);
+        _doc.getElementsByTagName("avatar").item(0).setTextContent(this.avatar);
+        _doc.getElementsByTagName("anniversaire").item(0).setTextContent(this.dateNaissance);
+
+        for (Partie p : parties) {
+            _doc.getElementsByTagName("partie").item(0).getAttributes().item(0).setTextContent(profileDateToXmlDate(p.getDate()));
+            _doc.getElementsByTagName("partie").item(0).getAttributes().item(1).setTextContent(p.getTrouvé() + "%");
+            _doc.getElementsByTagName("partie").item(0).getChildNodes().item(0).setTextContent("" + p.getTemps());
+            _doc.getElementsByTagName("partie").item(0).getChildNodes().item(1).setTextContent(p.getMot());
+            _doc.getElementsByTagName("partie").item(0).getAttributes().item(0).setTextContent("" + p.getNiveau());
+        }
+
+        toXML(filename);
     }
     
     /// Takes a date in XML format (i.e. ????-??-??) and returns a date
