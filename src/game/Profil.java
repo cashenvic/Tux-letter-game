@@ -7,7 +7,12 @@ package game;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.text.Element;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.Document;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import xml.XMLUtil;
 
@@ -19,6 +24,7 @@ public class Profil {
     private ArrayList<Partie> parties;
     
     public Document _doc;
+    private String file;
     
     public Profil(String nom, String dateNaissance){
         this.nom = nom;
@@ -26,27 +32,65 @@ public class Profil {
     }
     
     // Cree un DOM à partir d'un fichier XML
+    //-> utilise le document DOM pour extraire les données nécessaires 
+    //à la récupération des valeurs du profil et des parties existantes
     public Profil(String nomFichier) {
-        Partie p;
+        
         _doc = fromXML(nomFichier);
-        this.nom = _doc.getElementsByTagName("ns1:nom").item(0).getTextContent();
+        this.nom = _doc.getElementsByTagName("ns1:nom").item(0).getTextContent()
         this.avatar = _doc.getElementsByTagName("ns1:avatar").item(0).getTextContent();
         this.dateNaissance = _doc.getElementsByTagName("ns1:anniversaire").item(0).getTextContent();
-
+        
+        //balise profil
+        Element racine =  (Element) _doc.createElement("ns1:profil");
+        racine.setAttributeNS("http://www.w3.org/2001/XMLSchema-instance", "xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
+        racine.setAttributeNS("http://myGame/tux","xmlns:ns1");
+        racine.setAttributeNS("http://myGame/tux ../xsd/profil.xsd","xsi:schemaLocation");
+        _doc.appendChild((Node) racine);
+        
+        //balise nom
+        Element nomElem = (Element) _doc.createElement("ns1:nom");
+        nomElem.setNodeValue(this.nom);
+        //balise avatar
+        Element avatarElem = (Element) _doc.createElement("ns1:avatar");
+        avatarElem.setNodeValue(this.avatar);
+        //balise anniversaire
+        Element annivElem = (Element) _doc.createElement("ns1:anniversaire");
+        annivElem.setNodeValue(this.dateNaissance);
+        //balise parties
+        Element partiesElem = (Element) _doc.createElement("ns1:parties");
+        
+        racine.appendChild(nomElem);
+        racine.appendChild(avatarElem);
+        racine.appendChild(annivElem);
+        racine.appendChild(partiesElem);
+                
+        String date;
+        double temps;
+        String mot;
+        int niveau;
+        int trouvé;
+        Partie p;        
+        NodeList listpartie = _doc.getElementsByTagName("ns1:partie");
         for (int i = 0; i < _doc.getElementsByTagName("ns1:partie").getLength(); i++) {
-            NodeList partie = _doc.getElementsByTagName("ns1:partie");
-            String date = partie.item(i).getAttributes().item(0).getTextContent();
-            String trouve = partie.item(i).getAttributes().item(1).getTextContent();
-            String temps = partie.item(i).getChildNodes().item(0).getTextContent();
-            String mot = partie.item(i).getChildNodes().item(1).getTextContent();
-            String niveau = partie.item(i).getAttributes().item(0).getTextContent();
-
-            p = new Partie(xmlDateToProfileDate(date), mot, Integer.parseInt(niveau));
+            date = listpartie[i].getAttribute("date");
+            temps = listpartie[i].getElementsByTagName("ns1:temps").item(0).getTextContent();
+            mot = listpartie[i].getElementsByTagName("ns1:mot").item(0).getTextContent();           
+            niveau = listpartie[i].getAttribute("niveau");       
+            trouvé = listpartie[i].getAttribute("trouvé");                   
+                       
+            p = new Partie(profileDateToXmlDate(date), mot, Integer.parseInt(niveau));
             p.setTemps(Integer.parseInt(temps));
-            p.setTrouve(Integer.parseInt(trouve));
-
-            parties.add(p);
+            p.setTrouve(Integer.parseInt(trouvé));
+            //ajout dans la liste des parties
+            ajouterPartie(p);
         }
+        
+        for(Partie unepartie : parties){            
+            Element partieExistant = unepartie.getPartie( (javax.swing.text.Document) _doc);
+            partiesElem.appendChild(partieExistant);
+        }
+        
     }
 
     
@@ -70,6 +114,7 @@ public class Profil {
     }
     
     
+    //rajouter à la liste des parties une Partie instanciée.
     public void ajouterPartie(Partie p){
         parties.add(p);
     }
@@ -82,22 +127,9 @@ public class Profil {
         return "";
     }
     
-    public void sauvegarder(String filename){
-        //ecrire les informations dans un doc dom et appeler toXml()
-        _doc.getElementsByTagName("nom").item(0).setTextContent(this.nom);
-        _doc.getElementsByTagName("avatar").item(0).setTextContent(this.avatar);
-        _doc.getElementsByTagName("anniversaire").item(0).setTextContent(this.dateNaissance);
+    //sauvegarder le document DOM dans un fichier XML
+    public void sauvegarder(String filename) {  
         
-        int i=0;
-        for (Partie p : parties) {
-            _doc.getElementsByTagName("partie").item(i).getAttributes().item(0).setTextContent(profileDateToXmlDate(p.getDate()));
-            _doc.getElementsByTagName("partie").item(i).getAttributes().item(1).setTextContent(p.getTrouvé() + "%");
-            _doc.getElementsByTagName("partie").item(i).getChildNodes().item(0).setTextContent("" + p.getTemps());
-            _doc.getElementsByTagName("partie").item(i).getChildNodes().item(1).setTextContent(p.getMot());
-            _doc.getElementsByTagName("partie").item(i).getAttributes().item(0).setTextContent("" + p.getNiveau());
-            i++;
-        }
-
         toXML(filename);
     }
     
@@ -133,15 +165,18 @@ public class Profil {
         return date;
     }
 
-    boolean charge(String nomJoueur) {
-        _doc = fromXML("src/xml/data/profil.xml");
+    protected boolean charge(String nomJoueur) {
+        String file = "src/xml/data/profil.xml";
+        _doc = fromXML(file);
         String nom = _doc.getElementsByTagName("ns1:nom").item(0).getTextContent();
         System.out.println("nom : "+nom);
         if(nom.equals(nomJoueur)){
+            this.nom = nomJoueur;
+            this.file = file;
             return true;
         }
         
         return false;
     }
-            
+    
 }

@@ -1,12 +1,9 @@
-/*
- *
- */
+
 package game;
 
-//import javax.swing.text.Document;
+import javax.swing.text.Document;
 import javax.swing.text.Element;
 
-import org.w3c.dom.Document;
 
 
 /**
@@ -18,7 +15,7 @@ public class Partie {
     private String mot;
     private int niveau;
     private int trouvé; 
-    private int temps;
+    private double temps;
     
     //construction d'une nouvelle partie et initialise donc tous ses attributs
     public Partie(String date, String mot, int niveau){
@@ -28,44 +25,54 @@ public class Partie {
     }
     
     //construction et la réinitialisation d'une Partie déjà faite et issue du XML
-    //parsing du document DOM ; 
-    //le constucteur utilisera cet élément pour récupérer les bonnes valeurs 
-    //et initialiser la partie.
+    //initialiser la partie à jouer
     public Partie(Element partieElt) { // élément DOM correspondant à une partie
-       /*
-        this.date = partieElt.getAttributes().item(0).getTextContent();
-        this.trouvé = partieElt.getAttributes().item(1).getTextContent();
-        this.temps = partieElt.getElementsByTagName("temps").getTextContent();
-        this.mot = partieElt.getElementsByTagName("mot").getTextContent();
-        this.niveau = partieElt.getElementsByTagName("mot").getAttribute().item(0).getTextContent();
-        */
+        //recuperer les données d'une partie
+        this.mot = partieElt.getElementsByTagName("ns1:mot").getTextContent();
+        this.niveau = partieElt.getAttribute("ns1:niveau");
+        this.date = partieElt.getAttribute("ns1:date");
         
-//        • getElementsByTagName(name: String): NodeList renvoie la liste des éléments descendants
-//        de l’élément courant qui ont pour nom celui passé en attribut.
-//        getAttribute(name: String): String retourne la valeur de l’attribut dont le nom est passé
-//        en paramètre.
-//        • setAttribute(name: String, valeur: String): void modifie la valeur de l’attribut.
-//        • removeAttribute(name: String): void supprime l’attribut dont le nom est passé en paramètre
-//        • getTagName(): String renvoie le nom de l’élément.
-    }
-    
-    //crée le bloc XML représentant une partie à partir du paramètre doc(pour créer les éléments du XML) 
-    //et renvoie ce bloc en tant que Element.
-    public /*Element*/ void getPartie(Document doc) {
-        
+        //reinitialisation des données
+        partieElt.setAttribute("trouvé",this.trouvé);
+        partieElt.getElementsByTagName("ns1:temps").setNodeValue(this.temps);
         
     }
     
-    
-    //renvoyer un pourcentage en fonction du nombre de lettres trouvées.
-    public int setTrouve(int nbLettresRestantes) {
-        return (this.mot.length() - nbLettresRestantes) * 100 / this.mot.length();
+    //crée le bloc XML représentant une partie à partir du paramètre doc(pour créer les éléments du XML) et le renvoie
+    public Element getPartie(Document doc) {
+        //balise partie avec attribut date et trouvé
+        Element partieElem =  (Element) doc.createElement("ns1:partie");
+        partieElem.setAttribute("date", this.date);
+        partieElem.setAttribute("trouvé", this.trouvé);
+        
+        //balise temps 
+        Element tempsElem = (Element) doc.createElement("ns1:temps");
+        tempsElem.appendChild(document.createTextNode(this.temps));
+        //balise mot avec attribut niveau
+        Element motElem = (Element) doc.createElement("ns1:mot");
+        motElem.setAttribute("niveau", this.niveau);
+        motElem.appendChild(document.createTextNode(this.mot));
+
+        //relie 
+        partieElem.appendChild(tempsElem);
+        partieElem.appendChild(motElem);
+        
+        return partieElem;
     }
     
     
     /*
     *Gestion des partie    
     */
+    
+    
+    public void setTrouve(int nbLettresRestantes) {
+        this.trouvé = (this.mot.length() - nbLettresRestantes) * 100 / this.mot.length();
+    }
+   //renvoyer un pourcentage des lettres trouvées.
+    public int getTrouve() {
+        return trouvé;
+    }
     
     public void setTemps(int temps) {
         this.temps = temps;
@@ -85,20 +92,8 @@ public class Partie {
         return this.mot;   
     } 
     
-    public void setMot(String mot){
-        this.mot = mot;   
-    }
-
     public String getDate() {
         return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
-
-    public int getTrouvé() {
-        return trouvé;
     }
 
     public int getTemps() {

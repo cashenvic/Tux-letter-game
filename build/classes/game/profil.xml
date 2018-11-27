@@ -1,21 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
-trouvé : peut-être un string/ on peut ne pas l'avoir à chaque fois
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
 -->
-<profil xmlns="http://myGame/tux" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://myGame/tux ./profil.xsd">
-    <nom>Alban</nom>
-    <avatar>conan.jpg</avatar>
-    <anniversaire>2006-05-08</anniversaire>
-    <parties>
-        <partie date="2013-12-10">
-            <temps>20.0</temps>
-            <mot niveau="1">cle</mot>
-        </partie>
-        <partie date="2013-12-11" trouvé="75%">
-            <mot niveau="2">indice</mot>
-        </partie>
-        <partie date="2013-12-11">
-            <temps>20.0</temps>
-            <mot niveau="2">indice</mot>
-        </partie>
-    </parties>
-</profil>
+
+
+<ns1:profil
+    xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+    xmlns:ns1='http://myGame/tux'
+    xsi:schemaLocation='http://myGame/tux file:/home/c/cissed/NetBeansProjects/TuxLetterGame/src/xsd/profil.xsd'>
+    <ns1:nom>Alban</ns1:nom>
+    <ns1:avatar>conan.jpg</ns1:avatar>
+    <ns1:anniversaire>2006-05-08</ns1:anniversaire>
+    <ns1:parties>
+        <ns1:partie date="2013-12-10">
+            <ns1:temps>20.0</ns1:temps>
+            <ns1:mot niveau="1">cle</ns1:mot>
+        </ns1:partie>
+        <ns1:partie date="2013-12-11" trouvé="75%">
+            <ns1:mot niveau="2">indice</ns1:mot>
+        </ns1:partie>
+        <ns1:partie date="2013-12-11">
+            <ns1:temps>20.0</ns1:temps>
+            <ns1:mot niveau="2">indice</ns1:mot>
+        </ns1:partie>
+    </ns1:parties>
+
+</ns1:profil>

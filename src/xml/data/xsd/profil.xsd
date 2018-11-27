@@ -7,7 +7,6 @@ pour moi : l'attribut niveau ne peut se placer
 <xsl:schema version="1.0"
            xmlns:xsl="http://www.w3.org/2001/XMLSchema"
            targetNamespace="http://myGame/tux"
-           xmlns="http://myGame/tux"
            xmlns:tux="http://myGame/tux"
            elementFormDefault="qualified">
     
@@ -32,7 +31,7 @@ pour moi : l'attribut niveau ne peut se placer
     
     <xsl:simpleType name="Avatar">
         <xsl:restriction base="xsl:string">
-            <xsl:pattern value="[\p{L}]+.jpg"/>
+            <xsl:pattern value="(\p{L})+\.[a-z]{3}"/>
         </xsl:restriction>
     </xsl:simpleType>
     

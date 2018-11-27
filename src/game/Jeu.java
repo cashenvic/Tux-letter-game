@@ -62,7 +62,7 @@ public abstract class Jeu {
     
     //question niveau
     EnvText textMenuQ1;
-    //reponses des niveau 
+    //selection des niveaux
     EnvText textMenuR1;
     EnvText textMenuR2;
     EnvText textMenuR3;
@@ -275,7 +275,7 @@ public abstract class Jeu {
                 // demande le nom du joueur existant
                 nomJoueur = getNomJoueur();
                 // charge le profil de ce joueur si possible
-                if (profil.charge(nomJoueur)) { 
+                if (profil.charge(nomJoueur)) {
                     // lance le menu de jeu et récupère le choix à la sortie de ce menu de jeu -> true
                     choix = menuJeu();
                 } else {
@@ -292,6 +292,8 @@ public abstract class Jeu {
                 nomJoueur = getNomJoueur();
                 //demande la date de naissance du nouveau joueur
                 //dateNais = getDateNais();
+                //...
+                
                 // crée un profil avec le nom d'un nouveau joueur
                 profil = new Profil(nomJoueur, "01-12-2000");
                 // lance le menu de jeu et récupère le choix à la sortie de ce menu de jeu
@@ -373,7 +375,6 @@ public abstract class Jeu {
                         env.advanceOneFrame();
                     }
                     
-                   
                     switch(touche1){
                         case Keyboard.KEY_1 :
                             this.niveau = 1;
@@ -406,47 +407,16 @@ public abstract class Jeu {
                     //choix du mot à deviner
                     this.mot = dico.getMotDepuisListeNiveau(this.niveau);                      
                     //date
-                    date = new SimpleDateFormat("dd/mm/aaaa_hh:mm:ss").format(Calendar.getInstance().getTime());                    
+                    date = new SimpleDateFormat("aaaa/mm/dd").format(Calendar.getInstance().getTime());                    
                     // crée un nouvelle partie
                     partie = new Partie(this.date, this.mot, this.niveau);
-
-                    //https://www.commentcamarche.net/forum/affich-27749493-comment-arreter-une-methode-apres-un-certain-temps-d-execution
-                    long max = 3000; // 60000 = 1mn
-                    long tmax = System.currentTimeMillis() + max;
-
-                    //public EnvText(Env env, String text, int x, int y,double size, double r, double g, double b, double a){
-//                    EnvText motAfficher = new EnvText(env, partie.getMot(), 280, 310, 2.0, 0.4, 0.4, 1.0, 1.0);
-//                    EnvText titre = new EnvText(env, "Trouver ce mot : ", 135, 300);
-//                    titre.display();
-//                    motAfficher.display();
-//                    env.advanceOneFrame();
-
-                    //caract = decouppeMot(partie.getMot());
-                    char caracts[] = decouppeMot(partie.getMot());
-                    double i = 0.0;
-                    for (char c : caracts) {
-                        Letter var = new Letter(c, 6 + i, mainRoom.getDepth());
-                        env.addObject(var);
-                        i += 7.0;
-                    }
-                    env.advanceOneFrame();
-
-                    while (System.currentTimeMillis() < tmax) {
-                    }
-
-                    for (char c : caracts) {
-                        env.removeObject(c);
-                    }
-
-//                    titre.erase();
-//                    motAfficher.erase();
-                    
+                                                  
                     // joue
                     joue(partie);
                     
                     // enregistre la partie dans le profil --> enregistre le profil
-//                    profil.ajouterPartie(partie);
-//                    profil.sauvegarder("filename");
+                    profil.ajouterPartie(partie);
+                    profil.sauvegarder("filename");
                     // .......... profil .........
                     playTheGame = MENU_VAL.MENU_JOUE;
                     break;
@@ -466,6 +436,8 @@ public abstract class Jeu {
                     // joue
                     joue(partie);
                     // enregistre la partie dans le profil --> enregistre le profil
+                    profil.ajouterPartie(partie);
+                    profil.sauvegarder("filename");
                     // .......... profil ........
                     playTheGame = MENU_VAL.MENU_JOUE;
                     break;
@@ -494,24 +466,21 @@ public abstract class Jeu {
     }
 
     
-    /**
-     * Méthode joue(partie : Partie) : void
-     * 
-     */
-        public void joue(Partie partie){
+/**
+ * Méthode joue(partie : Partie) : void
+ * 
+ */
+    public void joue(Partie partie){
          // TEMPORAIRE : on règle la room de l'environnement. Ceci sera à enlever lorsque vous ajouterez les menus.
         env.setRoom(mainRoom);
-        // Instancie un Tux
-        tux = new Tux(env, mainRoom);
-            env.addObject(this.tux);
-        
-        // Ici, on peut initialiser des valeurs pour une nouvelle partie
+
+        // Ici, on initialise des valeurs/démarches pour une nouvelle partie
         démarrePartie(partie);
 
-            // Boucle de jeu
+        // Boucle de jeu
         finished = false;  
         while (!finished ) {             
-            
+
             // Contrôles globaux du jeu (sortie, ...)
             //1 is for escape key
             if (env.getKey() == 1) {
@@ -521,17 +490,17 @@ public abstract class Jeu {
 
             // Contrôles des déplacements de Tux (gauche, droite, ...)
             tux.déplace();     
-                          
+
             // Ici, on applique les regles
             appliqueRegles(partie);
- 
+
             // Fait avancer le moteur de jeu (mise à jour de l'affichage, de l'écoute des événements clavier...)
             env.advanceOneFrame();
         }
-        
+
         // Ici on peut calculer des valeurs lorsque la partie est terminée
         terminePartie(partie);
-        
+
     }    
     
     

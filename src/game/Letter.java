@@ -17,9 +17,9 @@ public class Letter extends EnvNode {
     public Letter(char l, double x, double y) {
         this.letter = l;
         setScale(3.0);
-        setX(x);// positionnement au milieu de la largeur de la room
-        setY(getScale() * 1.1); // positionnement en hauteur basé sur la taille de Tux
-        setZ(y); // positionnement au milieu de la profondeur de la room
+        setX(x);// positionnement de la largeur de la room
+        setY(getScale() * 1.1); // positionnement en hauteur 
+        setZ(y); // positionnement e la profondeur de la room
 
         if (Character.isWhitespace(l)) {
             setTexture("models/cube/cube.png");
