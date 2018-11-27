@@ -134,6 +134,8 @@ public class Profil {
     }
 
     boolean charge(String nomJoueur) {
+        _doc = fromXML("src/game/profil.xml");
+        System.out.println("doc: " + _doc);
         return false;
     }
             

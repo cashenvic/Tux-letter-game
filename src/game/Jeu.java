@@ -293,7 +293,7 @@ public abstract class Jeu {
                 //demande la date de naissance du nouveau joueur
                 //dateNais = getDateNais();
                 // crée un profil avec le nom d'un nouveau joueur
-               // profil = new Profil(nomJoueur,"01-12-2000");
+                profil = new Profil(nomJoueur, "01-12-2000");
                 // lance le menu de jeu et récupère le choix à la sortie de ce menu de jeu
                 choix = menuJeu();
                 break;
