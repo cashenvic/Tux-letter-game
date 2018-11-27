@@ -45,7 +45,7 @@ public class JeuDevineLeMotOrdre extends Jeu{
         
         //affichage du mot à trouvé pendant 5s
         //initialise la limite + instancie le chrono et commence le chrono -> start
-        int limite = 5*60*1000; 
+        int limite = 10 * 1000/*5*60*1000*/;
         chrono = new Chronometre(limite);
         chrono.start();
                         
@@ -53,13 +53,15 @@ public class JeuDevineLeMotOrdre extends Jeu{
     
     @Override
     protected void appliqueRegles(Partie partie){
-        int i=0;      
+        int i = 0;
+        System.out.println("Temps ecoulé: " + chrono.getTime() + "Remains " + chrono.remainsTime());
         
         if(!chrono.remainsTime()){
-            finished=true;
+            finished = true;
+            System.out.println("\nFIN de la partie \nPas de chance!!!");
         }        
         if(nbLettresrestantes == 0 ){
-            System.out.println("FIN de la partie ");
+            System.out.println("\nFIN de la partie \nVous avez gagné!!! ");
             finished=true;
         }
         

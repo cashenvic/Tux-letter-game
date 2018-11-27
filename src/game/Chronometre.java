@@ -14,6 +14,7 @@ public class Chronometre {
     public void start(){
         begin = System.currentTimeMillis();
         //System.out.println("Temps begin : " + begin + " ms");
+        this.end = this.begin + limite;
     }
  
     public void stop(){
@@ -48,7 +49,7 @@ public class Chronometre {
     public boolean remainsTime() {
         current = System.currentTimeMillis();
         int timeSpent;
-        timeSpent = (int) ((current-begin)/1000.0);
+        timeSpent = (int) ((current - begin));
         return (limite >= timeSpent);
     }
      
