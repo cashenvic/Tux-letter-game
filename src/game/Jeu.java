@@ -275,11 +275,11 @@ public abstract class Jeu {
                 // demande le nom du joueur existant
                 nomJoueur = getNomJoueur();
                 // charge le profil de ce joueur si possible
-                if (profil.charge(nomJoueur)) {
-                    // lance le menu de jeu et récupère le choix à la sortie de ce menu de jeu
+                if (profil.charge(nomJoueur)) { 
+                    // lance le menu de jeu et récupère le choix à la sortie de ce menu de jeu -> true
                     choix = menuJeu();
                 } else {
-                    // sinon continue (et boucle dans ce menu)
+                    // sinon continue (et boucle dans ce menu) joueur inexistant =false
                     choix = MENU_VAL.MENU_CONTINUE;
                 }
                 break;

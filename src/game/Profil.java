@@ -134,8 +134,13 @@ public class Profil {
     }
 
     boolean charge(String nomJoueur) {
-        _doc = fromXML("src/game/profil.xml");
-        System.out.println("doc: " + _doc);
+        _doc = fromXML("src/xml/data/profil.xml");
+        String nom = _doc.getElementsByTagName("ns1:nom").item(0).getTextContent();
+        System.out.println("nom : "+nom);
+        if(nom.equals(nomJoueur)){
+            return true;
+        }
+        
         return false;
     }
             
