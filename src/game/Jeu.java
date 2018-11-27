@@ -97,7 +97,7 @@ public abstract class Jeu {
         // Instancie un profil par défaut
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-mm-yyyy") ;
         Date aujourdhui = new Date();
-        //profil = new Profil( "Hanh",dateFormat.format(aujourdhui));
+        profil = new Profil("Default", dateFormat.format(aujourdhui));
 
         // Dictionnaire
         //instancie les lettres en Liste Letter
@@ -377,7 +377,6 @@ public abstract class Jeu {
                     switch(touche1){
                         case Keyboard.KEY_1 :
                             this.niveau = 1;
-                            System.err.println("Key 1 pressed!!!");
                             break;
                         case Keyboard.KEY_2 :
                             this.niveau = 2;
@@ -390,9 +389,6 @@ public abstract class Jeu {
                             break;    
                         case Keyboard.KEY_5 :
                             this.niveau = 5;
-                            break;
-                        case Keyboard.KEY_SPACE:
-                            System.err.println("space pressed!!!");
                             break;
                         default:
                             break;
@@ -418,20 +414,39 @@ public abstract class Jeu {
                     long max = 3000; // 60000 = 1mn
                     long tmax = System.currentTimeMillis() + max;
 
-                    EnvText motAfficher = new EnvText(env, "Trouver ce mot :\n" + partie.getMot(), 250, 280);
-                    motAfficher.display();
+                    //public EnvText(Env env, String text, int x, int y,double size, double r, double g, double b, double a){
+//                    EnvText motAfficher = new EnvText(env, partie.getMot(), 280, 310, 2.0, 0.4, 0.4, 1.0, 1.0);
+//                    EnvText titre = new EnvText(env, "Trouver ce mot : ", 135, 300);
+//                    titre.display();
+//                    motAfficher.display();
+//                    env.advanceOneFrame();
+
+                    //caract = decouppeMot(partie.getMot());
+                    char caracts[] = decouppeMot(partie.getMot());
+                    double i = 0.0;
+                    for (char c : caracts) {
+                        Letter var = new Letter(c, 6 + i, mainRoom.getDepth());
+                        env.addObject(var);
+                        i += 7.0;
+                    }
                     env.advanceOneFrame();
+
                     while (System.currentTimeMillis() < tmax) {
                     }
-                    
-                    motAfficher.erase();
+
+                    for (char c : caracts) {
+                        env.removeObject(c);
+                    }
+
+//                    titre.erase();
+//                    motAfficher.erase();
                     
                     // joue
                     joue(partie);
                     
                     // enregistre la partie dans le profil --> enregistre le profil
-                    profil.ajouterPartie(partie);
-                    profil.sauvegarder("filename");
+//                    profil.ajouterPartie(partie);
+//                    profil.sauvegarder("filename");
                     // .......... profil .........
                     playTheGame = MENU_VAL.MENU_JOUE;
                     break;

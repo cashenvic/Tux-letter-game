@@ -10,6 +10,7 @@ public class JeuDevineLeMotOrdre extends Jeu{
     private int nbLettresrestantes;
     private Chronometre chrono;
     private ArrayList<Letter> lettresRestantes;
+    private ArrayList<Letter> lettresTrouvees;
     private ArrayList<Letter> wrongLetters;
     
     //affichage du mot pdt 5s
@@ -17,7 +18,7 @@ public class JeuDevineLeMotOrdre extends Jeu{
     public JeuDevineLeMotOrdre(){
         super();        
         lettresRestantes = new ArrayList<Letter>();
-        
+        lettresTrouvees = new ArrayList<Letter>();
     }
     
     @Override
@@ -62,10 +63,8 @@ public class JeuDevineLeMotOrdre extends Jeu{
             finished=true;
         }
         
-        if(tuxTrouveLettre()){
-            System.out.println("touché ");            
+        if (tuxTrouveLettre()) {
             nbLettresrestantes--;
-
         }
     }
     
@@ -88,7 +87,9 @@ public class JeuDevineLeMotOrdre extends Jeu{
             if( collision(l) ){ 
                 if(l == lettresRestantes.get(0)) {
                     lettresRestantes.remove(l);
+                    lettresTrouvees.add(l);
                     env.removeObject(l);
+                    System.out.print(l.getLetter());
                     return true;
                 }
                 else{
