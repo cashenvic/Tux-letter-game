@@ -4,7 +4,7 @@ TODO
 un autre cube -> graine
 - affichage pas à pas des lettres trouvé dans la console -> list bonOrdre
 - l.374 // enregistre la partie dans le profil --> enregistre le profil
-- apparition de la lettre pdt 5s
+- apparition de la lettre pdt 5s -> Design
  */
 package game;
 
@@ -417,24 +417,16 @@ public abstract class Jeu {
                     //https://www.commentcamarche.net/forum/affich-27749493-comment-arreter-une-methode-apres-un-certain-temps-d-execution
                     long max = 3000; // 60000 = 1mn
                     long tmax = System.currentTimeMillis() + max;
-//
+
                     EnvText motAfficher = new EnvText(env, "Trouver ce mot :\n" + partie.getMot(), 250, 280);
                     motAfficher.display();
                     env.advanceOneFrame();
                     while (System.currentTimeMillis() < tmax) {
                     }
-                    // joue
-
-//                    int clearWord = 0;
-//                    int i = 0;//                    int i = 0;
-//
-//                    while (env.getKey() != Keyboard.KEY_SPACE) {
-//                        System.out.println("tour de boucle " + i);
-//                        i++;
-//                    }
-
+                    
                     motAfficher.erase();
-
+                    
+                    // joue
                     joue(partie);
                     
                     // enregistre la partie dans le profil --> enregistre le profil

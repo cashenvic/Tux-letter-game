@@ -29,12 +29,12 @@ public class Profil {
     public Profil(String nomFichier) {
         Partie p;
         _doc = fromXML(nomFichier);
-        this.nom = _doc.getElementsByTagName("nom").item(0).getTextContent();
-        this.avatar = _doc.getElementsByTagName("avatar").item(0).getTextContent();
-        this.dateNaissance = _doc.getElementsByTagName("anniversaire").item(0).getTextContent();
+        this.nom = _doc.getElementsByTagName("ns1:nom").item(0).getTextContent();
+        this.avatar = _doc.getElementsByTagName("ns1:avatar").item(0).getTextContent();
+        this.dateNaissance = _doc.getElementsByTagName("ns1:anniversaire").item(0).getTextContent();
 
-        for (int i = 0; i < _doc.getElementsByTagName("partie").getLength(); i++) {
-            NodeList partie = _doc.getElementsByTagName("partie");
+        for (int i = 0; i < _doc.getElementsByTagName("ns1:partie").getLength(); i++) {
+            NodeList partie = _doc.getElementsByTagName("ns1:partie");
             String date = partie.item(i).getAttributes().item(0).getTextContent();
             String trouve = partie.item(i).getAttributes().item(1).getTextContent();
             String temps = partie.item(i).getChildNodes().item(0).getTextContent();
