@@ -377,6 +377,7 @@ public abstract class Jeu {
                     switch(touche1){
                         case Keyboard.KEY_1 :
                             this.niveau = 1;
+                            System.err.println("Key 1 pressed!!!");
                             break;
                         case Keyboard.KEY_2 :
                             this.niveau = 2;
@@ -389,6 +390,9 @@ public abstract class Jeu {
                             break;    
                         case Keyboard.KEY_5 :
                             this.niveau = 5;
+                            break;
+                        case Keyboard.KEY_SPACE:
+                            System.err.println("space pressed!!!");
                             break;
                         default:
                             break;
@@ -413,13 +417,24 @@ public abstract class Jeu {
                     //https://www.commentcamarche.net/forum/affich-27749493-comment-arreter-une-methode-apres-un-certain-temps-d-execution
                     long max = 3000; // 60000 = 1mn
                     long tmax = System.currentTimeMillis() + max;
-
+//
                     EnvText motAfficher = new EnvText(env, "Trouver ce mot :\n" + partie.getMot(), 250, 280);
                     motAfficher.display();
+                    env.advanceOneFrame();
                     while (System.currentTimeMillis() < tmax) {
                     }
-                    motAfficher.erase();
                     // joue
+
+//                    int clearWord = 0;
+//                    int i = 0;//                    int i = 0;
+//
+//                    while (env.getKey() != Keyboard.KEY_SPACE) {
+//                        System.out.println("tour de boucle " + i);
+//                        i++;
+//                    }
+
+                    motAfficher.erase();
+
                     joue(partie);
                     
                     // enregistre la partie dans le profil --> enregistre le profil
@@ -479,15 +494,14 @@ public abstract class Jeu {
         public void joue(Partie partie){
          // TEMPORAIRE : on règle la room de l'environnement. Ceci sera à enlever lorsque vous ajouterez les menus.
         env.setRoom(mainRoom);
-
         // Instancie un Tux
         tux = new Tux(env, mainRoom);
             env.addObject(this.tux);
         
         // Ici, on peut initialiser des valeurs pour une nouvelle partie
-        démarrePartie(partie);        
-                
-        // Boucle de jeu
+        démarrePartie(partie);
+
+            // Boucle de jeu
         finished = false;  
         while (!finished ) {             
             
