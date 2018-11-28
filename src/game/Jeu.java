@@ -43,7 +43,10 @@ public abstract class Jeu {
     // ... attributs existants ...
     protected char caract[];
     protected Boolean finished;
-    
+    protected String nomJoueur;
+    protected String dateNais;
+    protected int menu; //1 charge joueur / 2 nouvelle joueur
+    protected String file = "src/xml/data/profil.xml";
    
     private final mainRoom menuRoom;
     
@@ -69,8 +72,7 @@ public abstract class Jeu {
     EnvText textMenuR4;
     EnvText textMenuR5;
 
-
-
+   
 
     public Jeu() {
 
@@ -119,6 +121,7 @@ public abstract class Jeu {
         textMenuJeu2 = new EnvText(env, "2. Charger une partie existante ?", 250, 260);
         textMenuJeu3 = new EnvText(env, "3. Sortir de ce jeu ?", 250, 240);
         textMenuJeu4 = new EnvText(env, "4. Quitter le jeu ?", 250, 220);
+        
         textNomJoueur = new EnvText(env, "Choisissez un nom de joueur : ", 200, 300);
         textDateNais = new EnvText(env, "Indiquez la date de naissance du joueur : ", 140, 300);
         
@@ -215,17 +218,16 @@ public abstract class Jeu {
     }
     
     
-    /**
-     * Permet de saisir la date de naissance d'un joueur et de l'affiche à l'écran durant la saisie
-     *
+     /*
      * @return la date de naissance du joueur au format String
      */
+    
     private String getDateNais() {
         textDateNais.modify("Indiquez la date de naissance du joueur (dd-MM-aaaa) : ");
         int touche = 0;
-//        Scanner sc = new Scanner(System.in);
-//        System.out.println("Veuillez saisir une date de naissance (dd-mm-yyyy) :");
-//        String dateNais = sc.nextLine();
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Veuillez saisir une date de naissance (dd-mm-yyyy) :");
+        String dateNais = sc.nextLine();
 
         String dataNaisJoueur = "";
         while (!(dataNaisJoueur.length() > 0 && touche == Keyboard.KEY_RETURN)) {
@@ -251,6 +253,8 @@ public abstract class Jeu {
         return dataNaisJoueur;
     }
     
+
+    
     /**
      * Menu principal
      *
@@ -259,8 +263,8 @@ public abstract class Jeu {
     private MENU_VAL menuPrincipal() {
 
         MENU_VAL choix = MENU_VAL.MENU_CONTINUE;
-        String nomJoueur;
-        String dateNais;
+        //String nomJoueur;
+        //String dateNais;
 
         // restaure la room du menu
         env.setRoom(menuRoom);
@@ -290,10 +294,11 @@ public abstract class Jeu {
             // Touche 1 : Charger un profil existant
             // -------------------------------------
             case Keyboard.KEY_1:
+                menu = 1;
                 // demande le nom du joueur existant
                 nomJoueur = getNomJoueur();
                 // charge le profil de ce joueur si possible
-                if (profil.charge(nomJoueur)) {
+                if (profil.charge(nomJoueur,file)) {
                     // lance le menu de jeu et récupère le choix à la sortie de ce menu de jeu -> true
                     choix = menuJeu();
                 } else {
@@ -306,14 +311,12 @@ public abstract class Jeu {
             // Touche 2 : Créer un nouveau joueur
             // -------------------------------------
             case Keyboard.KEY_2:
+                menu = 2;
                 // demande le nom du nouveau joueur
                 nomJoueur = getNomJoueur();
                 //demande la date de naissance du nouveau joueur
                 dateNais = getDateNais();
-                //...
-                
-                // crée un profil avec le nom d'un nouveau joueur
-                profil = new Profil(nomJoueur, dateNais);
+                                
                 // lance le menu de jeu et récupère le choix à la sortie de ce menu de jeu
                 choix = menuJeu();
                 break;
@@ -425,17 +428,24 @@ public abstract class Jeu {
                     //choix du mot à deviner
                     this.mot = dico.getMotDepuisListeNiveau(this.niveau);                      
                     //date
-                    date = new SimpleDateFormat("aaaa/mm/dd").format(Calendar.getInstance().getTime());                    
+                    date = new SimpleDateFormat("aaaa/mm/dd").format(Calendar.getInstance().getTime());   
+                    
                     // crée un nouvelle partie
                     partie = new Partie(this.date, this.mot, this.niveau);
-                                                  
+                                                                      
                     // joue
                     joue(partie);
-                    
                     // enregistre la partie dans le profil --> enregistre le profil
-                    profil.ajouterPartie(partie);
-                    profil.sauvegarder("filename");
+                    if(menu==1){
+                        //crée profil au données existante
+                        profil = new Profil(partie);
+                    }
+                    else{
+                        // crée un profil avec le nom d'un nouveau joueur
+                        profil = new Profil(partie,nomJoueur, dateNais);
+                    }
                     // .......... profil .........
+                    profil.sauvegarder(file);
                     playTheGame = MENU_VAL.MENU_JOUE;
                     break;
 
@@ -444,18 +454,21 @@ public abstract class Jeu {
                 // -----------------------------------------                
                 case Keyboard.KEY_2: // charge une partie existante
                     // demander de fournir une date
-                    // ..........
+                    // dateJeu =
                     // tenter de trouver une partie à cette date
-                    partie = new Partie("","",0); /******/
+                    String dateJeu ="";
+                                        
                     // .......
-                    // Si partie trouvée, recupère le mot de la partie existante, sinon ???
-                    // ..........
-                    // ..........
-                    // joue
-                    joue(partie);
-                    // enregistre la partie dans le profil --> enregistre le profil
-                    profil.ajouterPartie(partie);
-                    profil.sauvegarder("filename");
+                    // Si partie trouvée, recupère le mot de la partie existante
+                    if (menu==1){                        
+                        profil = new Profil(file, nomJoueur, dateJeu);
+                        // joue
+                        joue(profil.p);
+                        // enregistre la partie dans le profil --> enregistre le profil
+                        profil.sauvegarder(file);
+                    }                    
+                    //sinon on fait rien
+                    
                     // .......... profil ........
                     playTheGame = MENU_VAL.MENU_JOUE;
                     break;

@@ -7,13 +7,11 @@ package game;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.w3c.dom.*;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import org.w3c.dom.*;
 import xml.XMLUtil;
 
 
@@ -21,77 +19,85 @@ public class Profil {
     private String nom;
     private String dateNaissance;
     private String avatar;    
-    private ArrayList<Partie> parties;
-    
+    //private ArrayList<Partie> parties;
+    public Partie p;
     public Document _doc;
-    private String file;
     
-    public Profil(String nom, String dateNaissance){
+    
+    //charger profil -> nouvelle partie 1.1
+    public Profil(Partie p) {
+        //recuperation des données du joueur        
+        Element partieActuelle = (Element) p.getPartie(_doc); 
+        
+    }
+    
+    public Profil(Partie p, String nom, String dateNaissance){ //2/1
         this.nom = nom;
         this.dateNaissance = dateNaissance;
+        //DOM .............
+        
+        
+        //Element partieActuelle = (Element) p.getPartie(_doc); 
+        
     }
     
-    // Cree un DOM à partir d'un fichier XML
+    //menu 1.2
+    // Cree un DOM à partir d'un fichier XML -> joueur existant
     //-> utilise le document DOM pour extraire les données nécessaires 
-    //à la récupération des valeurs du profil et des parties existantes
-    public Profil(String nomFichier) {
+    //à la récupération des valeurs du profil et des parties existantes 
+    public Profil(String nomFichier, String nomJoueur, String dateJeu) {
+        //recuperation des données du joueur
+        _doc = fromXML(nomFichier);        
+        int j=0;
+        Boolean trouverprofil = false;
+        NodeList listprofil = _doc.getElementsByTagName("ns1:profil"); 
         
-        _doc = fromXML(nomFichier);
-        this.nom = _doc.getElementsByTagName("ns1:nom").item(0).getTextContent();
-        this.avatar = _doc.getElementsByTagName("ns1:avatar").item(0).getTextContent();
-        this.dateNaissance = _doc.getElementsByTagName("ns1:anniversaire").item(0).getTextContent();
+        while(j< listprofil.getLength() && !trouverprofil){
+            Element listeprof = (Element) listprofil.item(j);
+            if (listeprof.getElementsByTagName("ns1:nom").equals(nomJoueur)){
+                this.nom = listeprof.getElementsByTagName("ns1:nom").item(0).getTextContent();
+                this.avatar = _doc.getElementsByTagName("ns1:avatar").item(0).getTextContent();
+                this.dateNaissance = _doc.getElementsByTagName("ns1:anniversaire").item(0).getTextContent();
+                trouverprofil =true;
+            }
+            j++;
+        }        
+        Element profilJoueur = (Element) listprofil.item(j);
         
-        //balise profil
-        Element racine =  (Element) _doc.createElement("ns1:profil");
-        racine.setAttributeNS("http://www.w3.org/2001/XMLSchema-instance", "xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
-        racine.setAttributeNS("http://myGame/tux", "xmlns:ns1", "");
-        racine.setAttributeNS("http://myGame/tux ../xsd/profil.xsd", "xsi:schemaLocation", "");
-        _doc.appendChild((Node) racine);
-        
-        //balise nom
-        Element nomElem = (Element) _doc.createElement("ns1:nom");
-        nomElem.setNodeValue(this.nom);
-        //balise avatar
-        Element avatarElem = (Element) _doc.createElement("ns1:avatar");
-        avatarElem.setNodeValue(this.avatar);
-        //balise anniversaire
-        Element annivElem = (Element) _doc.createElement("ns1:anniversaire");
-        annivElem.setNodeValue(this.dateNaissance);
-        //balise parties
-        Element partiesElem = (Element) _doc.createElement("ns1:parties");
-        
-        racine.appendChild(nomElem);
-        racine.appendChild(avatarElem);
-        racine.appendChild(annivElem);
-        racine.appendChild(partiesElem);
-                
+        //charge partie
         String date;
-        double temps;
-        String mot;
-        int niveau;
-        int trouvé;
-        Partie p;        
-        NodeList listpartie = _doc.getElementsByTagName("ns1:partie");
-//        for (int i = 0; i < _doc.getElementsByTagName("ns1:partie").getLength(); i++) {
-//            date = listpartie[i].getAttribute("date");
-//            temps = listpartie[i].getElementsByTagName("ns1:temps").item(0).getTextContent();
-//            mot = listpartie[i].getElementsByTagName("ns1:mot").item(0).getTextContent();           
-//            niveau = listpartie[i].getAttribute("niveau");       
-//            trouvé = listpartie[i].getAttribute("trouvé");                   
-//                       
-//            p = new Partie(profileDateToXmlDate(date), mot, Integer.parseInt(niveau));
-//            p.setTemps(Integer.parseInt(temps));
-//            p.setTrouve(Integer.parseInt(trouvé));
-//            //ajout dans la liste des parties
-//            ajouterPartie(p);
-//        }
-//        
-//        for(Partie unepartie : parties){            
-//            Element partieExistant = unepartie.getPartie( (javax.swing.text.Document) _doc);
-//            partiesElem.appendChild(partieExistant);
-//        }
+        double temps=0.0;
+        String mot="";
+        int niveau=1;
+        int trouvé=0;
+                
+        int i=0;
+        Boolean trouverpartie = false;
+        NodeList listpartie = profilJoueur.getElementsByTagName("ns1:partie"); 
+        
+        while( (i < listpartie.getLength()) && !trouverpartie) {
+            Element liste = (Element) listpartie.item(i);
+            
+            if (liste.getAttribute("date").equals(dateJeu)){
+                //temps = Double.parseDouble(liste.getElementsByTagName("ns1:temps").item(0).getTextContent());
+                mot = liste.getElementsByTagName("ns1:mot").item(0).getTextContent();           
+                niveau = Integer.parseInt(liste.getAttribute("niveau"));       
+                //trouvé = Integer.parseInt(liste.getAttribute("trouvé"));
+                trouverpartie =true;
+            }
+            i++;
+        }            
+                       
+            p = new Partie(profileDateToXmlDate(dateJeu), mot, niveau);
+           // p.setTemps((int) 0.0);
+            //p.setTrouve(0);
+            //ajout dans la liste des parties
+           
         
     }
+    
+    
+    
 
     
     // Sauvegarde un DOM en XML
@@ -115,20 +121,20 @@ public class Profil {
     
     
     //rajouter à la liste des parties une Partie instanciée.
-    public void ajouterPartie(Partie p){
+   /* public void ajouterPartie(Partie p){
         parties.add(p);
-    }
-    
+    }*/
+    /*
     public int getDernierNiveau(){
         return parties.get(parties.size() - 1).getNiveau();
-    }
+    }*/
     
     public String toString(){
         return "";
     }
     
     //sauvegarder le document DOM dans un fichier XML
-    public void sauvegarder(String filename) {  
+    public void sauvegarder(String filename) {       
         
         toXML(filename);
     }
@@ -165,18 +171,21 @@ public class Profil {
         return date;
     }
 
-    protected boolean charge(String nomJoueur) {
-        String file = "src/xml/data/profil.xml";
+    protected boolean charge(String nomJoueur, String file) {
         _doc = fromXML(file);
-        String nom = _doc.getElementsByTagName("ns1:nom").item(0).getTextContent();
-        System.out.println("nom : "+nom);
-        if(nom.equals(nomJoueur)){
-            this.nom = nomJoueur;
-            this.file = file;
-            return true;
-        }
-        
+        NodeList noms = _doc.getElementsByTagName("ns1:nom");
+        int i;
+        for(i= 0 ; i<noms.getLength(); i++){
+            Element nom = (Element) noms.item(i);            
+            System.out.println("nom : "+nom);
+            
+            if(nom.equals(nomJoueur)){
+                this.nom = nomJoueur;
+                return true;
+            }            
+        }        
         return false;
     }
+    
     
 }

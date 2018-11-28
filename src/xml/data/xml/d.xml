@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="profil.xsl"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+
+
+<ns1:profil
+    xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+    xmlns:ns1='http://myGame/tux'
+    xsi:schemaLocation='http://myGame/tux ../xsd/profil.xsd'>
+    <ns1:nom>Alban</ns1:nom>
+    <ns1:avatar>conan.jpg</ns1:avatar>
+    <ns1:anniversaire>2006-05-08</ns1:anniversaire>
+    <ns1:parties>
+        <ns1:partie date="2013-12-10">
+            <ns1:temps>20.0</ns1:temps>
+            <ns1:mot niveau="1">cle</ns1:mot>
+        </ns1:partie>
+        <ns1:partie date="2013-12-11" trouvé="75%">
+            <ns1:mot niveau="2">indice</ns1:mot>
+        </ns1:partie>
+        <ns1:partie date="2013-12-11">
+            <ns1:temps>20.0</ns1:temps>
+            <ns1:mot niveau="2">indice</ns1:mot>
+        </ns1:partie>
+    </ns1:parties>
+
+</ns1:profil>
+
+
+
+/*
+        //balise profil        
+        Element racine = (Element)  _doc.createElement("ns1:profil");
+        racine.setAttributeNS("xmlns","xsi","http://www.w3.org/2001/XMLSchema-instance");
+        racine.setAttributeNS("xmlns", "ns1","http://myGame/tux");
+        racine.setAttributeNS("xsi","schemaLocation", "http://myGame/tux ../xsd/profil.xsd");
+        _doc.appendChild(racine);
+        
+        //balise nom
+        Element nomElem = (Element) _doc.createElement("ns1:nom");
+        nomElem.setNodeValue(this.nom);
+        racine.appendChild(nomElem);
+        //balise avatar
+        Element avatarElem = (Element) _doc.createElement("ns1:avatar");
+        avatarElem.setNodeValue(this.avatar);
+        racine.appendChild(avatarElem);
+        //balise anniversaire
+        Element annivElem = (Element) _doc.createElement("ns1:anniversaire");
+        annivElem.setNodeValue(this.dateNaissance);
+        racine.appendChild(annivElem);
+        //balise parties
+        Element partiesElem = (Element) _doc.createElement("ns1:parties");
+        racine.appendChild(partiesElem);
+        */

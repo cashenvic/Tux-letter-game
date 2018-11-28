@@ -12,7 +12,13 @@ pour moi : l'attribut niveau ne peut se placer
     
     <xsl:include schemaLocation="dico.xsd"/>
     
-    <xsl:element name="profil" type="tux:Profil"/>
+    <xsl:element name="listeProfils" type="tux:ListeProfils"/>
+    
+    <xsl:complexType name="ListeProfils">
+        <xsl:sequence>
+            <xsl:element name="profil" type="tux:Profil" minOccurs="1" maxOccurs="unbounded"/>
+        </xsl:sequence>
+    </xsl:complexType>
     
     <xsl:complexType name="Profil">
         <xsl:sequence>
