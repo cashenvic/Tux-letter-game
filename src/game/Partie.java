@@ -29,13 +29,15 @@ public class Partie {
     //initialiser la partie à jouer
     public Partie(Element partieElt) { // élément DOM correspondant à une partie
         //recuperer les données d'une partie
-        this.mot = partieElt.getElementsByTagName("ns1:mot").getTextContent();
-        this.niveau = partieElt.getAttribute("ns1:niveau");
+        Element mot = (Element) partieElt.getElementsByTagName("ns1:mot");
+        this.mot = mot.getTextContent();
+        this.niveau = Integer.parseInt(partieElt.getAttribute("ns1:niveau"));
         this.date = partieElt.getAttribute("ns1:date");
         
         //reinitialisation des données
-        partieElt.setAttribute("trouvé",this.trouvé);
-        partieElt.getElementsByTagName("ns1:temps").setNodeValue(this.temps);
+        partieElt.setAttribute("trouvé", "" + this.trouvé);
+        Element temps = (Element) partieElt.getElementsByTagName("ns1:temps");
+        temps.setNodeValue("" + this.temps);
         
     }
     

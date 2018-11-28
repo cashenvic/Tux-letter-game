@@ -46,7 +46,7 @@ public abstract class Jeu {
     protected String nomJoueur;
     protected String dateNais;
     protected int menu; //1 charge joueur / 2 nouvelle joueur
-    protected String file = "src/xml/data/profil.xml";
+    protected String file = "src/xml/data/xml/profil.xml";
    
     private final mainRoom menuRoom;
     
@@ -99,7 +99,7 @@ public abstract class Jeu {
         // Instancie un profil par défaut
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-mm-yyyy") ;
         Date aujourdhui = new Date();
-        profil = new Profil("Default", dateFormat.format(aujourdhui));
+        profil = new Profil(nomJoueur, dateFormat.format(aujourdhui));
 
         // Dictionnaire
         //instancie les lettres en Liste Letter
@@ -298,7 +298,7 @@ public abstract class Jeu {
                 // demande le nom du joueur existant
                 nomJoueur = getNomJoueur();
                 // charge le profil de ce joueur si possible
-                if (profil.charge(nomJoueur,file)) {
+                if (profil.charge(nomJoueur, file)) {
                     // lance le menu de jeu et récupère le choix à la sortie de ce menu de jeu -> true
                     choix = menuJeu();
                 } else {
@@ -442,7 +442,7 @@ public abstract class Jeu {
                     }
                     else{
                         // crée un profil avec le nom d'un nouveau joueur
-                        profil = new Profil(partie,nomJoueur, dateNais);
+                        profil = new Profil(/*partie,*/nomJoueur, dateNais);
                     }
                     // .......... profil .........
                     profil.sauvegarder(file);
@@ -456,11 +456,12 @@ public abstract class Jeu {
                     // demander de fournir une date
                     // dateJeu =
                     // tenter de trouver une partie à cette date
-                    String dateJeu ="";
-                                        
+
                     // .......
                     // Si partie trouvée, recupère le mot de la partie existante
-                    if (menu==1){                        
+                    if (menu == 1) {
+                        //on pourrait afficher ici une liste des parties trouvées et demander de choisir
+                        String dateJeu = getDateNais();
                         profil = new Profil(file, nomJoueur, dateJeu);
                         // joue
                         joue(profil.p);

@@ -4,12 +4,8 @@
  */
 package game;
 
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.Document;
 import org.w3c.dom.*;
 import xml.XMLUtil;
@@ -31,12 +27,11 @@ public class Profil {
         
     }
     
-    public Profil(Partie p, String nom, String dateNaissance){ //2/1
+    public Profil(/*Partie p,*/String nom, String dateNaissance) { //2/1
         this.nom = nom;
         this.dateNaissance = dateNaissance;
         //DOM .............
-        
-        
+
         //Element partieActuelle = (Element) p.getPartie(_doc); 
         
     }
@@ -58,6 +53,7 @@ public class Profil {
                 this.nom = listeprof.getElementsByTagName("ns1:nom").item(0).getTextContent();
                 this.avatar = _doc.getElementsByTagName("ns1:avatar").item(0).getTextContent();
                 this.dateNaissance = _doc.getElementsByTagName("ns1:anniversaire").item(0).getTextContent();
+                this.dateNaissance = xmlDateToProfileDate(this.dateNaissance);
                 trouverprofil =true;
             }
             j++;
@@ -91,13 +87,32 @@ public class Profil {
             p = new Partie(profileDateToXmlDate(dateJeu), mot, niveau);
            // p.setTemps((int) 0.0);
             //p.setTrouve(0);
-            //ajout dans la liste des parties
-           
-        
+            //ajout dans la liste des parties        
     }
     
     
-    
+    public Partie chargerPartie(String dateNais, String file) {
+        double temps = 0.0;
+        String mot = "";
+        String date = "";
+        int niveau = 0;
+        Element partie;
+        this._doc = fromXML(file);
+        NodeList parties = this._doc.getElementsByTagName("partie");
+
+        int i = 0;
+        Boolean found = false;
+        while (i < parties.getLength() && !found) {
+            partie = (Element) parties.item(i);
+            date = partie.getAttribute("date");
+            if (date.equals(dateNais)) {
+                temps = Double.parseDouble(partie.getElementsByTagName("ns1:temps").item(0).getTextContent());
+                mot = partie.getElementsByTagName("mot").item(0).getTextContent();
+                niveau = Integer.parseInt(partie.getAttribute("niveau"));
+            }
+        }
+        return new Partie(xmlDateToProfileDate(date), mot, niveau);
+    }
 
     
     // Sauvegarde un DOM en XML
@@ -175,11 +190,11 @@ public class Profil {
         _doc = fromXML(file);
         NodeList noms = _doc.getElementsByTagName("ns1:nom");
         int i;
-        for(i= 0 ; i<noms.getLength(); i++){
-            Element nom = (Element) noms.item(i);            
+        for (i = 0; i < noms.getLength(); i++) {
+            String nom = noms.item(i).getTextContent();
             System.out.println("nom : "+nom);
             
-            if(nom.equals(nomJoueur)){
+            if (nom.equals(nomJoueur)) {
                 this.nom = nomJoueur;
                 return true;
             }            
