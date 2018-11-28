@@ -48,7 +48,7 @@ public abstract class Jeu {
     private final mainRoom menuRoom;
     
     EnvText textNomJoueur;
-    //EnvText textDateNais;
+    EnvText textDateNais;
     
     
     EnvText textMenuQuestion;
@@ -120,7 +120,7 @@ public abstract class Jeu {
         textMenuJeu3 = new EnvText(env, "3. Sortir de ce jeu ?", 250, 240);
         textMenuJeu4 = new EnvText(env, "4. Quitter le jeu ?", 250, 220);
         textNomJoueur = new EnvText(env, "Choisissez un nom de joueur : ", 200, 300);
-        //textDateNais = new EnvText(env, "Indiquez la date de naissance du joueur : ", 200, 300);
+        textDateNais = new EnvText(env, "Indiquez la date de naissance du joueur : ", 140, 300);
         
         textMenuPrincipal1 = new EnvText(env, "1. Charger un profil de joueur existant ?", 250, 280);
         textMenuPrincipal2 = new EnvText(env, "2. Créer un nouveau joueur ?", 250, 260);
@@ -220,18 +220,36 @@ public abstract class Jeu {
      *
      * @return la date de naissance du joueur au format String
      */
-    /*
     private String getDateNais() {
-        textDateNais.modify("Indiquez la date de naissance du joueur : ");
+        textDateNais.modify("Indiquez la date de naissance du joueur (dd-MM-aaaa) : ");
         int touche = 0;
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Veuillez saisir une date de naissance (dd-mm-yyyy) :");
-        String dateNais = sc.nextLine();
+//        Scanner sc = new Scanner(System.in);
+//        System.out.println("Veuillez saisir une date de naissance (dd-mm-yyyy) :");
+//        String dateNais = sc.nextLine();
+
+        String dataNaisJoueur = "";
+        while (!(dataNaisJoueur.length() > 0 && touche == Keyboard.KEY_RETURN)) {
+            touche = 0;
+            while (!(touche == Keyboard.KEY_1 || touche == Keyboard.KEY_2 || touche == Keyboard.KEY_3
+                    || touche == Keyboard.KEY_4 || touche == Keyboard.KEY_5 || touche == Keyboard.KEY_6
+                    || touche == Keyboard.KEY_7 || touche == Keyboard.KEY_8 || touche == Keyboard.KEY_9
+                    || touche == Keyboard.KEY_0 || touche == Keyboard.KEY_SUBTRACT || touche == Keyboard.KEY_MINUS)) {
+                touche = env.getKey();
+                env.advanceOneFrame();
+            }
+            if (touche != Keyboard.KEY_RETURN) {
+                if ((touche == Keyboard.KEY_SUBTRACT || touche == Keyboard.KEY_MINUS) && dataNaisJoueur.length() > 0) {
+                    dataNaisJoueur += "-";
+                } else {
+                    dataNaisJoueur += getLetter(touche);
+                }
+                textDateNais.modify("Indiquez la date de naissance du joueur (dd-MM-aaaa) : " + dataNaisJoueur);
+            }
+        }
         
         textDateNais.erase();
-        return dateNais;
+        return dataNaisJoueur;
     }
-    */
     
     /**
      * Menu principal
@@ -291,11 +309,11 @@ public abstract class Jeu {
                 // demande le nom du nouveau joueur
                 nomJoueur = getNomJoueur();
                 //demande la date de naissance du nouveau joueur
-                //dateNais = getDateNais();
+                dateNais = getDateNais();
                 //...
                 
                 // crée un profil avec le nom d'un nouveau joueur
-                profil = new Profil(nomJoueur, "01-12-2000");
+                profil = new Profil(nomJoueur, dateNais);
                 // lance le menu de jeu et récupère le choix à la sortie de ce menu de jeu
                 choix = menuJeu();
                 break;

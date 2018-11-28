@@ -7,7 +7,7 @@ package game;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.text.Element;
+import org.w3c.dom.*;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -37,15 +37,15 @@ public class Profil {
     public Profil(String nomFichier) {
         
         _doc = fromXML(nomFichier);
-        this.nom = _doc.getElementsByTagName("ns1:nom").item(0).getTextContent()
+        this.nom = _doc.getElementsByTagName("ns1:nom").item(0).getTextContent();
         this.avatar = _doc.getElementsByTagName("ns1:avatar").item(0).getTextContent();
         this.dateNaissance = _doc.getElementsByTagName("ns1:anniversaire").item(0).getTextContent();
         
         //balise profil
         Element racine =  (Element) _doc.createElement("ns1:profil");
         racine.setAttributeNS("http://www.w3.org/2001/XMLSchema-instance", "xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
-        racine.setAttributeNS("http://myGame/tux","xmlns:ns1");
-        racine.setAttributeNS("http://myGame/tux ../xsd/profil.xsd","xsi:schemaLocation");
+        racine.setAttributeNS("http://myGame/tux", "xmlns:ns1", "");
+        racine.setAttributeNS("http://myGame/tux ../xsd/profil.xsd", "xsi:schemaLocation", "");
         _doc.appendChild((Node) racine);
         
         //balise nom
@@ -72,24 +72,24 @@ public class Profil {
         int trouvé;
         Partie p;        
         NodeList listpartie = _doc.getElementsByTagName("ns1:partie");
-        for (int i = 0; i < _doc.getElementsByTagName("ns1:partie").getLength(); i++) {
-            date = listpartie[i].getAttribute("date");
-            temps = listpartie[i].getElementsByTagName("ns1:temps").item(0).getTextContent();
-            mot = listpartie[i].getElementsByTagName("ns1:mot").item(0).getTextContent();           
-            niveau = listpartie[i].getAttribute("niveau");       
-            trouvé = listpartie[i].getAttribute("trouvé");                   
-                       
-            p = new Partie(profileDateToXmlDate(date), mot, Integer.parseInt(niveau));
-            p.setTemps(Integer.parseInt(temps));
-            p.setTrouve(Integer.parseInt(trouvé));
-            //ajout dans la liste des parties
-            ajouterPartie(p);
-        }
-        
-        for(Partie unepartie : parties){            
-            Element partieExistant = unepartie.getPartie( (javax.swing.text.Document) _doc);
-            partiesElem.appendChild(partieExistant);
-        }
+//        for (int i = 0; i < _doc.getElementsByTagName("ns1:partie").getLength(); i++) {
+//            date = listpartie[i].getAttribute("date");
+//            temps = listpartie[i].getElementsByTagName("ns1:temps").item(0).getTextContent();
+//            mot = listpartie[i].getElementsByTagName("ns1:mot").item(0).getTextContent();           
+//            niveau = listpartie[i].getAttribute("niveau");       
+//            trouvé = listpartie[i].getAttribute("trouvé");                   
+//                       
+//            p = new Partie(profileDateToXmlDate(date), mot, Integer.parseInt(niveau));
+//            p.setTemps(Integer.parseInt(temps));
+//            p.setTrouve(Integer.parseInt(trouvé));
+//            //ajout dans la liste des parties
+//            ajouterPartie(p);
+//        }
+//        
+//        for(Partie unepartie : parties){            
+//            Element partieExistant = unepartie.getPartie( (javax.swing.text.Document) _doc);
+//            partiesElem.appendChild(partieExistant);
+//        }
         
     }
 

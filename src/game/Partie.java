@@ -1,8 +1,7 @@
 
 package game;
 
-import javax.swing.text.Document;
-import javax.swing.text.Element;
+import org.w3c.dom.*;
 
 
 
@@ -28,34 +27,34 @@ public class Partie {
     //initialiser la partie à jouer
     public Partie(Element partieElt) { // élément DOM correspondant à une partie
         //recuperer les données d'une partie
-        this.mot = partieElt.getElementsByTagName("ns1:mot").getTextContent();
-        this.niveau = partieElt.getAttribute("ns1:niveau");
-        this.date = partieElt.getAttribute("ns1:date");
-        
-        //reinitialisation des données
-        partieElt.setAttribute("trouvé",this.trouvé);
-        partieElt.getElementsByTagName("ns1:temps").setNodeValue(this.temps);
-        
+//        this.mot = partieElt.getElementsByTagName("ns1:mot").getTextContent();
+//        this.niveau = partieElt.getAttribute("ns1:niveau");
+//        this.date = partieElt.getAttribute("ns1:date");
+//        
+//        //reinitialisation des données
+//        partieElt.setAttribute("trouvé",this.trouvé);
+//        partieElt.getElementsByTagName("ns1:temps").setNodeValue(this.temps);
+//        
     }
     
     //crée le bloc XML représentant une partie à partir du paramètre doc(pour créer les éléments du XML) et le renvoie
     public Element getPartie(Document doc) {
         //balise partie avec attribut date et trouvé
-        Element partieElem =  (Element) doc.createElement("ns1:partie");
-        partieElem.setAttribute("date", this.date);
-        partieElem.setAttribute("trouvé", this.trouvé);
-        
-        //balise temps 
-        Element tempsElem = (Element) doc.createElement("ns1:temps");
-        tempsElem.appendChild(document.createTextNode(this.temps));
-        //balise mot avec attribut niveau
-        Element motElem = (Element) doc.createElement("ns1:mot");
-        motElem.setAttribute("niveau", this.niveau);
-        motElem.appendChild(document.createTextNode(this.mot));
-
-        //relie 
-        partieElem.appendChild(tempsElem);
-        partieElem.appendChild(motElem);
+        Element partieElem = (Element) doc.createElement("ns1:partie");
+//        partieElem.setAttribute("date", this.date);
+//        partieElem.setAttribute("trouvé", this.trouvé);
+//        
+//        //balise temps 
+//        Element tempsElem = (Element) doc.createElement("ns1:temps");
+//        tempsElem.appendChild(document.createTextNode(this.temps));
+//        //balise mot avec attribut niveau
+//        Element motElem = (Element) doc.createElement("ns1:mot");
+//        motElem.setAttribute("niveau", this.niveau);
+//        motElem.appendChild(document.createTextNode(this.mot));
+//
+//        //relie 
+//        partieElem.appendChild(tempsElem);
+//        partieElem.appendChild(motElem);
         
         return partieElem;
     }
@@ -97,7 +96,7 @@ public class Partie {
     }
 
     public int getTemps() {
-        return temps;
+        return 0;
     }
 
 
