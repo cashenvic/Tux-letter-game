@@ -225,9 +225,9 @@ public abstract class Jeu {
     private String getDateNais() {
         textDateNais.modify("Indiquez la date de naissance du joueur (dd-MM-aaaa) : ");
         int touche = 0;
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Veuillez saisir une date de naissance (dd-mm-yyyy) :");
-        String dateNais = sc.nextLine();
+//        Scanner sc = new Scanner(System.in);
+//        System.out.println("Veuillez saisir une date de naissance (dd-mm-yyyy) :");
+//        String dateNais = sc.nextLine();
 
         String dataNaisJoueur = "";
         while (!(dataNaisJoueur.length() > 0 && touche == Keyboard.KEY_RETURN)) {
