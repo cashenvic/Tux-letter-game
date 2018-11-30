@@ -112,8 +112,8 @@ public class JeuDevineLeMotOrdre extends Jeu{
         wrongLetters = new ArrayList<Letter>();
         
         // Instancie un Tux
-        tux = new Tux(env, mainRoom);
-        env.addObject(this.tux);
+//        tux = new Tux(env, mainRoom);
+//        env.addObject(this.tux);
         
     }
     
