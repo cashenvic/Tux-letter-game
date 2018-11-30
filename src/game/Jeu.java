@@ -9,12 +9,10 @@ un autre cube -> graine
 package game;
 
 import env3d.Env;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Scanner;
 import org.lwjgl.input.Keyboard;
 
 public abstract class Jeu {
@@ -46,12 +44,12 @@ public abstract class Jeu {
     protected String nomJoueur;
     protected String dateNais;
     protected int menu; //1 charge joueur / 2 nouvelle joueur
-    protected String file = "src/xml/data/xml/profil.xml";
+    //protected String file = ;
    
     private final mainRoom menuRoom;
     
     EnvText textNomJoueur;
-    EnvText textDateNais;
+    EnvText textDate;
     
     
     EnvText textMenuQuestion;
@@ -113,17 +111,18 @@ public abstract class Jeu {
         dico.ajouteMotADico(1, "papa");   
         dico.ajouteMotADico(1, "j ai");
         dico.ajouteMotADico(5, "mot tres complique");
+        //TODO:
         
 
         // Textes affichés à l'écran
         textMenuQuestion = new EnvText(env, "Voulez vous ?", 200, 300);
         textMenuJeu1 = new EnvText(env, "1. Commencer une nouvelle partie ?", 250, 280);
         textMenuJeu2 = new EnvText(env, "2. Charger une partie existante ?", 250, 260);
-        textMenuJeu3 = new EnvText(env, "3. Sortir de ce jeu ?", 250, 240);
+        textMenuJeu3 = new EnvText(env, "3. Sortir de ce menu ?", 250, 240);
         textMenuJeu4 = new EnvText(env, "4. Quitter le jeu ?", 250, 220);
         
         textNomJoueur = new EnvText(env, "Choisissez un nom de joueur : ", 200, 300);
-        textDateNais = new EnvText(env, "Indiquez la date de naissance du joueur : ", 140, 300);
+        textDate = new EnvText(env, "Indiquez la date : \n", 140, 300);
         
         textMenuPrincipal1 = new EnvText(env, "1. Charger un profil de joueur existant ?", 250, 280);
         textMenuPrincipal2 = new EnvText(env, "2. Créer un nouveau joueur ?", 250, 260);
@@ -222,35 +221,45 @@ public abstract class Jeu {
      * @return la date de naissance du joueur au format String
      */
     
-    private String getDateNais() {
-        textDateNais.modify("Indiquez la date de naissance du joueur (dd-MM-aaaa) : ");
+    private String getDate() {
+        if (menu == 1) {
+            textDate.modify("Indiquez la date (dd-MM-aaaa) :\n");
+        } else {
+            textDate.modify("Indiquez la date de naissance (dd-MM-aaaa) :\n");
+        }
         int touche = 0;
-//        Scanner sc = new Scanner(System.in);
-//        System.out.println("Veuillez saisir une date de naissance (dd-mm-yyyy) :");
-//        String dateNais = sc.nextLine();
 
-        String dataNaisJoueur = "";
-        while (!(dataNaisJoueur.length() > 0 && touche == Keyboard.KEY_RETURN)) {
+        String date = "";
+        while (!(date.length() > 0 && touche == Keyboard.KEY_RETURN)) {
             touche = 0;
             while (!(touche == Keyboard.KEY_1 || touche == Keyboard.KEY_2 || touche == Keyboard.KEY_3
                     || touche == Keyboard.KEY_4 || touche == Keyboard.KEY_5 || touche == Keyboard.KEY_6
                     || touche == Keyboard.KEY_7 || touche == Keyboard.KEY_8 || touche == Keyboard.KEY_9
-                    || touche == Keyboard.KEY_0 || touche == Keyboard.KEY_SUBTRACT || touche == Keyboard.KEY_MINUS)) {
+                    || touche == Keyboard.KEY_0 || touche == Keyboard.KEY_SUBTRACT || touche == Keyboard.KEY_MINUS
+                    || touche == Keyboard.KEY_RETURN || touche == Keyboard.KEY_ESCAPE)) {
                 touche = env.getKey();
                 env.advanceOneFrame();
             }
+            if (touche == Keyboard.KEY_ESCAPE) {
+                textDate.erase();
+                return "";
+            }
             if (touche != Keyboard.KEY_RETURN) {
-                if ((touche == Keyboard.KEY_SUBTRACT || touche == Keyboard.KEY_MINUS) && dataNaisJoueur.length() > 0) {
-                    dataNaisJoueur += "-";
+                if ((touche == Keyboard.KEY_SUBTRACT || touche == Keyboard.KEY_MINUS) && date.length() > 0) {
+                    date += "-";
                 } else {
-                    dataNaisJoueur += getLetter(touche);
+                    date += getLetter(touche);
                 }
-                textDateNais.modify("Indiquez la date de naissance du joueur (dd-MM-aaaa) : " + dataNaisJoueur);
+                if (menu == 1) {
+                    textDate.modify("Indiquez la date (dd-MM-aaaa) :\n" + date);
+                } else {
+                    textDate.modify("Indiquez la date  de naissance (dd-MM-aaaa) :\n" + date);
+                }
             }
         }
         
-        textDateNais.erase();
-        return dataNaisJoueur;
+        textDate.erase();
+        return date;
     }
     
 
@@ -298,7 +307,9 @@ public abstract class Jeu {
                 // demande le nom du joueur existant
                 nomJoueur = getNomJoueur();
                 // charge le profil de ce joueur si possible
-                if (profil.charge(nomJoueur, file)) {
+                if (profil.charge(nomJoueur)) {
+                    profil = new Profil(nomJoueur);
+                    profil.toString();
                     // lance le menu de jeu et récupère le choix à la sortie de ce menu de jeu -> true
                     choix = menuJeu();
                 } else {
@@ -315,7 +326,9 @@ public abstract class Jeu {
                 // demande le nom du nouveau joueur
                 nomJoueur = getNomJoueur();
                 //demande la date de naissance du nouveau joueur
-                dateNais = getDateNais();
+                dateNais = getDate();
+
+                //******    Creation immediate du profil
                                 
                 // lance le menu de jeu et récupère le choix à la sortie de ce menu de jeu
                 choix = menuJeu();
@@ -358,9 +371,9 @@ public abstract class Jeu {
             textMenuJeu3.display();
             textMenuJeu4.display();
 
-            // vérifie qu'une touche 1, 2, 3 ou 4 est pressée
+            // vérifie qu'une touche 1, 2, 3, 4, ou ESC est pressée
             int touche = 0;
-            while (!(touche == Keyboard.KEY_1 || touche == Keyboard.KEY_2 || touche == Keyboard.KEY_3 || touche == Keyboard.KEY_4)) {
+            while (!(touche == Keyboard.KEY_1 || touche == Keyboard.KEY_2 || touche == Keyboard.KEY_3 || touche == Keyboard.KEY_4 || touche == Keyboard.KEY_ESCAPE)) {
                 touche = env.getKey();
                 env.advanceOneFrame();
             }
@@ -427,7 +440,7 @@ public abstract class Jeu {
                     // .......... dico ...........
                     //choix du mot à deviner
                     this.mot = dico.getMotDepuisListeNiveau(this.niveau);                      
-                    //date
+                    //date de la partie
                     date = new SimpleDateFormat("aaaa/mm/dd").format(Calendar.getInstance().getTime());   
                     
                     // crée un nouvelle partie
@@ -436,16 +449,18 @@ public abstract class Jeu {
                     // joue
                     joue(partie);
                     // enregistre la partie dans le profil --> enregistre le profil
-                    if(menu==1){
+                    if (profil.charge(nomJoueur)) {
                         //crée profil au données existante
-                        profil = new Profil(partie);
+                        System.out.println("Il me semble te connaitre deja");
+                        profil.sauvegarder(partie);
                     }
-                    else{
+                    else {
+                        System.out.println("je pense pas qu'on se connaisse");
                         // crée un profil avec le nom d'un nouveau joueur
                         profil = new Profil(/*partie,*/nomJoueur, dateNais);
                     }
                     // .......... profil .........
-                    profil.sauvegarder(file);
+                    profil.sauvegarder(partie);
                     playTheGame = MENU_VAL.MENU_JOUE;
                     break;
 
@@ -461,12 +476,16 @@ public abstract class Jeu {
                     // Si partie trouvée, recupère le mot de la partie existante
                     if (menu == 1) {
                         //on pourrait afficher ici une liste des parties trouvées et demander de choisir
-                        String dateJeu = getDateNais();
-                        profil = new Profil(file, nomJoueur, dateJeu);
+                        String dateJeu = getDate();
+                        profil = new Profil(nomJoueur, dateJeu);
+
+                        //****  Charger le profil existant 
+                        //****  ensuite charger la partie demandée
+                        //****  puis lancer le jeu
                         // joue
                         joue(profil.p);
                         // enregistre la partie dans le profil --> enregistre le profil
-                        profil.sauvegarder(file);
+                        //profil.sauvegarder(partie);
                     }                    
                     //sinon on fait rien
                     
@@ -475,19 +494,16 @@ public abstract class Jeu {
                     break;
 
                 // -----------------------------------------
-                // Touche 3 : Sortie de ce jeu
+                // Touche 3 : Sortie de ce menu
                 // -----------------------------------------                
                 case Keyboard.KEY_3:
                     playTheGame = MENU_VAL.MENU_CONTINUE;
                     break;
 
                 // -----------------------------------------
-                // Touche 4 : Quitter le jeu
+                // Touche 4 ou Esc: Quitter le jeu
                 // -----------------------------------------                
                 case Keyboard.KEY_4:
-                    playTheGame = MENU_VAL.MENU_SORTIE;
-                    break;
-
                 case Keyboard.KEY_ESCAPE:
                     // le choix est de sortir du jeu (quitter l'application)
                     playTheGame = MENU_VAL.MENU_SORTIE;
@@ -495,6 +511,14 @@ public abstract class Jeu {
             }
         } while (playTheGame == MENU_VAL.MENU_JOUE);
         return playTheGame;
+    }
+
+    private MENU_VAL menuCommencerNouvellePartie() {
+        return MENU_VAL.MENU_CONTINUE;
+    }
+
+    private MENU_VAL menuChargerPartie() {
+        return MENU_VAL.MENU_JOUE;
     }
 
     
@@ -505,6 +529,9 @@ public abstract class Jeu {
     public void joue(Partie partie){
          // TEMPORAIRE : on règle la room de l'environnement. Ceci sera à enlever lorsque vous ajouterez les menus.
         env.setRoom(mainRoom);
+
+        tux = new Tux(env, mainRoom);
+        env.addObject(this.tux);
 
         // Ici, on initialise des valeurs/démarches pour une nouvelle partie
         démarrePartie(partie);

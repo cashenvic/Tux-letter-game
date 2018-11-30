@@ -42,7 +42,7 @@ public class Partie {
     }
     
     //crée le bloc XML représentant une partie à partir du paramètre doc(pour créer les éléments du XML) et le renvoie
-    public Element getPartie(Document doc) {
+    public Element createPartieOnDOM(Document doc) {
         //balise partie avec attribut date et trouvé        
         Element partieElem =  (Element) doc.createElement("ns1:partie");
         partieElem.setAttribute("date", this.date);

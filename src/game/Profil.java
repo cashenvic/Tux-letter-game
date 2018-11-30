@@ -14,17 +14,27 @@ import xml.XMLUtil;
 public class Profil {
     private String nom;
     private String dateNaissance;
-    private String avatar;    
+    private String avatar;
+    public String fileProfilXML = "src/xml/data/xml/profil.xml";
+    private Element nomCharge;
     //private ArrayList<Partie> parties;
     public Partie p;
     public Document _doc;
-    
-    
-    //charger profil -> nouvelle partie 1.1
-    public Profil(Partie p) {
-        //recuperation des données du joueur        
-        Element partieActuelle = (Element) p.getPartie(_doc); 
-        
+
+    //charger profil pour un joueur existant -> nouvelle partie 1.1
+    public Profil(String nomJoueur) {
+        init_doc();
+
+        if (charge(nomJoueur)) {
+            if (nomJoueur.equals(nomCharge.getTextContent())) {
+                Element profil = (Element) nomCharge.getParentNode();
+                Element dateNais = (Element) profil.getElementsByTagName("ns1:anniversaire").item(0);
+                Element avatar = (Element) profil.getElementsByTagName("ns1:avatar").item(0);
+                this.nom = nomCharge.getTextContent();
+                this.dateNaissance = dateNais.getTextContent();
+                this.avatar = avatar.getTextContent();
+            }
+        }
     }
     
     public Profil(/*Partie p,*/String nom, String dateNaissance) { //2/1
@@ -35,6 +45,11 @@ public class Profil {
         //Element partieActuelle = (Element) p.getPartie(_doc); 
         
     }
+
+    private void init_doc() {
+        _doc = fromXML("src/xml/data/xml/profil.xml");
+        System.out.println("le doc " + _doc);
+    }
     
     //menu 1.2
     // Cree un DOM à partir d'un fichier XML -> joueur existant
@@ -42,7 +57,7 @@ public class Profil {
     //à la récupération des valeurs du profil et des parties existantes 
     public Profil(String nomFichier, String nomJoueur, String dateJeu) {
         //recuperation des données du joueur
-        _doc = fromXML(nomFichier);        
+        _doc = fromXML(fileProfilXML);
         int j=0;
         Boolean trouverprofil = false;
         NodeList listprofil = _doc.getElementsByTagName("ns1:profil"); 
@@ -149,9 +164,12 @@ public class Profil {
     }
     
     //sauvegarder le document DOM dans un fichier XML
-    public void sauvegarder(String filename) {       
-        
-        toXML(filename);
+    public void sauvegarder(Partie p) {
+        Element partie = p.createPartieOnDOM(_doc);
+        Element parties = (Element) _doc.getElementsByTagName("parties");
+        parties.appendChild(partie);
+        System.out.println("le doc ecrit : " + _doc);
+        //toXML(filename);
     }
     
     /// Takes a date in XML format (i.e. ????-??-??) and returns a date
@@ -186,20 +204,53 @@ public class Profil {
         return date;
     }
 
-    protected boolean charge(String nomJoueur, String file) {
-        _doc = fromXML(file);
+    protected boolean charge(String nomJoueur) {
+        _doc = fromXML(fileProfilXML);
         NodeList noms = _doc.getElementsByTagName("ns1:nom");
         int i;
         for (i = 0; i < noms.getLength(); i++) {
             String nom = noms.item(i).getTextContent();
-            System.out.println("nom : "+nom);
             
             if (nom.equals(nomJoueur)) {
+                nomCharge = (Element) noms.item(i);
                 this.nom = nomJoueur;
+                System.out.println("Profil de nom : " + nom + " trouvé");
                 return true;
             }            
         }        
         return false;
+    }
+
+    public String getNom() {
+        return nom;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
+    public String getDateNaissance() {
+        return dateNaissance;
+    }
+
+    public void setDateNaissance(String dateNaissance) {
+        this.dateNaissance = dateNaissance;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public Document getDoc() {
+        return _doc;
+    }
+
+    public void setDoc(Document _doc) {
+        this._doc = _doc;
     }
     
     

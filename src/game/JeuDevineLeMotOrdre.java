@@ -43,7 +43,7 @@ public class JeuDevineLeMotOrdre extends Jeu{
     @Override
     protected void appliqueRegles(Partie partie){
         int i = 0;
-        System.out.println("Temps écoulé: " + chrono.getTime() + " ****** Temps restantes " + chrono.remainsTime());
+        //System.out.println("Temps écoulé: " + chrono.getTime() + " ****** Temps restantes " + chrono.remainsTime());
         
         if(!chrono.remainsTime()){
             finished = true;
@@ -139,6 +139,8 @@ public class JeuDevineLeMotOrdre extends Jeu{
         for (char c : caracts) {
             env.removeObject(c);
         }
+
+        env.advanceOneFrame();
     }
             
         

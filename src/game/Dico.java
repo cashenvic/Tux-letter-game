@@ -110,7 +110,7 @@ public class Dico extends DefaultHandler {
         if(list.size() > 0){
             int range = (list.size()-1) - 0 + 1  ; 
             // generate random numbers entre 0 et la taille de la list
-            int rand = (int)(Math.random() * range) + 0;
+            int rand = (int) (Math.random() * range) + 0;
             //return le mot de d'indice rand
             //System.out.println( rand + "-> "+ list.get(rand) );
             return list.get(rand);
