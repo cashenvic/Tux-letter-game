@@ -22,12 +22,12 @@ public abstract class Jeu {
         MENU_SORTIE, MENU_CONTINUE, MENU_JOUE
     }
 
-
     // attributs de classe
     protected Env env;
     protected mainRoom mainRoom;    
     protected Tux tux;
     protected Profil profil;
+    protected Partie partie;
     protected ArrayList<Letter> lettres; 
     protected Dico dico;
     
@@ -329,6 +329,7 @@ public abstract class Jeu {
                 dateNais = getDate();
 
                 //******    Creation immediate du profil
+                profil = new Profil(nomJoueur, dateNais);
                                 
                 // lance le menu de jeu et récupère le choix à la sortie de ce menu de jeu
                 choix = menuJeu();
@@ -359,7 +360,7 @@ public abstract class Jeu {
 
         MENU_VAL playTheGame;
         playTheGame = MENU_VAL.MENU_JOUE;
-        Partie partie;
+        //Partie partie;
         do {
             // restaure la room du menu
             env.setRoom(menuRoom);
@@ -449,16 +450,7 @@ public abstract class Jeu {
                     // joue
                     joue(partie);
                     // enregistre la partie dans le profil --> enregistre le profil
-                    if (profil.charge(nomJoueur)) {
-                        //crée profil au données existante
-                        System.out.println("Il me semble te connaitre deja");
-                        profil.sauvegarder(partie);
-                    }
-                    else {
-                        System.out.println("je pense pas qu'on se connaisse");
-                        // crée un profil avec le nom d'un nouveau joueur
-                        profil = new Profil(/*partie,*/nomJoueur, dateNais);
-                    }
+
                     // .......... profil .........
                     profil.sauvegarder(partie);
                     playTheGame = MENU_VAL.MENU_JOUE;
@@ -474,20 +466,19 @@ public abstract class Jeu {
 
                     // .......
                     // Si partie trouvée, recupère le mot de la partie existante
-                    if (menu == 1) {
-                        //on pourrait afficher ici une liste des parties trouvées et demander de choisir
-                        String dateJeu = getDate();
-                        profil = new Profil(nomJoueur, dateJeu);
+                    //on pourrait afficher ici une liste des parties trouvées et demander de choisir
+                    String dateJeu = getDate();
+                    //profil = new Profil(nomJoueur, dateJeu);
+                    partie = profil.loadPartie(nomJoueur, dateJeu);
 
-                        //****  Charger le profil existant 
-                        //****  ensuite charger la partie demandée
-                        //****  puis lancer le jeu
-                        // joue
-                        joue(profil.p);
-                        // enregistre la partie dans le profil --> enregistre le profil
-                        //profil.sauvegarder(partie);
-                    }                    
+                    // joue
+                    joue(partie);
+                    // enregistre la partie dans le profil --> enregistre le profil
+                    //profil.sauvegarder(partie);                  
                     //sinon on fait rien
+                    profil.sauvegarder(partie);
+                    // .......... profil .........
+                    //profil.sauvegarder(partie);
                     
                     // .......... profil ........
                     playTheGame = MENU_VAL.MENU_JOUE;

@@ -8,21 +8,26 @@
     xsi:schemaLocation='http://myGame/tux ../xsd/dico.xsd'>
     <ns1:mot niveau="1">bonbon</ns1:mot>
     <ns1:mot niveau="1">papa</ns1:mot>
-    <ns1:mot niveau="3">maman</ns1:mot>
-    <ns1:mot niveau="4">nounours</ns1:mot>
-    <ns1:mot niveau="5">jouet</ns1:mot>
-    <ns1:mot niveau="4">ballon</ns1:mot>
     <ns1:mot niveau="1">tata</ns1:mot>    
+    
     <ns1:mot niveau="2">tonton</ns1:mot>    
-    <ns1:mot niveau="5">princesse</ns1:mot>    
-    <ns1:mot niveau="3">bleu</ns1:mot>    
-    <ns1:mot niveau="2">rose</ns1:mot>    
-    <ns1:mot niveau="3">rouge</ns1:mot>    
-    <ns1:mot niveau="3">sac</ns1:mot>    
-    <ns1:mot niveau="3">jaune</ns1:mot>
-    <ns1:mot niveau="5">chien</ns1:mot>    
-    <ns1:mot niveau="5">chat</ns1:mot>    
+    <ns1:mot niveau="2">rose</ns1:mot>
     <ns1:mot niveau="2">beau</ns1:mot>    
     <ns1:mot niveau="2">belle</ns1:mot>    
+    <ns1:mot niveau="2">sac</ns1:mot>    
+      
+    <ns1:mot niveau="3">coucou</ns1:mot>    
+    <ns1:mot niveau="3">jaune</ns1:mot>
+    <ns1:mot niveau="3">maman</ns1:mot>
+    <ns1:mot niveau="3">bleu</ns1:mot>    
+    <ns1:mot niveau="3">rouge</ns1:mot>    
+    
+    <ns1:mot niveau="4">nounours</ns1:mot>
+    <ns1:mot niveau="4">ballon</ns1:mot>
     <ns1:mot niveau="4">manger</ns1:mot>
+    
+    <ns1:mot niveau="5">princesse</ns1:mot>    
+    <ns1:mot niveau="5">chien</ns1:mot>    
+    <ns1:mot niveau="5">chat</ns1:mot>    
+    <ns1:mot niveau="5">jouet</ns1:mot>
 </ns1:dictionnaire>

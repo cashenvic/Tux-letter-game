@@ -24,28 +24,52 @@ public class Profil {
     private Element nomCharge; //le nom en DOM (Element DOM)
     private Element profil; //le profil en Dom (Element DOM)
 
+    private final String listeProfilsTag = "ns1:listeProfils";
+    private final String profilTag = "ns1:profil";
+    private final String nomTag = "ns1:nom";
+    private final String dateNaisTag = "ns1:anniversaire";
+    private final String avatarTag = "ns1:avatar";
+    private final String partiesTag = "ns1:parties";
+    private final String partieTag = "ns1:partie";
+    private final String motTag = "ns1:mot";
+    private final String tempsTag = "ns1:temps";
+    private final String trouvéAttr = "trouvé";
+    private final String niveauAttr = "niveau";
+
     public Profil() {
         this.nom = "";
         this.avatar = "";
         this.dateNaissance = "";
     }
 
-    //charger profil pour un joueur existant -> nouvelle partie 1.1
+    /**
+     * Constructeur de profil depuis un fichier xml en se basant sur le nom de
+     * joueur qui lui est passé. Profil(nomJoueur: String)
+     *
+     * @param nomJoueur
+     */
     public Profil(String nomJoueur) {
         init_doc();
 
         if (charge(nomJoueur)) {
             if (nomJoueur.equals(nomCharge.getTextContent())) {
                 profil = (Element) nomCharge.getParentNode();
-                Element dateNais = (Element) profil.getElementsByTagName("ns1:anniversaire").item(0);
-                Element avatar = (Element) profil.getElementsByTagName("ns1:avatar").item(0);
+                Element dateNais = (Element) profil.getElementsByTagName(dateNaisTag).item(0);
+                Element avatar = (Element) profil.getElementsByTagName(avatarTag).item(0);
                 this.nom = nomCharge.getTextContent();
                 this.dateNaissance = dateNais.getTextContent();
                 this.avatar = avatar.getTextContent();
             }
         }
     }
-    
+
+    /**
+     * Constructeur de profil à partir le nom et la date de naissance du joueur
+     * qui lui est passé. Profil(nom: String, dateNaissance: String)
+     *
+     * @param nom
+     * @param dateNaissance
+     */
     public Profil(String nom, /*String avatar,*/ String dateNaissance) { //2/1
         this.nom = nom;
         this.dateNaissance = dateNaissance;
@@ -55,33 +79,58 @@ public class Profil {
             init_doc();
         }
 
-        Element profilElem = (Element) _doc.createElement("ns1:profil");
+        Element profilElem = (Element) _doc.createElement(profilTag);
 
         //balise temps 
-        Element nomElem = (Element) _doc.createElement("ns1:nom");
+        Element nomElem = (Element) _doc.createElement(nomTag);
         nomElem.appendChild(_doc.createTextNode(this.nom));
 
-        Element avatarElem = (Element) _doc.createElement("ns1:avatar");
+        Element avatarElem = (Element) _doc.createElement(avatarTag);
         avatarElem.appendChild(_doc.createTextNode(this.avatar));
 
-        Element dateNaisElem = (Element) _doc.createElement("ns1:anniversaire");
+        Element dateNaisElem = (Element) _doc.createElement(dateNaisTag);
         dateNaisElem.appendChild(_doc.createTextNode(this.dateNaissance));
 
-        Element partiesElem = (Element) _doc.createElement("ns1:parties");
+        Element partiesElem = (Element) _doc.createElement(partiesTag);
 
         //liaison
         profilElem.appendChild(nomElem);
         profilElem.appendChild(avatarElem);
         profilElem.appendChild(dateNaisElem);
         profilElem.appendChild(partiesElem);
-        _doc.getElementsByTagName("ns1:listeProfils").item(0).appendChild(profilElem);
-        profil = profilElem;
+        _doc.getElementsByTagName(listeProfilsTag).item(0).appendChild(profilElem);
         toXML(fileProfilXML);
+        profil = profilElem;
     }
 
+    /**
+     * Charge le document .xml pour la lecture et l'ecriture par le DOM
+     *
+     */
     private void init_doc() {
         _doc = fromXML(fileProfilXML);
         _doc_loaded = true;
+    }
+
+    /**
+     * Constructeur de profil depuis le nom et la date de naissance du joueur
+     * qui lui est passé Profil(nom: String, dateNaissance: String)
+     *
+     * @param nomJoueur
+     * @param date
+     */
+    public Partie loadPartie(String nomJoueur, String date) {
+        if (!_doc_loaded) {
+            init_doc();
+        }
+
+        if (charge(nomJoueur)) {
+            if (nomJoueur.equals(nomCharge.getTextContent())) {
+                Element partieElm = (Element) profil.getElementsByTagName(partieTag).item(0);
+                p = new Partie(partieElm);
+            }
+        }
+        return p;
     }
     
     //menu 1.2
@@ -140,30 +189,30 @@ public class Profil {
 //    }
     }
     
-    
-    public Partie chargerPartie(String dateNais) {
-        double temps = 0.0;
-        String mot = "";
-        String date = "";
-        int niveau = 0;
-        Element partie;
-        //this._doc = fromXML(file);
-        NodeList parties = this._doc.getElementsByTagName("partie");
-
-        int i = 0;
-        Boolean found = false;
-        while (i < parties.getLength() && !found) {
-            partie = (Element) parties.item(i);
-            date = partie.getAttribute("date");
-            if (date.equals(dateNais)) {
-                temps = Double.parseDouble(partie.getElementsByTagName("ns1:temps").item(0).getTextContent());
-                mot = partie.getElementsByTagName("mot").item(0).getTextContent();
-                niveau = Integer.parseInt(partie.getAttribute("niveau"));
-            }
-        }
-        return new Partie(xmlDateToProfileDate(date), mot, niveau);
+    {
+//    public Partie chargerPartie(String dateNais) {
+//        double temps = 0.0;
+//        String mot = "";
+//        String date = "";
+//        int niveau = 0;
+//        Element partie;
+//        //this._doc = fromXML(file);
+//        NodeList parties = this._doc.getElementsByTagName("partie");
+//
+//        int i = 0;
+//        Boolean found = false;
+//        while (i < parties.getLength() && !found) {
+//            partie = (Element) parties.item(i);
+//            date = partie.getAttribute("date");
+//            if (date.equals(dateNais)) {
+//                temps = Double.parseDouble(partie.getElementsByTagName("ns1:temps").item(0).getTextContent());
+//                mot = partie.getElementsByTagName("mot").item(0).getTextContent();
+//                niveau = Integer.parseInt(partie.getAttribute("niveau"));
+//            }
+//        }
+//        return new Partie(xmlDateToProfileDate(date), mot, niveau);
+//    }
     }
-
     
     // Sauvegarde un DOM en XML
     private void toXML(String nomFichier) {
@@ -189,10 +238,16 @@ public class Profil {
     }
     
     //sauvegarder le document DOM dans un fichier XML
+    /**
+     * Méthode pour sauvegarder dans un le fichier des profils (xml) une partie
+     * sauvegarder(p : Partie) : void
+     *
+     * @param p
+     */
     public void sauvegarder(Partie p) {
         //init_doc();
         Element partie = p.createPartieOnDOM(_doc);
-        Element parties = (Element) profil.getElementsByTagName("ns1:parties").item(0);
+        Element parties = (Element) profil.getElementsByTagName(partiesTag).item(0);
         parties.appendChild(partie);
         toXML(fileProfilXML);
     }
@@ -233,7 +288,7 @@ public class Profil {
         if (!_doc_loaded) {
             init_doc();
         }
-        NodeList noms = _doc.getElementsByTagName("ns1:nom");
+        NodeList noms = _doc.getElementsByTagName(nomTag);
         int i;
         for (i = 0; i < noms.getLength(); i++) {
             String nom = noms.item(i).getTextContent();

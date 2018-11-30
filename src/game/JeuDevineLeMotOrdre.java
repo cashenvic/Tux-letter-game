@@ -27,7 +27,7 @@ public class JeuDevineLeMotOrdre extends Jeu{
     @Override
     protected void démarrePartie(Partie partie){   
         //affichage du mot pendant quelques secondes
-        affichageDelai( partie.getMot(),3000);
+        affichageDelai(partie.getMot(), 3000);
                
         //instanciation du mot à deviner et le tux dans l'env
         ajoutEnvJeu(partie.getMot());                
@@ -96,14 +96,13 @@ public class JeuDevineLeMotOrdre extends Jeu{
     private void ajoutEnvJeu(String mot){
         //ajout dans l'environnment le mot en lettres à deviner et le tux
         caract = decouppeMot(mot);
-        int i=0;
+
         for (char c : caract) {
             Letter var = new Letter(c, randomDouble(0 + 3.0 , mainRoom.getWidth() - 3.0 ), randomDouble(0 + 3.0, mainRoom.getDepth() -3.0 ) );
             lettres.add(var);
             //initialises de la liste lettresRestantes à deviner
             lettresRestantes.add(var);    
-            env.addObject(lettres.get(i));
-            i++;
+            env.addObject(var);
         }  
         //inialise (int) nbLettresrestantes         
         nbLettresrestantes = getNbLettresRestantes();
@@ -117,18 +116,25 @@ public class JeuDevineLeMotOrdre extends Jeu{
         
     }
     
-        
+    /**
+     * Affiche le mot à trouver pendant le nombre de millisecondes secondes
+     * passé en paramètre
+     *
+     * @param mot
+     * @param temps
+     */
     private void affichageDelai(String mot, int temps){
-        //affichage du mot à deviner pendant 3s
+        //affichage du mot à deviner pendant "temps" secondes
         long max = temps; // 60000 = 1mn
         long tmax = System.currentTimeMillis() + max;
 
-        //caract = decouppeMot(partie.getMot());
+        ArrayList<Letter> lettresAffichees = new ArrayList<Letter>();
         char caracts[] = decouppeMot(mot);
         double i = 0.0;
         for (char c : caracts) {
             Letter var = new Letter(c, 6 + i, mainRoom.getDepth());
             env.addObject(var);
+            lettresAffichees.add(var);
             i += 7.0;
         }
         env.advanceOneFrame();
@@ -136,11 +142,9 @@ public class JeuDevineLeMotOrdre extends Jeu{
         while (System.currentTimeMillis() < tmax) {
         }
         
-        for (char c : caracts) {
-            env.removeObject(c);
+        for (Letter letter : lettresAffichees) {
+            env.removeObject(letter);
         }
-
-        env.advanceOneFrame();
     }
             
         

@@ -38,7 +38,7 @@ and open the template in the editor.
             <ns1:partie date="2013-12-11">
                 <ns1:temps>20.0</ns1:temps>
                 <ns1:mot niveau="2">indice</ns1:mot>
-            </ns1:partie>            
+            </ns1:partie>
         </ns1:parties>
     </ns1:profil>
 
@@ -51,7 +51,17 @@ and open the template in the editor.
                 <ns1:temps>6.0</ns1:temps>
                 <ns1:mot niveau="1">mot</ns1:mot>
             </ns1:partie>
+        </ns1:parties>
+</ns1:profil>
+<ns1:profil>
+        <ns1:nom>moi</ns1:nom>
+        <ns1:avatar/>
+        <ns1:anniversaire>12-08-2000</ns1:anniversaire>
+        <ns1:parties>
+            <ns1:partie date="PM/46/30" trouvé="100%">
+                <ns1:temps>9.0</ns1:temps>
+                <ns1:mot niveau="1">maman</ns1:mot>
             </ns1:partie>
         </ns1:parties>
-    </ns1:profil>
+</ns1:profil>
 </ns1:listeProfils>
