@@ -47,7 +47,7 @@ public class Profil {
     }
 
     private void init_doc() {
-        _doc = fromXML("src/xml/data/xml/profil.xml");
+        _doc = fromXML("src/xml/data/xml/d.xml");
         System.out.println("le doc " + _doc);
     }
     
@@ -165,11 +165,11 @@ public class Profil {
     
     //sauvegarder le document DOM dans un fichier XML
     public void sauvegarder(Partie p) {
+        init_doc();
         Element partie = p.createPartieOnDOM(_doc);
-        Element parties = (Element) _doc.getElementsByTagName("parties");
+        Element parties = (Element) _doc.getElementsByTagName("ns1:parties").item(0);
         parties.appendChild(partie);
-        System.out.println("le doc ecrit : " + _doc);
-        //toXML(filename);
+        toXML(fileProfilXML);
     }
     
     /// Takes a date in XML format (i.e. ????-??-??) and returns a date

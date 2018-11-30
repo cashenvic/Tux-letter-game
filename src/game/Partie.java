@@ -46,12 +46,12 @@ public class Partie {
         //balise partie avec attribut date et trouvé        
         Element partieElem =  (Element) doc.createElement("ns1:partie");
         partieElem.setAttribute("date", this.date);
-        partieElem.setAttribute("trouvé", ""+this.trouvé);
+        partieElem.setAttribute("trouvé", this.trouvé + "%");
         
         //balise temps 
         Element tempsElem = (Element) doc.createElement("ns1:temps");
         
-        tempsElem.appendChild(doc.createTextNode(""+this.temps));
+        tempsElem.appendChild(doc.createTextNode("" + this.temps));
         //balise mot avec attribut niveau
         Element motElem = (Element) doc.createElement("ns1:mot");
         motElem.setAttribute("niveau", ""+this.niveau);
@@ -60,7 +60,7 @@ public class Partie {
         //relie 
         partieElem.appendChild(tempsElem);
         partieElem.appendChild(motElem);
-        
+
         return partieElem;
     }
     

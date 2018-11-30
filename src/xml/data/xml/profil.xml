@@ -1,45 +1,28 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!--
+<?xml-stylesheet type="text/xsl" href="profil.xsl"?><!--
 To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates
 and open the template in the editor.
---><ns1:listeProfils xmlns:ns1="http://myGame/tux" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://myGame/tux file:/home/d/dothit/Bureau/tux/tuxtemplate/src/xml/data/xsd/profil.xsd">
-    <ns1:profil>
-        <ns1:nom>Alban</ns1:nom>
-        <ns1:avatar>conan.jpg</ns1:avatar>
-        <ns1:anniversaire>2006-05-08</ns1:anniversaire>
-        <ns1:parties>
-            <ns1:partie date="2013-12-10">
-                <ns1:temps>20.0</ns1:temps>
-                <ns1:mot niveau="1">cle</ns1:mot>
-            </ns1:partie>
-            <ns1:partie date="2013-12-11" trouvé="75%">
-                <ns1:mot niveau="2">indice</ns1:mot>
-            </ns1:partie>
-            <ns1:partie date="2013-12-11">
-                <ns1:temps>20.0</ns1:temps>
-                <ns1:mot niveau="2">indice</ns1:mot>
-            </ns1:partie>
-        </ns1:parties>
-    </ns1:profil>
-    
-    <ns1:profil>
-        <ns1:nom>do</ns1:nom>
-        <ns1:avatar>conan.jpg</ns1:avatar>
-        <ns1:anniversaire>2006-05-08</ns1:anniversaire>
-        <ns1:parties>
-            <ns1:partie date="2013-12-10">
-                <ns1:temps>20.0</ns1:temps>
-                <ns1:mot niveau="1">cle</ns1:mot>
-            </ns1:partie>
-            <ns1:partie date="2013-12-11" trouvé="75%">
-                <ns1:mot niveau="2">indice</ns1:mot>
-            </ns1:partie>
-            <ns1:partie date="2013-12-11">
-                <ns1:temps>20.0</ns1:temps>
-                <ns1:mot niveau="2">indice</ns1:mot>
-            </ns1:partie>
-        </ns1:parties>
-    </ns1:profil>
+--><ns1:profil xmlns:ns1="http://myGame/tux" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://myGame/tux ../xsd/profil.xsd">
+    <ns1:nom>Alban</ns1:nom>
+    <ns1:avatar>conan.jpg</ns1:avatar>
+    <ns1:anniversaire>2006-05-08</ns1:anniversaire>
+    <ns1:parties>
+        <ns1:partie date="2013-12-10">
+            <ns1:temps>20.0</ns1:temps>
+            <ns1:mot niveau="1">cle</ns1:mot>
+        </ns1:partie>
+        <ns1:partie date="2013-12-11" trouvé="75%">
+            <ns1:mot niveau="2">indice</ns1:mot>
+        </ns1:partie>
+        <ns1:partie date="2013-12-11">
+            <ns1:temps>20.0</ns1:temps>
+            <ns1:mot niveau="2">indice</ns1:mot>
+        </ns1:partie>
+    <ns1:partie date="AM/49/30" trouvé="100">
+            <ns1:temps>8.0</ns1:temps>
+            <ns1:mot niveau="1">j ai</ns1:mot>
+        </ns1:partie>
+    </ns1:parties>
 
-</ns1:listeProfils>
+</ns1:profil>
