@@ -15,7 +15,7 @@ public class Profil {
     private String nom;
     private String dateNaissance;
     private String avatar;
-    public String fileProfilXML = "src/xml/data/xml/profil.xml";
+    public final String fileProfilXML = "src/xml/data/xml/profil.xml";
     //private ArrayList<Partie> parties;
     public Partie p;
     public Document _doc;
@@ -23,6 +23,12 @@ public class Profil {
 
     private Element nomCharge; //le nom en DOM (Element DOM)
     private Element profil; //le profil en Dom (Element DOM)
+
+    public Profil() {
+        this.nom = "";
+        this.avatar = "";
+        this.dateNaissance = "";
+    }
 
     //charger profil pour un joueur existant -> nouvelle partie 1.1
     public Profil(String nomJoueur) {
@@ -40,17 +46,41 @@ public class Profil {
         }
     }
     
-    public Profil(/*Partie p,*/String nom, String dateNaissance) { //2/1
+    public Profil(String nom, /*String avatar,*/ String dateNaissance) { //2/1
         this.nom = nom;
         this.dateNaissance = dateNaissance;
-        //DOM .............
+        this.avatar = "";
 
-        //Element partieActuelle = (Element) p.getPartie(_doc); 
-        
+        if (!_doc_loaded) {
+            init_doc();
+        }
+
+        Element profilElem = (Element) _doc.createElement("ns1:profil");
+
+        //balise temps 
+        Element nomElem = (Element) _doc.createElement("ns1:nom");
+        nomElem.appendChild(_doc.createTextNode(this.nom));
+
+        Element avatarElem = (Element) _doc.createElement("ns1:avatar");
+        avatarElem.appendChild(_doc.createTextNode(this.avatar));
+
+        Element dateNaisElem = (Element) _doc.createElement("ns1:anniversaire");
+        dateNaisElem.appendChild(_doc.createTextNode(this.dateNaissance));
+
+        Element partiesElem = (Element) _doc.createElement("ns1:parties");
+
+        //liaison
+        profilElem.appendChild(nomElem);
+        profilElem.appendChild(avatarElem);
+        profilElem.appendChild(dateNaisElem);
+        profilElem.appendChild(partiesElem);
+        _doc.getElementsByTagName("ns1:listeProfils").item(0).appendChild(profilElem);
+        profil = profilElem;
+        toXML(fileProfilXML);
     }
 
     private void init_doc() {
-        _doc = fromXML("src/xml/data/xml/profil.xml");
+        _doc = fromXML(fileProfilXML);
         _doc_loaded = true;
     }
     
@@ -58,54 +88,56 @@ public class Profil {
     // Cree un DOM à partir d'un fichier XML -> joueur existant
     //-> utilise le document DOM pour extraire les données nécessaires 
     //à la récupération des valeurs du profil et des parties existantes 
-    public Profil(String nomFichier, String nomJoueur, String dateJeu) {
-        //recuperation des données du joueur
-        //_doc = fromXML(fileProfilXML);
-        int j=0;
-        Boolean trouverprofil = false;
-        NodeList listprofil = _doc.getElementsByTagName("ns1:profil"); 
-        
-        while(j< listprofil.getLength() && !trouverprofil){
-            Element listeprof = (Element) listprofil.item(j);
-            if (listeprof.getElementsByTagName("ns1:nom").equals(nomJoueur)){
-                this.nom = listeprof.getElementsByTagName("ns1:nom").item(0).getTextContent();
-                this.avatar = _doc.getElementsByTagName("ns1:avatar").item(0).getTextContent();
-                this.dateNaissance = _doc.getElementsByTagName("ns1:anniversaire").item(0).getTextContent();
-                this.dateNaissance = xmlDateToProfileDate(this.dateNaissance);
-                trouverprofil =true;
-            }
-            j++;
-        }        
-        Element profilJoueur = (Element) listprofil.item(j);
-        
-        //charge partie
-        String date;
-        double temps=0.0;
-        String mot="";
-        int niveau=1;
-        int trouvé=0;
-                
-        int i=0;
-        Boolean trouverpartie = false;
-        NodeList listpartie = profilJoueur.getElementsByTagName("ns1:partie"); 
-        
-        while( (i < listpartie.getLength()) && !trouverpartie) {
-            Element liste = (Element) listpartie.item(i);
-            
-            if (liste.getAttribute("date").equals(dateJeu)){
-                //temps = Double.parseDouble(liste.getElementsByTagName("ns1:temps").item(0).getTextContent());
-                mot = liste.getElementsByTagName("ns1:mot").item(0).getTextContent();           
-                niveau = Integer.parseInt(liste.getAttribute("niveau"));       
-                //trouvé = Integer.parseInt(liste.getAttribute("trouvé"));
-                trouverpartie =true;
-            }
-            i++;
-        }            
-                       
-            p = new Partie(profileDateToXmlDate(dateJeu), mot, niveau);
-           // p.setTemps((int) 0.0);
-            //p.setTrouve(0);
-            //ajout dans la liste des parties        
+    {
+//    public Profil(String nomFichier, String nomJoueur, String dateJeu) {
+//        //recuperation des données du joueur
+//        //_doc = fromXML(fileProfilXML);
+//        int j=0;
+//        Boolean trouverprofil = false;
+//        NodeList listprofil = _doc.getElementsByTagName("ns1:profil"); 
+//        
+//        while(j< listprofil.getLength() && !trouverprofil){
+//            Element listeprof = (Element) listprofil.item(j);
+//            if (listeprof.getElementsByTagName("ns1:nom").equals(nomJoueur)){
+//                this.nom = listeprof.getElementsByTagName("ns1:nom").item(0).getTextContent();
+//                this.avatar = _doc.getElementsByTagName("ns1:avatar").item(0).getTextContent();
+//                this.dateNaissance = _doc.getElementsByTagName("ns1:anniversaire").item(0).getTextContent();
+//                this.dateNaissance = xmlDateToProfileDate(this.dateNaissance);
+//                trouverprofil =true;
+//            }
+//            j++;
+//        }        
+//        Element profilJoueur = (Element) listprofil.item(j);
+//        
+//        //charge partie
+//        String date;
+//        double temps=0.0;
+//        String mot="";
+//        int niveau=1;
+//        int trouvé=0;
+//                
+//        int i=0;
+//        Boolean trouverpartie = false;
+//        NodeList listpartie = profilJoueur.getElementsByTagName("ns1:partie"); 
+//        
+//        while( (i < listpartie.getLength()) && !trouverpartie) {
+//            Element liste = (Element) listpartie.item(i);
+//            
+//            if (liste.getAttribute("date").equals(dateJeu)){
+//                //temps = Double.parseDouble(liste.getElementsByTagName("ns1:temps").item(0).getTextContent());
+//                mot = liste.getElementsByTagName("ns1:mot").item(0).getTextContent();           
+//                niveau = Integer.parseInt(liste.getAttribute("niveau"));       
+//                //trouvé = Integer.parseInt(liste.getAttribute("trouvé"));
+//                trouverpartie =true;
+//            }
+//            i++;
+//        }            
+//                       
+//            p = new Partie(profileDateToXmlDate(dateJeu), mot, niveau);
+//           // p.setTemps((int) 0.0);
+//            //p.setTrouve(0);
+//            //ajout dans la liste des parties        
+//    }
     }
     
     
@@ -152,18 +184,8 @@ public class Profil {
         return null;
     }
     
-    
-    //rajouter à la liste des parties une Partie instanciée.
-   /* public void ajouterPartie(Partie p){
-        parties.add(p);
-    }*/
-    /*
-    public int getDernierNiveau(){
-        return parties.get(parties.size() - 1).getNiveau();
-    }*/
-    
     public String toString(){
-        return "";
+        return "profil de " + nom;
     }
     
     //sauvegarder le document DOM dans un fichier XML

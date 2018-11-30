@@ -97,7 +97,7 @@ public abstract class Jeu {
         // Instancie un profil par défaut
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-mm-yyyy") ;
         Date aujourdhui = new Date();
-        profil = new Profil(nomJoueur, dateFormat.format(aujourdhui));
+        profil = new Profil();
 
         // Dictionnaire
         //instancie les lettres en Liste Letter

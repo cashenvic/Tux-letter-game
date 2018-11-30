@@ -50,8 +50,8 @@ public class Partie {
         
         //balise temps 
         Element tempsElem = (Element) doc.createElement("ns1:temps");
-        
         tempsElem.appendChild(doc.createTextNode("" + this.temps));
+
         //balise mot avec attribut niveau
         Element motElem = (Element) doc.createElement("ns1:mot");
         motElem.setAttribute("niveau", ""+this.niveau);
