@@ -125,31 +125,6 @@ public class Dico extends DefaultHandler {
         }
         
     }
-
-    private void lireDictionnaire() throws org.xml.sax.SAXException {
-        String pathToDicoFile = getCheminFichierDico();
-
-        try {
-            // création d'une fabrique de parseurs SAX 
-            SAXParserFactory fabrique = SAXParserFactory.newInstance();
-
-            // création d'un parseur SAX 
-            SAXParser parseur = fabrique.newSAXParser();
-
-            // lecture d'un fichier XML avec un DefaultHandler 
-            File fichier = new File(pathToDicoFile);
-            DefaultHandler gestionnaire = new Dico("src/xml/data/xml/dico.xml");
-            parseur.parse(pathToDicoFile, gestionnaire);
-
-        } catch (ParserConfigurationException pce) {
-            System.out.println("Erreur de configuration du parseur");
-            System.out.println("Lors de l'appel à newSAXParser()");
-        } catch (IOException ex) {
-            Logger.getLogger(Dico.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-      
         
     //détection d'ouverture de balise 
     @Override
@@ -210,10 +185,10 @@ public class Dico extends DefaultHandler {
     
     @Override
     public void endDocument() throws SAXException {
-//        for (Mot p : dictionnaire) {
-//            ajouteMotADico(p.getNiveau(), p.getMot());
+        for (Mot p : dictionnaire) {
+            ajouteMotADico(p.getNiveau(), p.getMot());
 //            System.out.println("Ajouté au dico: " + p);
-//        }
+        }
     }
 
 }
