@@ -7,6 +7,7 @@ package game;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Dictionary;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
@@ -29,16 +30,18 @@ public class Dico extends DefaultHandler {
     private String cheminFichierDico;
     
     //résultats de notre parsing 
-	private List<Mot> dictionnaire; 
-	private Mot mot; 
-	//flags nous indiquant la position du parseur 
-	private boolean inDictionnaire, inMot; 
-	//buffer nous permettant de récupérer les données  
-	private StringBuffer buffer; 
+    private List<Mot> dictionnaire;
+    private Mot mot;
+    //flags nous indiquant la position du parseur 
+	private boolean inDictionnaire, inMot;
+    //buffer nous permettant de récupérer les données  
+    private StringBuffer buffer;
     
     
     public Dico(String cheminFichier) {
         super();
+        inDictionnaire = false;
+        inMot = false;
         //instancie les listes par niveau
         this.listeNiveau1 = new ArrayList<String>();
         this.listeNiveau2 = new ArrayList<String>();
@@ -47,6 +50,7 @@ public class Dico extends DefaultHandler {
         this.listeNiveau5 = new ArrayList<String>();
                 
         this.cheminFichierDico = cheminFichier;
+
     }
     
 
@@ -92,7 +96,7 @@ public class Dico extends DefaultHandler {
     
 
     public String getCheminFichierDico() {
-        return "";
+        return cheminFichierDico;
     }
 
     //verifie si le niveau est compris entre 1 et 5
@@ -123,7 +127,7 @@ public class Dico extends DefaultHandler {
     }
 
     private void lireDictionnaire() throws org.xml.sax.SAXException {
-        String pathToDicoFile = "../../../TuxLetterGame/src/xml/dico.xml";
+        String pathToDicoFile = getCheminFichierDico();
 
         try {
             // création d'une fabrique de parseurs SAX 
@@ -134,8 +138,8 @@ public class Dico extends DefaultHandler {
 
             // lecture d'un fichier XML avec un DefaultHandler 
             File fichier = new File(pathToDicoFile);
-            DefaultHandler gestionnaire = new DefaultHandler();
-            parseur.parse(fichier, gestionnaire);
+            DefaultHandler gestionnaire = new Dico("src/xml/data/xml/dico.xml");
+            parseur.parse(pathToDicoFile, gestionnaire);
 
         } catch (ParserConfigurationException pce) {
             System.out.println("Erreur de configuration du parseur");
@@ -150,14 +154,15 @@ public class Dico extends DefaultHandler {
     //détection d'ouverture de balise 
     @Override
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
-        if(qName.equals("dictionnaire")){ 
-			dictionnaire = new LinkedList<Mot>(); 
-			inDictionnaire = true; 
-        }else if(qName.equals("mot")){ 
+        if (qName.equals("ns1:dictionnaire")) {
+            dictionnaire = new LinkedList<Mot>();
+            inDictionnaire = true;
+        } else if (qName.equals("ns1:mot")) {
             mot = new Mot(); 
             try{ 
-                int niveau = Integer.parseInt(attributes.getValue("niveau")); 
-                mot.setNiveau(niveau); 
+                int niveau = Integer.parseInt(attributes.getValue("niveau"));
+                mot.setNiveau(niveau);
+                //ajouteMotADico(niveau, mot.getMot());
             }catch(Exception e){ 
                 //erreur, le contenu de niveau n'est pas un entier 
                 throw new SAXException(e); 
@@ -172,12 +177,12 @@ public class Dico extends DefaultHandler {
     @Override
     //détection fin de balise 
     public void endElement(String uri, String localName, String qName) throws SAXException{ 
-        if(qName.equals("dictionnaire")){ 
+        if (qName.equals("ns1:dictionnaire")) {
             inDictionnaire = false; 
-        }else if(qName.equals("mot")){ 
+        } else if (qName.equals("ns1:mot")) {
             mot.setMot(buffer.toString()); 
             buffer = null;
-            
+
             dictionnaire.add(mot);
             mot = null; 
             
@@ -198,19 +203,17 @@ public class Dico extends DefaultHandler {
     
     //début du parsing 
     @Override
-    public void startDocument() throws SAXException { 
-            System.out.println("Début du parsing"); 
+    public void startDocument() throws SAXException {
     } 
     //fin du parsing 
     
     
     @Override
-    public void endDocument() throws SAXException { 
-            System.out.println("Fin du parsing"); 
-            System.out.println("Resultats du parsing"); 
-            for(Mot p : dictionnaire){ 
-                    System.out.println(p); 
-            } 
-    } 
+    public void endDocument() throws SAXException {
+//        for (Mot p : dictionnaire) {
+//            ajouteMotADico(p.getNiveau(), p.getMot());
+//            System.out.println("Ajouté au dico: " + p);
+//        }
+    }
 
 }

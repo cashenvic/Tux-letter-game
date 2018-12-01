@@ -8,7 +8,8 @@
     xsi:schemaLocation='http://myGame/tux ../xsd/dico.xsd'>
     <ns1:mot niveau="1">bonbon</ns1:mot>
     <ns1:mot niveau="1">papa</ns1:mot>
-    <ns1:mot niveau="1">tata</ns1:mot>    
+    <ns1:mot niveau="1">tata</ns1:mot>  
+    <ns1:mot niveau="1">cle</ns1:mot>  
     
     <ns1:mot niveau="2">tonton</ns1:mot>    
     <ns1:mot niveau="2">rose</ns1:mot>
@@ -25,6 +26,7 @@
     <ns1:mot niveau="4">nounours</ns1:mot>
     <ns1:mot niveau="4">ballon</ns1:mot>
     <ns1:mot niveau="4">manger</ns1:mot>
+    <ns1:mot niveau="4">chasser</ns1:mot>
     
     <ns1:mot niveau="5">princesse</ns1:mot>    
     <ns1:mot niveau="5">chien</ns1:mot>    

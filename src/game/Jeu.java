@@ -9,11 +9,19 @@ un autre cube -> graine
 package game;
 
 import env3d.Env;
+import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 import org.lwjgl.input.Keyboard;
+import org.xml.sax.SAXException;
 
 public abstract class Jeu {
 
@@ -103,15 +111,19 @@ public abstract class Jeu {
         //instancie les lettres en Liste Letter
         lettres = new ArrayList<Letter>();        
         //instancie de dico
-        dico = new Dico("dico.xml");
+        dico = new Dico("src/xml/data/xml/dico.xml");
         //ajout du dico niveau 1 
-        dico.ajouteMotADico(1, "mot");
-        dico.ajouteMotADico(1, "grenoble");
-        dico.ajouteMotADico(1, "maman");
-        dico.ajouteMotADico(1, "papa");   
-        dico.ajouteMotADico(1, "j ai");
-        dico.ajouteMotADico(5, "mot tres complique");
-        //TODO:
+//        dico.ajouteMotADico(1, "mot");
+//        dico.ajouteMotADico(1, "grenoble");
+//        dico.ajouteMotADico(1, "maman");
+//        dico.ajouteMotADico(1, "papa");   
+//        dico.ajouteMotADico(1, "j ai");
+//        dico.ajouteMotADico(5, "mot tres complique");
+        try {
+            lireDictionnaire(dico);
+        } catch (SAXException ex) {
+            Logger.getLogger(Dico.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
 
         // Textes affichés à l'écran
@@ -596,9 +608,34 @@ public abstract class Jeu {
         }
         return true;
     }
-    
-    
-    
+
+    /**
+     * Charge et parse le dictionnaire (dico.xml)
+     *
+     * @param dico
+     */
+    private static void lireDictionnaire(Dico dico) throws org.xml.sax.SAXException {
+        String pathToDicoFile = "src/xml/data/xml/dico.xml";
+
+        try {
+            // création d'une fabrique de parseurs SAX 
+            SAXParserFactory fabrique = SAXParserFactory.newInstance();
+
+            // création d'un parseur SAX 
+            SAXParser parseur = fabrique.newSAXParser();
+
+            // lecture d'un fichier XML avec un DefaultHandler 
+            File fichier = new File(pathToDicoFile);
+            //DefaultHandler gestionnaire = dico;
+            parseur.parse(fichier, dico);
+
+        } catch (ParserConfigurationException pce) {
+            System.out.println("Erreur de configuration du parseur");
+            System.out.println("Lors de l'appel à newSAXParser()");
+        } catch (IOException ex) {
+            Logger.getLogger(Dico.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     
     /**
      * Méthode abstraite démarrePartie(partie : Partie) : void
