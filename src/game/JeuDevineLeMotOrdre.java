@@ -3,11 +3,7 @@ tuxTrouveLettre -> si c'est pas la bonne lettre
  */
 package game;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 
 public class JeuDevineLeMotOrdre extends Jeu{
     private int nbLettresrestantes;
@@ -15,15 +11,24 @@ public class JeuDevineLeMotOrdre extends Jeu{
     private ArrayList<Letter> lettresRestantes;
     private ArrayList<Letter> lettresTrouvees;
     private ArrayList<Letter> wrongLetters;
-    
-    //affichage du mot pdt 5s
-    
+    private int tempsLimite = 30;
+
+    /**
+     * Constructeur sans paramètre de la classe JeuDevineMotOrdre. Il initialise
+     * les listes de mots
+     *
+     */
     public JeuDevineLeMotOrdre(){
         super();        
         lettresRestantes = new ArrayList<Letter>();
         lettresTrouvees = new ArrayList<Letter>();
     }
-    
+
+    /**
+     * Demarre une partie en affichant le mot à trouver pendant 3s
+     *
+     * @param partie
+     */
     @Override
     protected void démarrePartie(Partie partie){   
         //affichage du mot pendant quelques secondes
@@ -33,13 +38,34 @@ public class JeuDevineLeMotOrdre extends Jeu{
         ajoutEnvJeu(partie.getMot());                
         
         //initialise la limite + instancie le chrono et commence le chrono -> start
-        int limite = 10 * 1000/*5*60*1000*/;
-        chrono = new Chronometre(limite);
+//        switch (partie.getNiveau()) {
+//            case 1:
+//                tempsLimite = 50;
+//                break;
+//            case 2:
+//                tempsLimite = 45;
+//                break;
+//            case 3:
+//                tempsLimite = 40;
+//                break;
+//            case 4:
+//                tempsLimite = 35;
+//                break;
+//            case 5:
+//                tempsLimite = 30;
+//                break;
+//        }
+        //int limite = 30 * 1000/*5*60*1000*/;
+        chrono = new Chronometre(tempsLimite * 1000);
         chrono.start();
                         
     }
     
-    
+    /**
+     * Applique les règles du jeu à une partie
+     *
+     * @param partie
+     */
     @Override
     protected void appliqueRegles(Partie partie){
         int i = 0;
@@ -50,7 +76,7 @@ public class JeuDevineLeMotOrdre extends Jeu{
             System.out.println("\nFIN de la partie \nPas de chance!!!");
         }        
         if(nbLettresrestantes == 0 ){
-            System.out.println("\nFIN de la partie \nVous avez gagné!!! ");
+            System.out.println("\nFIN de la partie \nBravo! C'est gagné!!! ");
             finished=true;
         }
         
@@ -58,7 +84,13 @@ public class JeuDevineLeMotOrdre extends Jeu{
             nbLettresrestantes--;
         }
     }
-    
+
+    /**
+     * Termine le jeu à la fin du temps imparti ou lorsque tux a trouvé toutes
+     * les lettres
+     *
+     * @param partie
+     */
     @Override
     protected void terminePartie(Partie partie){
         chrono.stop();    
@@ -66,13 +98,18 @@ public class JeuDevineLeMotOrdre extends Jeu{
         partie.setTemps(chrono.getSeconds()); 
         partie.setTrouve(nbLettresrestantes);
         
-        System.out.println("Temps réparti : " + chrono.getMilliseconds() + " ms"
+        System.out.println("Temps ecoulé : " + partie.getTemps() + "s/" + tempsLimite
                 + "\nPourcentage des lettres trouvé : " + partie.getTrouve() + "%");
         
     }
     
     //a chaque lettre trouver -> on enleve la lettre de la liste et de l'env
     //si mauvaise lettre on l'ajoute dans la liste de wrongLetters
+    /**
+     * Permet de savoir si tux a touché une lettre, et si c'est la bonne
+     * l'enlever de l'environnement
+     * @return boolean
+     */
     private boolean tuxTrouveLettre(){
         for (Letter l : lettresRestantes) {
             if( collision(l) ){ 
@@ -92,28 +129,24 @@ public class JeuDevineLeMotOrdre extends Jeu{
     }
     
     
-            
-    private void ajoutEnvJeu(String mot){
-        //ajout dans l'environnment le mot en lettres à deviner et le tux
+    /**
+     * Disperse les lettres du mot à trouver dans l'environnement
+     *
+     * @param mot
+     */
+    private void ajoutEnvJeu(String mot) {
         caract = decouppeMot(mot);
 
         for (char c : caract) {
             Letter var = new Letter(c, randomDouble(0 + 3.0 , mainRoom.getWidth() - 3.0 ), randomDouble(0 + 3.0, mainRoom.getDepth() -3.0 ) );
             lettres.add(var);
-            //initialises de la liste lettresRestantes à deviner
             lettresRestantes.add(var);    
             env.addObject(var);
-        }  
-        //inialise (int) nbLettresrestantes         
+        }
         nbLettresrestantes = getNbLettresRestantes();
         
          //comporte les lettres qui sont mal choisi/désodre
         wrongLetters = new ArrayList<Letter>();
-        
-        // Instancie un Tux
-//        tux = new Tux(env, mainRoom);
-//        env.addObject(this.tux);
-        
     }
     
     /**
@@ -146,9 +179,6 @@ public class JeuDevineLeMotOrdre extends Jeu{
             env.removeObject(letter);
         }
     }
-            
-        
-    
     
     private int getNbLettresRestantes(){
         return lettresRestantes.size();

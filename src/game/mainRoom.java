@@ -27,7 +27,10 @@ public class mainRoom {
     private String textureSouth;
     public Document _doc;
     public final String filePlateauXML = "src/xml/data/xml/plateau.xml";
-    
+
+    /**
+     * Constructeur sans paramètre de la room à partir du document plateau.xml
+     */
     public mainRoom(){
         this.depth = 100;
         this.height = 60;
@@ -39,6 +42,9 @@ public class mainRoom {
         loadPlateau();
     }
 
+    /**
+     * Charge (parse) le document contenant l'environnement
+     */
     private void loadPlateau() {
         _doc = fromXML(filePlateauXML);
         this.textureBottom = _doc.getElementsByTagName("textureBottom").item(0).getTextContent();

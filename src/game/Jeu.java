@@ -14,7 +14,6 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.parsers.ParserConfigurationException;
@@ -79,7 +78,11 @@ public abstract class Jeu {
     EnvText textMenuR5;
 
    
-
+    /**
+     * Constructeur de jeu. Instancie un nouveau jeu avec son environnement, le
+     * dictionnaire de mot et les textes d'interaction avec l'utilisateur
+     *
+     */
     public Jeu() {
 
         // Crée un nouvel environnement
@@ -103,8 +106,6 @@ public abstract class Jeu {
         env.setDefaultControl(false);
 
         // Instancie un profil par défaut
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-mm-yyyy") ;
-        Date aujourdhui = new Date();
         profil = new Profil();
 
         // Dictionnaire
@@ -229,10 +230,10 @@ public abstract class Jeu {
     }
     
     
-     /*
-     * @return la date de naissance du joueur au format String
+    /**
+     * Demande une date au joueur et la retourne
+     * @return String
      */
-    
     private String getDate() {
         if (menu == 1) {
             textDate.modify("Indiquez la date (dd-MM-aaaa) :\n");
@@ -366,6 +367,7 @@ public abstract class Jeu {
                     choix = menuJeu();
                 } else {
                     // sinon continue (et boucle dans ce menu) joueur inexistant =false
+                    System.err.println("Désolé, ce nom d'utilisateur est introuvable.");
                     choix = MENU_VAL.MENU_CONTINUE;
                 }
                 break;
@@ -613,6 +615,13 @@ public abstract class Jeu {
     
     
     //generer les coordonnees alétoirement
+    /**
+     * Genère un nombre aléatoire entre min et max
+     *
+     * @param min
+     * @param max
+     * @return double
+     */
     public double randomDouble(double min, double max) {
         double range = max - min + 1.0 ;
         // generate random numbers 
@@ -626,6 +635,12 @@ public abstract class Jeu {
     }
     
     //découpe le mot string en tableau de char
+    /**
+     * Decoupe le mot en lettres
+     *
+     * @param mot
+     * @return char[]
+     */
     public char[] decouppeMot(String mot){
         char motdecoupé[];
         motdecoupé = new char[mot.length()];
@@ -639,6 +654,13 @@ public abstract class Jeu {
     
     
     //distance entre la lettre et le tux pour la collision
+    /**
+     * Retourne la distance entre tux et une lettre
+     *
+     * @param letter
+     *
+     * @return double
+     */
     protected double distance(Letter letter){
         double dx = letter.getX()-tux.getX(); //largeur
         //double dy = tux.getY()-letter.getY(); //hauteur
@@ -647,7 +669,12 @@ public abstract class Jeu {
         return distance; //tux - lettres
     }
     
-    
+    /**
+     * Retourne vrai si tux est en contact avec la lettre passée en paramètre
+     *
+     * @param letter
+     * @return boolean
+     */
      protected boolean collision(Letter letter){
         if ( (distance(letter) > 4) || (distance(letter) < -4)  ){  //scale du tux = 3
             return false;

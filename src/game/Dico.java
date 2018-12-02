@@ -4,17 +4,9 @@
 */
 package game;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Dictionary;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -37,7 +29,11 @@ public class Dico extends DefaultHandler {
     //buffer nous permettant de récupérer les données  
     private StringBuffer buffer;
     
-    
+    /**
+     * Construit une instance de dico à partir du chemin du fichier xml
+     *
+     * @param cheminFichier
+     */
     public Dico(String cheminFichier) {
         super();
         inDictionnaire = false;
@@ -53,7 +49,13 @@ public class Dico extends DefaultHandler {
 
     }
     
-
+    /**
+     * Va piocher un mot dans les listes de mot en fonction du niveau demandé et
+     * retourner ce mot
+     *
+     * @param niveau
+     * @return String
+     */
     public String getMotDepuisListeNiveau(int niveau) {
         switch (vérifieNiveau(niveau)) {
             case 5: 
@@ -72,6 +74,12 @@ public class Dico extends DefaultHandler {
     }
 
     //ajout du mot dans la liste du niveau spécifique
+    /**
+     * Ajoute un mot aux listes de mots en fonction du niveau
+     *
+     * @param niveau
+     * @param mot
+     */
     public void ajouteMotADico(int niveau, String mot) {
         int niv = vérifieNiveau(niveau);
         switch (niv) {
@@ -100,6 +108,13 @@ public class Dico extends DefaultHandler {
     }
 
     //verifie si le niveau est compris entre 1 et 5
+    /**
+     * Veifie si le niveau est compris en 1 et 5 (les niveaux acceptés) sinon
+     * retourne 1
+     *
+     * @param niveau
+     * @return int
+     */
     private int vérifieNiveau(int niveau) {
         if ((niveau >= 1) && (niveau <= 5) ){            
             return niveau;
@@ -110,6 +125,12 @@ public class Dico extends DefaultHandler {
     }
     
     //choix aléatoire du mot dans la liste
+    /**
+     * Pioche et retourne un mot au hazard dans la liste de mot qui lui est
+     * donné en     * paramètre
+     *
+     * @return String
+     */
     private String getMotDepuisListe(ArrayList<String> list) {
         if(list.size() > 0){
             int range = (list.size()-1) - 0 + 1  ; 

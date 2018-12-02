@@ -12,7 +12,14 @@ import org.lwjgl.input.Keyboard;
 public class Tux  extends EnvNode{
     private Env env;
     private mainRoom room;
-    
+
+    /**
+     * Constructeur du personnage Tux
+     *
+     * @param env
+     * @param room
+     * @return double
+     */
     public Tux(Env env, mainRoom room){
         //Dans le constructeur
         this.env = env;
@@ -28,6 +35,11 @@ public class Tux  extends EnvNode{
     }
 
     //déplacement du tux dans l'env elon les touches du clavier
+    /**
+     * Methode qui assure le deplacement de tux en fonction des touches
+     * assignées à cet effet
+     *
+     */
     public void déplace() {    
         
         if (env.getKeyDown(Keyboard.KEY_Z) || env.getKeyDown(Keyboard.KEY_UP)) { // Fleche 'haut' ou Z
@@ -62,6 +74,13 @@ public class Tux  extends EnvNode{
     }
     
     //limite des déplacements en fonction de l'environnement (largeur et profondeur)
+    /**
+     * Teste la collision de tux avec les limites de l'environnement et
+     * l'empeche d'en sortir. Retourne True si si est au bord de
+     * l'environnement.
+     *
+     * @return boolean
+     */
     private Boolean testeRoomCollision ( double x, double z){
         if( (( (this.room.getDepth()- getScale()) > z) && ( 0.0 + getScale()  < z) ) && ( (this.room.getWidth() - getScale())> x) && (0.0 + getScale() < x) ) {
             return true;

@@ -46,6 +46,11 @@ public class Partie {
     
     //construction et la réinitialisation d'une Partie déjà faite et issue du XML
     //initialiser la partie à jouer
+    /**
+     * Construit une partie à partir d'un element DOM passé en paramètre
+     *
+     * @param partieElt
+     */
     public Partie(Element partieElt) { // élément DOM correspondant à une partie
         //recuperer les données d'une partie
         Element mot = (Element) partieElt.getElementsByTagName("ns1:mot");
@@ -61,6 +66,11 @@ public class Partie {
     }
     
     //crée le bloc XML représentant une partie à partir du paramètre doc(pour créer les éléments du XML) et le renvoie
+    /**
+     * Méthode qui crée une partie dans le DOM et retourne cet element
+     *
+     * @return Element
+     */
     public Element createPartieOnDOM(Document doc) {
         //balise partie avec attribut date et trouvé        
         Element partieElem =  (Element) doc.createElement("ns1:partie");

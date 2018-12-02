@@ -124,6 +124,7 @@ public class Profil {
      *
      * @param nomJoueur
      * @param dateRecherchee
+     * @return Partie
      */
     public Partie loadPartie(String nomJoueur, String dateRecherchee) {
         if (!_doc_loaded) {
@@ -151,87 +152,6 @@ public class Profil {
         return p;
     }
 
-    //menu 1.2
-    // Cree un DOM à partir d'un fichier XML -> joueur existant
-    //-> utilise le document DOM pour extraire les données nécessaires 
-    //à la récupération des valeurs du profil et des parties existantes 
-    {
-//    public Profil(String nomFichier, String nomJoueur, String dateJeu) {
-//        //recuperation des données du joueur
-//        //_doc = fromXML(fileProfilXML);
-//        int j=0;
-//        Boolean trouverprofil = false;
-//        NodeList listprofil = _doc.getElementsByTagName("ns1:profil"); 
-//        
-//        while(j< listprofil.getLength() && !trouverprofil){
-//            Element listeprof = (Element) listprofil.item(j);
-//            if (listeprof.getElementsByTagName("ns1:nom").equals(nomJoueur)){
-//                this.nom = listeprof.getElementsByTagName("ns1:nom").item(0).getTextContent();
-//                this.avatar = _doc.getElementsByTagName("ns1:avatar").item(0).getTextContent();
-//                this.dateNaissance = _doc.getElementsByTagName("ns1:anniversaire").item(0).getTextContent();
-//                this.dateNaissance = xmlDateToProfileDate(this.dateNaissance);
-//                trouverprofil =true;
-//            }
-//            j++;
-//        }        
-//        Element profilJoueur = (Element) listprofil.item(j);
-//        
-//        //charge partie
-//        String date;
-//        double temps=0.0;
-//        String mot="";
-//        int niveau=1;
-//        int trouvé=0;
-//                
-//        int i=0;
-//        Boolean trouverpartie = false;
-//        NodeList listpartie = profilJoueur.getElementsByTagName("ns1:partie"); 
-//        
-//        while( (i < listpartie.getLength()) && !trouverpartie) {
-//            Element liste = (Element) listpartie.item(i);
-//            
-//            if (liste.getAttribute("date").equals(dateJeu)){
-//                //temps = Double.parseDouble(liste.getElementsByTagName("ns1:temps").item(0).getTextContent());
-//                mot = liste.getElementsByTagName("ns1:mot").item(0).getTextContent();           
-//                niveau = Integer.parseInt(liste.getAttribute("niveau"));       
-//                //trouvé = Integer.parseInt(liste.getAttribute("trouvé"));
-//                trouverpartie =true;
-//            }
-//            i++;
-//        }            
-//                       
-//            p = new Partie(profileDateToXmlDate(dateJeu), mot, niveau);
-//           // p.setTemps((int) 0.0);
-//            //p.setTrouve(0);
-//            //ajout dans la liste des parties        
-//    }
-    }
-    
-    {
-//    public Partie chargerPartie(String dateNais) {
-//        double temps = 0.0;
-//        String mot = "";
-//        String date = "";
-//        int niveau = 0;
-//        Element partie;
-//        //this._doc = fromXML(file);
-//        NodeList parties = this._doc.getElementsByTagName("partie");
-//
-//        int i = 0;
-//        Boolean found = false;
-//        while (i < parties.getLength() && !found) {
-//            partie = (Element) parties.item(i);
-//            date = partie.getAttribute("date");
-//            if (date.equals(dateNais)) {
-//                temps = Double.parseDouble(partie.getElementsByTagName("ns1:temps").item(0).getTextContent());
-//                mot = partie.getElementsByTagName("mot").item(0).getTextContent();
-//                niveau = Integer.parseInt(partie.getAttribute("niveau"));
-//            }
-//        }
-//        return new Partie(xmlDateToProfileDate(date), mot, niveau);
-//    }
-    }
-    
     // Sauvegarde un DOM en XML
     private void toXML(String nomFichier) {
         try {
@@ -303,6 +223,12 @@ public class Profil {
         return date;
     }
 
+    /**
+     * Verifie si un nom de joeur existe dans le fichier profil.xml
+     *
+     * @param nomJoueur
+     * @return boolean
+     */
     protected boolean charge(String nomJoueur) {
         if (!_doc_loaded) {
             init_doc();
