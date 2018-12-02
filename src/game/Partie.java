@@ -16,7 +16,7 @@ public class Partie {
     private String mot;
     private int niveau;
     private int trouvé; 
-    private double temps;
+    private double temps = 0;
     
     /**
      * Constructeur de partie sans paramètre qui se charge d'initialiser les

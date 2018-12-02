@@ -37,6 +37,7 @@ public abstract class Jeu {
     protected Partie partie;
     protected ArrayList<Letter> lettres; 
     protected Dico dico;
+    protected Chronometre chrono;
     
     //niveau
     private int niveau;
@@ -58,6 +59,7 @@ public abstract class Jeu {
     EnvText textNomJoueur;
     EnvText textDate;
     EnvText textPlayerName;
+    EnvText textChrono;
     
     EnvText textMenuQuestion;
     EnvText textMenuJeu1;
@@ -133,7 +135,8 @@ public abstract class Jeu {
         textMenuJeu3 = new EnvText(env, "3. Sortir de ce menu ?", 250, 240);
         textMenuJeu4 = new EnvText(env, "4. Quitter le jeu ?", 250, 220);
         //EnvText(Env env, String text, int x, int y,double size, double r, double g, double b, double a){
-        textPlayerName = new EnvText(env, "", 5, 50, 1.7, 1.0, 1.0, 1.0, 1.0);
+        textPlayerName = new EnvText(env, "", 3, 45, 2.0, 1.0, 1.0, 1.0, 1.0);
+        textChrono = new EnvText(env, "", 350, 45, 1.7, 1.0, 1.0, 1.0, 1.0);
         textNomJoueur = new EnvText(env, "Choisissez un nom de joueur : ", 200, 300);
         textDate = new EnvText(env, "Indiquez la date : \n", 140, 300);
         
@@ -384,6 +387,7 @@ public abstract class Jeu {
 
                 //******    Creation immediate du profil
                 profil = new Profil(nomJoueur, dateNais);
+
                                 
                 // lance le menu de jeu et récupère le choix à la sortie de ce menu de jeu
                 choix = menuJeu();
@@ -416,8 +420,12 @@ public abstract class Jeu {
         playTheGame = MENU_VAL.MENU_JOUE;
         //Partie partie;
         do {
+
             // restaure la room du menu
             env.setRoom(menuRoom);
+
+            textChrono.erase();
+            env.advanceOneFrame();
 
             // affiche le menu de jeu
             textMenuQuestion.display();
@@ -431,7 +439,8 @@ public abstract class Jeu {
 
             // vérifie qu'une touche 1, 2, 3, 4, ou ESC est pressée
             int touche = 0;
-            while (!(touche == Keyboard.KEY_1 || touche == Keyboard.KEY_2 || touche == Keyboard.KEY_3 || touche == Keyboard.KEY_4 || touche == Keyboard.KEY_ESCAPE)) {
+            while (!(touche == Keyboard.KEY_1 || touche == Keyboard.KEY_2 || touche == Keyboard.KEY_3
+                    || touche == Keyboard.KEY_4 || touche == Keyboard.KEY_ESCAPE)) {
                 touche = env.getKey();
                 env.advanceOneFrame();
             }
@@ -462,7 +471,8 @@ public abstract class Jeu {
                     textMenuR5.display();   
                     
                     int touche1 = 0;
-                    while (!(touche1 == Keyboard.KEY_1 || touche1 == Keyboard.KEY_2 || touche1 == Keyboard.KEY_3 || touche1 == Keyboard.KEY_4 || touche1 == Keyboard.KEY_5) ) {
+                    while (!(touche1 == Keyboard.KEY_1 || touche1 == Keyboard.KEY_2 || touche1 == Keyboard.KEY_3
+                            || touche1 == Keyboard.KEY_4 || touche1 == Keyboard.KEY_5 || touche1 == Keyboard.KEY_ESCAPE)) {
                         touche1 = env.getKey();
                         env.advanceOneFrame();
                     }
@@ -483,6 +493,9 @@ public abstract class Jeu {
                         case Keyboard.KEY_5 :
                             this.niveau = 5;
                             break;
+                        case Keyboard.KEY_ESCAPE:
+                            playTheGame = MENU_VAL.MENU_CONTINUE;
+                            break;
                         default:
                             break;
                     }
@@ -494,14 +507,10 @@ public abstract class Jeu {
                     textMenuR3.erase();
                     textMenuR4.erase();
                     textMenuR5.erase();  
-                    
-                    // .......... dico ...........
-                    //choix du mot à deviner
-                    this.mot = dico.getMotDepuisListeNiveau(this.niveau);                      
-                    //date de la partie
+
+                    //preparation d'une partie
+                    this.mot = dico.getMotDepuisListeNiveau(this.niveau);
                     date = new SimpleDateFormat("dd/MM/yyyy").format(Calendar.getInstance().getTime());
-                    
-                    // crée un nouvelle partie
                     partie = new Partie(this.date, this.mot, this.niveau);
                                                                       
                     // joue
@@ -608,6 +617,7 @@ public abstract class Jeu {
 
             // Ici, on applique les regles
             appliqueRegles(partie);
+            textChrono.modify("Temps restant: " + (30 - chrono.getTime()) + "s");
 
             // Fait avancer le moteur de jeu (mise à jour de l'affichage, de l'écoute des événements clavier...)
             env.advanceOneFrame();

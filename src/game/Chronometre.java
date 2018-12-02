@@ -41,7 +41,8 @@ public class Chronometre {
      * @return long
      */
     public long getTime() {
-        return end-begin;
+        current = System.currentTimeMillis();
+        return (current - begin) / 1000;
     }
 
     /**

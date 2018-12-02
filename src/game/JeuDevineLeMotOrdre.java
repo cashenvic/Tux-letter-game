@@ -7,7 +7,6 @@ import java.util.ArrayList;
 
 public class JeuDevineLeMotOrdre extends Jeu{
     private int nbLettresrestantes;
-    private Chronometre chrono;
     private ArrayList<Letter> lettresRestantes;
     private ArrayList<Letter> lettresTrouvees;
     private ArrayList<Letter> wrongLetters;
