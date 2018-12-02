@@ -2,7 +2,6 @@ package game;
 
 import env3d.Env;
 import env3d.advanced.EnvNode;
-import java.util.ArrayList;
 import org.lwjgl.input.Keyboard;
 
 /**
@@ -18,7 +17,6 @@ public class Tux  extends EnvNode{
      *
      * @param env
      * @param room
-     * @return double
      */
     public Tux(Env env, mainRoom room){
         //Dans le constructeur

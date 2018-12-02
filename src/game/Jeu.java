@@ -57,7 +57,7 @@ public abstract class Jeu {
     
     EnvText textNomJoueur;
     EnvText textDate;
-    
+    EnvText textPlayerName;
     
     EnvText textMenuQuestion;
     EnvText textMenuJeu1;
@@ -126,14 +126,14 @@ public abstract class Jeu {
             Logger.getLogger(Dico.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-
         // Textes affichés à l'écran
         textMenuQuestion = new EnvText(env, "Voulez vous ?", 200, 300);
         textMenuJeu1 = new EnvText(env, "1. Commencer une nouvelle partie ?", 250, 280);
         textMenuJeu2 = new EnvText(env, "2. Charger une partie existante ?", 250, 260);
         textMenuJeu3 = new EnvText(env, "3. Sortir de ce menu ?", 250, 240);
         textMenuJeu4 = new EnvText(env, "4. Quitter le jeu ?", 250, 220);
-        
+        //EnvText(Env env, String text, int x, int y,double size, double r, double g, double b, double a){
+        textPlayerName = new EnvText(env, "", 5, 50, 1.7, 1.0, 1.0, 1.0, 1.0);
         textNomJoueur = new EnvText(env, "Choisissez un nom de joueur : ", 200, 300);
         textDate = new EnvText(env, "Indiquez la date : \n", 140, 300);
         
@@ -380,7 +380,7 @@ public abstract class Jeu {
                 // demande le nom du nouveau joueur
                 nomJoueur = getNomJoueur();
                 //demande la date de naissance du nouveau joueur
-                dateNais = getDate();
+                dateNais = new SimpleDateFormat("dd/MM/yyyy").format(Calendar.getInstance().getTime());
 
                 //******    Creation immediate du profil
                 profil = new Profil(nomJoueur, dateNais);
@@ -425,6 +425,9 @@ public abstract class Jeu {
             textMenuJeu2.display();
             textMenuJeu3.display();
             textMenuJeu4.display();
+            textPlayerName.display();
+            env.advanceOneFrame();
+            textPlayerName.modify(nomJoueur);
 
             // vérifie qu'une touche 1, 2, 3, 4, ou ESC est pressée
             int touche = 0;
@@ -548,6 +551,8 @@ public abstract class Jeu {
                 // Touche 3 : Sortie de ce menu
                 // -----------------------------------------                
                 case Keyboard.KEY_3:
+                    textPlayerName.erase();
+                    env.advanceOneFrame();
                     playTheGame = MENU_VAL.MENU_CONTINUE;
                     break;
 
