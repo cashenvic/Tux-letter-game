@@ -18,7 +18,26 @@ public class Partie {
     private int trouvé; 
     private double temps;
     
+    /**
+     * Constructeur de partie sans paramètre qui se charge d'initialiser les
+     * attributs de classe. La date à la date du jour, mot à "" et niveau à 1
+     */
+    public Partie() {
+        this.date = "";
+        this.mot = "";
+        this.niveau = 1;
+    }
+
     //construction d'une nouvelle partie et initialise donc tous ses attributs
+    /**
+     * Constructeur de partie qui initialise les attributs de classes aux
+     * valeurs passées en paramètres. Partie(date: String, mot: String, niveau:
+     * int)
+     *
+     * @param date
+     * @param mot
+     * @param niveau
+     */
     public Partie(String date, String mot, int niveau){
         this.date = date;
         this.mot = mot;

@@ -36,6 +36,10 @@ public class Profil {
     private final String trouvéAttr = "trouvé";
     private final String niveauAttr = "niveau";
 
+    /**
+     * Constructeur de profil sans paramètre des profil qui se charge
+     * d'initialiser les attributs de classe nom, avatar et dateNaissance à ""
+     */
     public Profil() {
         this.nom = "";
         this.avatar = "";
@@ -119,23 +123,34 @@ public class Profil {
      * date: String)
      *
      * @param nomJoueur
-     * @param date
+     * @param dateRecherchee
      */
-    public Partie loadPartie(String nomJoueur, String date) {
+    public Partie loadPartie(String nomJoueur, String dateRecherchee) {
         if (!_doc_loaded) {
             init_doc();
         }
 
-        if (charge(nomJoueur)) {
-            if (nomJoueur.equals(nomCharge.getTextContent())) {
-                Element partieElm = (Element) profil.getElementsByTagName(partieTag).item(0);
-                p = new Partie(partieElm);
-                p.setDate(xmlDateToProfileDate(p.getDate()));
+        if (nomJoueur.equals(nomCharge.getTextContent())) {
+            NodeList allPartieTag = profil.getElementsByTagName(partieTag);
+            Element partieElm;
+            String datePartie;
+
+            for (int i = 0; i < allPartieTag.getLength(); i++) {
+                partieElm = (Element) allPartieTag.item(i);
+                datePartie = partieElm.getAttribute("date");
+
+                if (datePartie.equals(dateRecherchee)) {
+                    partieElm = (Element) allPartieTag.item(i);
+                    p = new Partie(partieElm);
+                    p.setDate(xmlDateToProfileDate(p.getDate()));
+                    return p;
+                }
             }
         }
+        p = new Partie();
         return p;
     }
-    
+
     //menu 1.2
     // Cree un DOM à partir d'un fichier XML -> joueur existant
     //-> utilise le document DOM pour extraire les données nécessaires 
@@ -300,7 +315,6 @@ public class Profil {
             if (nom.equals(nomJoueur)) {
                 nomCharge = (Element) noms.item(i);
                 this.nom = nomJoueur;
-                System.out.println("Profil de nom : " + nom + " trouvé");
                 return true;
             }            
         }        

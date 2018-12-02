@@ -28,36 +28,9 @@ and open the template in the editor.
         <ns1:avatar>conan.jpg</ns1:avatar>
         <ns1:anniversaire>2006-05-08</ns1:anniversaire>
         <ns1:parties>
-            <ns1:partie date="2013-12-10">
-                <ns1:temps>20.0</ns1:temps>
-                <ns1:mot niveau="1">cle</ns1:mot>
-            </ns1:partie>
-            <ns1:partie date="2013-12-11" trouvé="75%">
-                <ns1:mot niveau="2">indice</ns1:mot>
-            </ns1:partie>
-            <ns1:partie date="2013-12-11">
-                <ns1:temps>20.0</ns1:temps>
-                <ns1:mot niveau="2">indice</ns1:mot>
-            </ns1:partie>
-        <ns1:partie date="02-33-2018" trouvé="42%">
+        <ns1:partie date="2018-12-02" trouvé="50%">
                 <ns1:temps>10.0</ns1:temps>
-                <ns1:mot niveau="4">chasser</ns1:mot>
-            </ns1:partie>
-        <ns1:partie date="2018-38-02" trouvé="80%">
-                <ns1:temps>10.0</ns1:temps>
-                <ns1:mot niveau="3">maman</ns1:mot>
-            </ns1:partie>
-        <ns1:partie date="2018-12-02" trouvé="100%">
-                <ns1:temps>9.0</ns1:temps>
-                <ns1:mot niveau="5">chien</ns1:mot>
-            </ns1:partie>
-        <ns1:partie date="2018-12-02" trouvé="42%">
-                <ns1:temps>10.0</ns1:temps>
-                <ns1:mot niveau="4">chasser</ns1:mot>
-            </ns1:partie>
-        <ns1:partie date="2018-12-02" trouvé="55%">
-                <ns1:temps>10.0</ns1:temps>
-                <ns1:mot niveau="5">princesse</ns1:mot>
+                <ns1:mot niveau="4">nounours</ns1:mot>
             </ns1:partie>
         </ns1:parties>
     </ns1:profil>

@@ -273,7 +273,47 @@ public abstract class Jeu {
         textDate.erase();
         return date;
     }
-    
+
+    private String selectionPartie() {
+        if (menu == 1) {
+            textDate.modify("Indiquez la date (dd-MM-aaaa) :\n");
+        } else {
+            textDate.modify("Indiquez la date de naissance (dd-MM-aaaa) :\n");
+        }
+        int touche = 0;
+
+        String date = "";
+        while (!(date.length() > 0 && touche == Keyboard.KEY_RETURN)) {
+            touche = 0;
+            while (!(touche == Keyboard.KEY_1 || touche == Keyboard.KEY_2 || touche == Keyboard.KEY_3
+                    || touche == Keyboard.KEY_4 || touche == Keyboard.KEY_5 || touche == Keyboard.KEY_6
+                    || touche == Keyboard.KEY_7 || touche == Keyboard.KEY_8 || touche == Keyboard.KEY_9
+                    || touche == Keyboard.KEY_0 || touche == Keyboard.KEY_SUBTRACT || touche == Keyboard.KEY_MINUS
+                    || touche == Keyboard.KEY_RETURN || touche == Keyboard.KEY_ESCAPE)) {
+                touche = env.getKey();
+                env.advanceOneFrame();
+            }
+            if (touche == Keyboard.KEY_ESCAPE) {
+                textDate.erase();
+                return "";
+            }
+            if (touche != Keyboard.KEY_RETURN) {
+                if ((touche == Keyboard.KEY_SUBTRACT || touche == Keyboard.KEY_MINUS) && date.length() > 0) {
+                    date += "-";
+                } else {
+                    date += getLetter(touche);
+                }
+                if (menu == 1) {
+                    textDate.modify("Indiquez la date (dd-MM-aaaa) :\n" + date);
+                } else {
+                    textDate.modify("Indiquez la date  de naissance (dd-MM-aaaa) :\n" + date);
+                }
+            }
+        }
+
+        textDate.erase();
+        return date;
+    }
 
     
     /**
@@ -455,7 +495,6 @@ public abstract class Jeu {
                     this.mot = dico.getMotDepuisListeNiveau(this.niveau);                      
                     //date de la partie
                     date = new SimpleDateFormat("dd/MM/yyyy").format(Calendar.getInstance().getTime());
-                    System.err.println("la date generée: " + date);
                     
                     // crée un nouvelle partie
                     partie = new Partie(this.date, this.mot, this.niveau);
@@ -483,6 +522,12 @@ public abstract class Jeu {
                     String dateJeu = getDate();
                     //profil = new Profil(nomJoueur, dateJeu);
                     partie = profil.loadPartie(nomJoueur, dateJeu);
+                    if (partie.getMot().equals("")) {
+                        //Aucune partie corresepondante n'a été trouvée
+                        System.err.println("Désolé cette partie n'a pas été trouvée");
+                        playTheGame = MENU_VAL.MENU_JOUE;
+                        break;
+                    }
 
                     // joue
                     joue(partie);
