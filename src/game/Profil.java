@@ -57,15 +57,16 @@ public class Profil {
                 Element dateNais = (Element) profil.getElementsByTagName(dateNaisTag).item(0);
                 Element avatar = (Element) profil.getElementsByTagName(avatarTag).item(0);
                 this.nom = nomCharge.getTextContent();
-                this.dateNaissance = dateNais.getTextContent();
+                this.dateNaissance = xmlDateToProfileDate(dateNais.getTextContent());
                 this.avatar = avatar.getTextContent();
             }
         }
     }
 
     /**
-     * Constructeur de profil à partir le nom et la date de naissance du joueur
-     * qui lui est passé. Profil(nom: String, dateNaissance: String)
+     * Constructeur de profil qui ecrit dans le xml à partir le nom et la date
+     * de naissance du joueur qui lui est passé. Profil(nom: String,
+     * dateNaissance: String)
      *
      * @param nom
      * @param dateNaissance
@@ -89,7 +90,7 @@ public class Profil {
         avatarElem.appendChild(_doc.createTextNode(this.avatar));
 
         Element dateNaisElem = (Element) _doc.createElement(dateNaisTag);
-        dateNaisElem.appendChild(_doc.createTextNode(this.dateNaissance));
+        dateNaisElem.appendChild(_doc.createTextNode(profileDateToXmlDate(this.dateNaissance)));
 
         Element partiesElem = (Element) _doc.createElement(partiesTag);
 
@@ -113,8 +114,9 @@ public class Profil {
     }
 
     /**
-     * Constructeur de profil depuis le nom et la date de naissance du joueur
-     * qui lui est passé Profil(nom: String, dateNaissance: String)
+     * Charge une partie existante despuis le xml en fonction du nom et la date
+     * de naissance du joueur qui lui sont passés loadPartie(nomJouer: String,
+     * date: String)
      *
      * @param nomJoueur
      * @param date
@@ -128,6 +130,7 @@ public class Profil {
             if (nomJoueur.equals(nomCharge.getTextContent())) {
                 Element partieElm = (Element) profil.getElementsByTagName(partieTag).item(0);
                 p = new Partie(partieElm);
+                p.setDate(xmlDateToProfileDate(p.getDate()));
             }
         }
         return p;
@@ -246,6 +249,7 @@ public class Profil {
      */
     public void sauvegarder(Partie p) {
         //init_doc();
+        p.setDate(profileDateToXmlDate(p.getDate()));
         Element partie = p.createPartieOnDOM(_doc);
         Element parties = (Element) profil.getElementsByTagName(partiesTag).item(0);
         parties.appendChild(partie);

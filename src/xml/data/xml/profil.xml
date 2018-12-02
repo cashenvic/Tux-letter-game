@@ -39,29 +39,19 @@ and open the template in the editor.
                 <ns1:temps>20.0</ns1:temps>
                 <ns1:mot niveau="2">indice</ns1:mot>
             </ns1:partie>
+        <ns1:partie date="02-33-2018" trouvé="42%">
+                <ns1:temps>10.0</ns1:temps>
+                <ns1:mot niveau="4">chasser</ns1:mot>
+            </ns1:partie>
+        <ns1:partie date="2018-38-02" trouvé="80%">
+                <ns1:temps>10.0</ns1:temps>
+                <ns1:mot niveau="3">maman</ns1:mot>
+            </ns1:partie>
+        <ns1:partie date="2018-12-02" trouvé="100%">
+                <ns1:temps>9.0</ns1:temps>
+                <ns1:mot niveau="5">chien</ns1:mot>
+            </ns1:partie>
         </ns1:parties>
     </ns1:profil>
 
-<ns1:profil>
-        <ns1:nom>dr</ns1:nom>
-        <ns1:avatar/>
-        <ns1:anniversaire>12-066-2345</ns1:anniversaire>
-        <ns1:parties>
-            <ns1:partie date="PM/09/30" trouvé="100%">
-                <ns1:temps>6.0</ns1:temps>
-                <ns1:mot niveau="1">mot</ns1:mot>
-            </ns1:partie>
-        </ns1:parties>
-</ns1:profil>
-<ns1:profil>
-        <ns1:nom>kadi</ns1:nom>
-        <ns1:avatar/>
-        <ns1:anniversaire>13</ns1:anniversaire>
-        <ns1:parties>
-            <ns1:partie date="AM/13/01" trouvé="57%">
-                <ns1:temps>10.0</ns1:temps>
-                <ns1:mot niveau="5">default</ns1:mot>
-            </ns1:partie>
-        </ns1:parties>
-    </ns1:profil>
 </ns1:listeProfils>

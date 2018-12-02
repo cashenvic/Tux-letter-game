@@ -454,7 +454,8 @@ public abstract class Jeu {
                     //choix du mot à deviner
                     this.mot = dico.getMotDepuisListeNiveau(this.niveau);                      
                     //date de la partie
-                    date = new SimpleDateFormat("aaaa/mm/dd").format(Calendar.getInstance().getTime());   
+                    date = new SimpleDateFormat("dd/MM/yyyy").format(Calendar.getInstance().getTime());
+                    System.err.println("la date generée: " + date);
                     
                     // crée un nouvelle partie
                     partie = new Partie(this.date, this.mot, this.niveau);

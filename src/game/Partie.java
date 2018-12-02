@@ -103,5 +103,8 @@ public class Partie {
         return (int) temps;
     }
 
-    
+    public void setDate(String date) {
+        this.date = date;
+    }
+
 }
