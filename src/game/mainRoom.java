@@ -26,20 +26,21 @@ public class mainRoom {
     private String textureTop;    
     private String textureSouth;
     public Document _doc;
+    public final String filePlateauXML = "src/xml/data/xml/plateau.xml";
     
     public mainRoom(){
         this.depth = 100;
         this.height = 60;
         this.width = 100;
-        this.textureBottom = "textures/floor/grass2.png";
-        this.textureNorth = "textures/skybox/sunny/north.png";
-        this.textureEast = "textures/skybox/sunny/east.png";
-        this.textureWest = "textures/skybox/sunny/west.png";
-        //loadPlateau();
+//        this.textureBottom = "textures/floor/grass2.png";
+//        this.textureNorth = "textures/skybox/sunny/north.png";
+//        this.textureEast = "textures/skybox/sunny/east.png";
+//        this.textureWest = "textures/skybox/sunny/west.png";
+        loadPlateau();
     }
 
     private void loadPlateau() {
-        _doc = fromXML("plateau.xml");
+        _doc = fromXML(filePlateauXML);
         this.textureBottom = _doc.getElementsByTagName("textureBottom").item(0).getTextContent();
         this.textureNorth = _doc.getElementsByTagName("textureNorth").item(0).getTextContent();
         this.textureEast = _doc.getElementsByTagName("textureEast").item(0).getTextContent();

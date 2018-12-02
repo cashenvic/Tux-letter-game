@@ -51,6 +51,14 @@ and open the template in the editor.
                 <ns1:temps>9.0</ns1:temps>
                 <ns1:mot niveau="5">chien</ns1:mot>
             </ns1:partie>
+        <ns1:partie date="2018-12-02" trouvé="42%">
+                <ns1:temps>10.0</ns1:temps>
+                <ns1:mot niveau="4">chasser</ns1:mot>
+            </ns1:partie>
+        <ns1:partie date="2018-12-02" trouvé="55%">
+                <ns1:temps>10.0</ns1:temps>
+                <ns1:mot niveau="5">princesse</ns1:mot>
+            </ns1:partie>
         </ns1:parties>
     </ns1:profil>
 
