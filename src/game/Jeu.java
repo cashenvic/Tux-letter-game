@@ -278,45 +278,10 @@ public abstract class Jeu {
         return date;
     }
 
-    private String selectionPartie() {
-        if (menu == 1) {
-            textDate.modify("Indiquez la date (dd-MM-aaaa) :\n");
-        } else {
-            textDate.modify("Indiquez la date de naissance (dd-MM-aaaa) :\n");
-        }
-        int touche = 0;
+    private Partie selectionPartie() {
+        partie = profil.getAllParties();
 
-        String date = "";
-        while (!(date.length() > 0 && touche == Keyboard.KEY_RETURN)) {
-            touche = 0;
-            while (!(touche == Keyboard.KEY_1 || touche == Keyboard.KEY_2 || touche == Keyboard.KEY_3
-                    || touche == Keyboard.KEY_4 || touche == Keyboard.KEY_5 || touche == Keyboard.KEY_6
-                    || touche == Keyboard.KEY_7 || touche == Keyboard.KEY_8 || touche == Keyboard.KEY_9
-                    || touche == Keyboard.KEY_0 || touche == Keyboard.KEY_SUBTRACT || touche == Keyboard.KEY_MINUS
-                    || touche == Keyboard.KEY_RETURN || touche == Keyboard.KEY_ESCAPE)) {
-                touche = env.getKey();
-                env.advanceOneFrame();
-            }
-            if (touche == Keyboard.KEY_ESCAPE) {
-                textDate.erase();
-                return "";
-            }
-            if (touche != Keyboard.KEY_RETURN) {
-                if ((touche == Keyboard.KEY_SUBTRACT || touche == Keyboard.KEY_MINUS) && date.length() > 0) {
-                    date += "-";
-                } else {
-                    date += getLetter(touche);
-                }
-                if (menu == 1) {
-                    textDate.modify("Indiquez la date (dd-MM-aaaa) :\n" + date);
-                } else {
-                    textDate.modify("Indiquez la date  de naissance (dd-MM-aaaa) :\n" + date);
-                }
-            }
-        }
-
-        textDate.erase();
-        return date;
+        return partie;
     }
 
     
@@ -526,16 +491,8 @@ public abstract class Jeu {
                 // Touche 2 : Charger une partie existante
                 // -----------------------------------------                
                 case Keyboard.KEY_2: // charge une partie existante
-                    // demander de fournir une date
-                    // dateJeu =
-                    // tenter de trouver une partie à cette date
 
-                    // .......
-                    // Si partie trouvée, recupère le mot de la partie existante
-                    //on pourrait afficher ici une liste des parties trouvées et demander de choisir
-                    String dateJeu = getDate();
-                    //profil = new Profil(nomJoueur, dateJeu);
-                    partie = profil.loadPartie(nomJoueur, dateJeu);
+                    partie = selectionPartie();
                     if (partie.getMot().equals("")) {
                         //Aucune partie corresepondante n'a été trouvée
                         System.err.println("Désolé cette partie n'a pas été trouvée");

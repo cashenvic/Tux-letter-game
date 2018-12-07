@@ -4,6 +4,8 @@
  */
 package game;
 
+import java.util.ArrayList;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.w3c.dom.Document;
@@ -22,7 +24,7 @@ public class Profil {
     private Boolean _doc_loaded = false;
 
     private Element nomCharge; //le nom en DOM (Element DOM)
-    private Element profil; //le profil en Dom (Element DOM)
+    private Element profilEnDOM; //le profil en Dom (Element DOM)
 
     private final String listeProfilsTag = "ns1:listeProfils";
     private final String profilTag = "ns1:profil";
@@ -57,9 +59,9 @@ public class Profil {
 
         if (charge(nomJoueur)) {
             if (nomJoueur.equals(nomCharge.getTextContent())) {
-                profil = (Element) nomCharge.getParentNode();
-                Element dateNais = (Element) profil.getElementsByTagName(dateNaisTag).item(0);
-                Element avatar = (Element) profil.getElementsByTagName(avatarTag).item(0);
+                profilEnDOM = (Element) nomCharge.getParentNode();
+                Element dateNais = (Element) profilEnDOM.getElementsByTagName(dateNaisTag).item(0);
+                Element avatar = (Element) profilEnDOM.getElementsByTagName(avatarTag).item(0);
                 this.nom = nomCharge.getTextContent();
                 this.dateNaissance = xmlDateToProfileDate(dateNais.getTextContent());
                 this.avatar = avatar.getTextContent();
@@ -105,7 +107,7 @@ public class Profil {
         profilElem.appendChild(partiesElem);
         _doc.getElementsByTagName(listeProfilsTag).item(0).appendChild(profilElem);
         toXML(fileProfilXML);
-        profil = profilElem;
+        profilEnDOM = profilElem;
     }
 
     /**
@@ -118,37 +120,52 @@ public class Profil {
     }
 
     /**
+     * Retourne toutes les parties de ce profil
+     *
+     * @return ArrayList<Partie>
+     */
+    public /*ArrayList<Partie>*/ Partie getAllParties() {
+        NodeList allPartieTag = profilEnDOM.getElementsByTagName(partieTag);
+        Element partieElm;
+        ArrayList<Partie> partiesTrouvees;
+        Partie part = new Partie();
+        partiesTrouvees = new ArrayList<Partie>();
+
+        for (int i = 0; i < allPartieTag.getLength(); i++) {
+            partieElm = (Element) allPartieTag.item(i);
+            partieElm = (Element) allPartieTag.item(i);
+            part = new Partie(partieElm);
+            partiesTrouvees.add(part);
+            System.out.println(i + " " + part.toString());
+        }
+
+        int choix;
+
+        do {
+            Scanner sc = new Scanner(System.in);
+            String str = sc.nextLine();
+            choix = Integer.parseInt(str);
+        } while (choix > allPartieTag.getLength() || choix < 0);
+        part = loadPartie((Element) allPartieTag.item(choix));
+
+        return part;
+        //return partiesTrouvees;
+    }
+
+    /**
      * Charge une partie existante despuis le xml en fonction du nom et la date
      * de naissance du joueur qui lui sont passés loadPartie(nomJouer: String,
      * date: String)
      *
-     * @param nomJoueur
-     * @param dateRecherchee
+     * @param partie
      * @return Partie
      */
-    public Partie loadPartie(String nomJoueur, String dateRecherchee) {
+    public Partie loadPartie(Element partie) {
         if (!_doc_loaded) {
             init_doc();
         }
-
-        if (nomJoueur.equals(nomCharge.getTextContent())) {
-            NodeList allPartieTag = profil.getElementsByTagName(partieTag);
-            Element partieElm;
-            String datePartie;
-
-            for (int i = 0; i < allPartieTag.getLength(); i++) {
-                partieElm = (Element) allPartieTag.item(i);
-                datePartie = partieElm.getAttribute("date");
-
-                if (datePartie.equals(dateRecherchee)) {
-                    partieElm = (Element) allPartieTag.item(i);
-                    p = new Partie(partieElm);
-                    p.setDate(xmlDateToProfileDate(p.getDate()));
-                    return p;
-                }
-            }
-        }
-        p = new Partie();
+        p = new Partie(partie);
+        p.setDate(xmlDateToProfileDate(p.getDate()));
         return p;
     }
 
@@ -186,7 +203,7 @@ public class Profil {
         //init_doc();
         p.setDate(profileDateToXmlDate(p.getDate()));
         Element partie = p.createPartieOnDOM(_doc);
-        Element parties = (Element) profil.getElementsByTagName(partiesTag).item(0);
+        Element parties = (Element) profilEnDOM.getElementsByTagName(partiesTag).item(0);
         parties.appendChild(partie);
         toXML(fileProfilXML);
     }

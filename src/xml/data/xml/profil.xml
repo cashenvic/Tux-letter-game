@@ -36,33 +36,53 @@ and open the template in the editor.
         <ns1:avatar>conan.jpg</ns1:avatar>
         <ns1:anniversaire>2006-05-08</ns1:anniversaire>
         <ns1:parties>
-        <ns1:partie date="2018-12-02" trouvé="100%">
+        <ns1:partie date="2018-12-02" trouvé="100">
                 <ns1:temps>10.0</ns1:temps>
                 <ns1:mot niveau="5">chat</ns1:mot>
             </ns1:partie>
-            <ns1:partie date="2018-12-02" trouvé="0%">
+            <ns1:partie date="2018-12-02" trouvé="0">
                 <ns1:temps>0.0</ns1:temps>
                 <ns1:mot niveau="1">cle</ns1:mot>
             </ns1:partie>
-        <ns1:partie date="2018-12-02" trouvé="0%">
+        <ns1:partie date="2018-12-02" trouvé="0">
                 <ns1:temps>7.0</ns1:temps>
                 <ns1:mot niveau="3">jaune</ns1:mot>
             </ns1:partie>
-        <ns1:partie date="2018-12-02" trouvé="100%">
+        <ns1:partie date="2018-12-02" trouvé="100">
                 <ns1:temps>11.0</ns1:temps>
                 <ns1:mot niveau="3">rouge</ns1:mot>
             </ns1:partie>
-        <ns1:partie date="2018-12-02" trouvé="100%">
+        <ns1:partie date="2018-12-02" trouvé="100">
                 <ns1:temps>11.0</ns1:temps>
                 <ns1:mot niveau="3">jaune</ns1:mot>
             </ns1:partie>
-        <ns1:partie date="2018-12-02" trouvé="100%">
+        <ns1:partie date="2018-12-02" trouvé="100">
                 <ns1:temps>12.0</ns1:temps>
                 <ns1:mot niveau="4">manger</ns1:mot>
             </ns1:partie>
-            <ns1:partie date="2018-12-02" trouvé="100%">
+            <ns1:partie date="2018-12-02" trouvé="100">
                 <ns1:temps>7.0</ns1:temps>
                 <ns1:mot niveau="2">rose</ns1:mot>
+            </ns1:partie>
+        <ns1:partie date="2018-12-04" trouvé="100">
+                <ns1:temps>16.0</ns1:temps>
+                <ns1:mot niveau="4">ballon</ns1:mot>
+            </ns1:partie>
+        <ns1:partie date="2018-12-04" trouvé="100">
+                <ns1:temps>27.0</ns1:temps>
+                <ns1:mot niveau="0">bonbon</ns1:mot>
+            </ns1:partie>
+        <ns1:partie date="2018-12-05" trouvé="100">
+                <ns1:temps>12.0</ns1:temps>
+                <ns1:mot niveau="5">chat</ns1:mot>
+            </ns1:partie>
+        <ns1:partie date="2018-12-06" trouvé="100">
+                <ns1:temps>12.0</ns1:temps>
+                <ns1:mot niveau="0">tata</ns1:mot>
+            </ns1:partie>
+        <ns1:partie date="2018-12-06" trouvé="100%">
+                <ns1:temps>8.0</ns1:temps>
+                <ns1:mot niveau="0">tata</ns1:mot>
             </ns1:partie>
         </ns1:parties>
     </ns1:profil>
@@ -83,6 +103,34 @@ and open the template in the editor.
         <ns1:partie date="2018-12-02" trouvé="100%">
                 <ns1:temps>11.0</ns1:temps>
                 <ns1:mot niveau="2">tonton</ns1:mot>
+            </ns1:partie>
+        </ns1:parties>
+    </ns1:profil>
+<ns1:profil>
+        <ns1:nom>afdd</ns1:nom>
+        <ns1:avatar/>
+        <ns1:anniversaire>2018-12-06</ns1:anniversaire>
+        <ns1:parties>
+            <ns1:partie date="2018-12-06" trouvé="100%">
+                <ns1:temps>26.0</ns1:temps>
+                <ns1:mot niveau="2">beau</ns1:mot>
+            </ns1:partie>
+        </ns1:parties>
+    </ns1:profil>
+<ns1:profil>
+        <ns1:nom>affd</ns1:nom>
+        <ns1:avatar/>
+        <ns1:anniversaire>2018-12-06</ns1:anniversaire>
+        <ns1:parties/>
+    </ns1:profil>
+<ns1:profil>
+        <ns1:nom>kh</ns1:nom>
+        <ns1:avatar/>
+        <ns1:anniversaire>2018-12-06</ns1:anniversaire>
+        <ns1:parties>
+            <ns1:partie date="2018-12-06" trouvé="50%">
+                <ns1:temps>30.0</ns1:temps>
+                <ns1:mot niveau="1">bonbon</ns1:mot>
             </ns1:partie>
         </ns1:parties>
     </ns1:profil>

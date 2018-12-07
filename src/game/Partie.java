@@ -53,14 +53,16 @@ public class Partie {
      */
     public Partie(Element partieElt) { // élément DOM correspondant à une partie
         //recuperer les données d'une partie
-        Element mot = (Element) partieElt.getElementsByTagName("ns1:mot");
+        Element mot = (Element) partieElt.getElementsByTagName("ns1:mot").item(0);
         this.mot = mot.getTextContent();
-        this.niveau = Integer.parseInt(partieElt.getAttribute("ns1:niveau"));
-        this.date = partieElt.getAttribute("ns1:date");
+        this.niveau = Integer.parseInt(mot.getAttribute("niveau"));
+        this.date = partieElt.getAttribute("date");
+        String trouvé = partieElt.getAttribute("trouvé");
+        this.trouvé = Integer.parseInt(trouvé.replace("%", ""));
         
         //reinitialisation des données
         partieElt.setAttribute("trouvé", "" + this.trouvé);
-        Element temps = (Element) partieElt.getElementsByTagName("ns1:temps");
+        Element temps = (Element) partieElt.getElementsByTagName("ns1:temps").item(0);
         temps.setNodeValue("" + this.temps);
         
     }
@@ -68,7 +70,7 @@ public class Partie {
     //crée le bloc XML représentant une partie à partir du paramètre doc(pour créer les éléments du XML) et le renvoie
     /**
      * Méthode qui crée une partie dans le DOM et retourne cet element
-     *
+     * @param doc
      * @return Element
      */
     public Element createPartieOnDOM(Document doc) {
@@ -115,7 +117,7 @@ public class Partie {
     }
     
     public String toString(){
-     return "";   
+        return "Partie du " + date + " de niveau " + niveau + " dont le mot est " + mot;
     } 
     
     
