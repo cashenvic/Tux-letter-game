@@ -124,7 +124,7 @@ public class Profil {
      *
      * @return ArrayList<Partie>
      */
-    public /*ArrayList<Partie>*/ Partie getAllParties() {
+    public Partie selectPartieToLoad() {
         NodeList allPartieTag = profilEnDOM.getElementsByTagName(partieTag);
         Element partieElm;
         ArrayList<Partie> partiesTrouvees;

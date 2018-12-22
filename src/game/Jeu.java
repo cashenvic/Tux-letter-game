@@ -279,7 +279,7 @@ public abstract class Jeu {
     }
 
     private Partie selectionPartie() {
-        partie = profil.getAllParties();
+        partie = profil.selectPartieToLoad();
 
         return partie;
     }
