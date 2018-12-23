@@ -56,7 +56,7 @@ public class Profil {
      */
     public Profil(String nomJoueur) {
         init_doc();
-
+//TODO: penser à l'interface du jeu pour charger une partie, afficher tous les profils
         if (charge(nomJoueur)) {
             if (nomJoueur.equals(nomCharge.getTextContent())) {
                 profilEnDOM = (Element) nomCharge.getParentNode();
@@ -124,7 +124,7 @@ public class Profil {
      *
      * @return ArrayList<Partie>
      */
-    public Partie selectPartieToLoad() {
+    public ArrayList<Partie> selectPartieToLoad() {
         NodeList allPartieTag = profilEnDOM.getElementsByTagName(partieTag);
         Element partieElm;
         ArrayList<Partie> partiesTrouvees;
@@ -132,24 +132,23 @@ public class Profil {
         partiesTrouvees = new ArrayList<Partie>();
 
         for (int i = 0; i < allPartieTag.getLength(); i++) {
-            partieElm = (Element) allPartieTag.item(i);
+            //partieElm = (Element) allPartieTag.item(i);
             partieElm = (Element) allPartieTag.item(i);
             part = new Partie(partieElm);
             partiesTrouvees.add(part);
-            System.out.println(i + " " + part.toString());
         }
 
-        int choix;
+        /*int choix;
 
         do {
             Scanner sc = new Scanner(System.in);
             String str = sc.nextLine();
             choix = Integer.parseInt(str);
         } while (choix > allPartieTag.getLength() || choix < 0);
-        part = loadPartie((Element) allPartieTag.item(choix));
+        part = loadPartie((Element) allPartieTag.item(choix));*/
 
-        return part;
-        //return partiesTrouvees;
+        //return part;
+        return partiesTrouvees;
     }
 
     /**

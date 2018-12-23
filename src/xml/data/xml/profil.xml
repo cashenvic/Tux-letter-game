@@ -84,6 +84,10 @@ and open the template in the editor.
                 <ns1:temps>8.0</ns1:temps>
                 <ns1:mot niveau="0">tata</ns1:mot>
             </ns1:partie>
+        <ns1:partie date="2018-12-22" trouvé="100%">
+                <ns1:temps>14.0</ns1:temps>
+                <ns1:mot niveau="4">manger</ns1:mot>
+            </ns1:partie>
         </ns1:parties>
     </ns1:profil>
 

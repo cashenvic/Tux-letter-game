@@ -277,9 +277,40 @@ public abstract class Jeu {
         textDate.erase();
         return date;
     }
+    //penser a generaliser son utilisation
+    private int getNumber() {
+        // vérifie qu'une touche 1, 2 ou 3 est pressée
+        int touche = 0;
+        while (!(touche == Keyboard.KEY_1 || touche == Keyboard.KEY_2 || touche == Keyboard.KEY_3 || touche == Keyboard.KEY_ESCAPE)) {
+            touche = env.getKey();
+            env.advanceOneFrame();
+        }
+        return touche;
+    }
 
     private Partie selectionPartie() {
-        partie = profil.selectPartieToLoad();
+        ArrayList<Partie> partiesTrrouvees = profil.selectPartieToLoad();
+        ArrayList<EnvText> affichagesParties = new ArrayList<EnvText>();
+        int x = 140, y = 445;
+        //partie = profil.selectPartieToLoad();
+        for (Partie p : partiesTrrouvees) {
+            //selection de de la partie
+            EnvText partieText;
+            partieText = new EnvText(env, partiesTrrouvees.indexOf(p) + "-" + p.toString(), x, y);
+            partieText.display();
+            env.advanceOneFrame();
+            y -= 23;
+            affichagesParties.add(partieText);
+
+            //choisir la partie et la mettre dans partie
+
+            System.out.println(" " + p.toString());
+        }
+        int sel = getNumber();
+        partie = partiesTrrouvees.get(sel);
+        for (EnvText e : affichagesParties) {
+            e.erase();
+        }
 
         return partie;
     }
@@ -305,12 +336,7 @@ public abstract class Jeu {
         textMenuPrincipal2.display();
         textMenuPrincipal3.display();
 
-        // vérifie qu'une touche 1, 2 ou 3 est pressée
-        int touche = 0;
-        while (!(touche == Keyboard.KEY_1 || touche == Keyboard.KEY_2 || touche == Keyboard.KEY_3 || touche == Keyboard.KEY_ESCAPE)) {
-            touche = env.getKey();
-            env.advanceOneFrame();
-        }
+        int touche = getNumber();
 
         // efface le menu
         textMenuQuestion.erase();

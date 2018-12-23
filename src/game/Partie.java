@@ -117,7 +117,7 @@ public class Partie {
     }
     
     public String toString(){
-        return "Partie du " + date + " de niveau " + niveau + " dont le mot est " + mot;
+        return "Partie du " + date + " de niveau " + niveau;
     } 
     
     
